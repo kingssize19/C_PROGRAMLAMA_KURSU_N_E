@@ -1,0 +1,286 @@
+C Dilinin Nitelikleri
+---------------------------------------------------------------------------------------------------
+* imperative = buyurgan
+* procedural = prosedürel
+* non - proprietary = mülkiyeti yok (Komite)
+* middle level = orta seviyeli
+* static typing = statik tür kavram (Tanımlanan değişkenlerin değerleri değişebilir fakat typeları değiştirilemez.)
+* general - purpose = genel amaçlı
+* efficient = verimli
+* artificial = yapay
+* standard = standart
+* portable = taşınabilir
+* expressive = ifade gücü yüksek
+---------------------------------------------------------------------------------------------------
+* 1969 --> traditional C, classic C, C 89/90 ilk standart (ANSI/ISO C)
+* 1995 --> C99 standartı
+* C11 standartı (2011)
+* Algol -> CPL -> BCPL -> B  -> C
+   (       TYPELESS        )
+---------------------------------------------------------------------------------------------------
+* Daha yüksek seviyeli bir dilden daha düşük seviyeli bir dile çeviri yapan programlara "compiler" denir.
+  Source Code --> Compiler --> Object Code (Executable Machine Code)
+
+* Front End 
+  Lexical Analysis : Kaynak kodu en küçük birimlerine ayırır.
+  Syntax Analysis : Dilin kurallarına uygunluğun kontrol edildiği süreç
+
+* Back End 
+  Code Generation and Optimisation
+
+* Object kodun çalıştırılabilir bir kod haline getirilmesi için bir süreç daha gerçekleştirilmeli.
+Bu sürece Linking (Bağlama) denir.
+
+  Link -> Bağlama           Linker -> Bağlayıcı
+
+deneme.c   --> Compiler  --> deneme.obj |
+                                          --> Linker --> .exe file
+deneme2.c  --> Compiler  --> deneme.obj | 
+
+* source file -> compiler -> object code -> Linker -> executable (yürütülebilir)
+
+* compile time : Derleme zamanı
+* Link time    : Object kodların exe koda dönüştürüldüğü süreç
+* run time     : executable kodu işlemcinin fiilen çalıştırdığı süreç
+---------------------------------------------------------------------------------------------------
+Source File (Kaynak Dosya)
+        |
+        |
+Preprocessor (önişlemci) (preprocessing time)
+        |
+        |
+Translation unit (çeviri birimi)
+        |
+        |
+Compiler (derleyici) (Compile time) --> assembly code --> assembler  |
+        |                                                            |
+    object code        <--              <--            <--         <-- 
+        |
+        |
+Linker (Bağlayıcı) (Link time) (Oluşturulan tüm object kodlar burada bağlanır)
+        |
+        |
+Executable Code
+---------------------------------------------------------------------------------------------------
+* IDE (Integrated Development Environment)
+  Geliştirme Platformları (Tümleşik Geliştirme Ortamı)
+
+* ill formed -> Dilin kurallarını çiğneyen bir durumu bildirir. Geçerli olmayan bir program.
+  zıttı -> well formed
+
+* syntax error -> Sözdizim hatası
+* invalid code -> Geçersiz kod. Kodun dilin kurallarını çiğnemesi demek. zıttı -> valid code
+* illegal code -> Kodun dilin kurallarına aykırı olduğunu anlatır. zıttı -> legal code
+
+
+* observable behavior -> Gözlenebilir davranış (optimizer module)
+
+* Derleyici, programın gözlemlenebilir davranışı değişmediği sürece kodu bizim yazdığımızdan farklı şekilde düzenleyebilir.
+  
+* Derleyicinin en önemli modülü, kodun etkin bir şekilde makine kodlarına dönüştürülmesini sağlayan modül olan "optimizer" modülüdür.
+
+* Yazdığımız kod farklı derleyicilerle derlendiğinde derleyicilerin ürettikleri makina kodu farklı hızlarda çalışabilir.
+
+* Derleyici işlemci mimarisini göz önünde bulundurarak optimizasyon yapar.
+
+* simd -> işlemcinin bir cycle'ında birden fazla işlemin yapılması.
+
+* Derleyiciyi derleyici yapan optimizer modülüdür. 
+  Derleyici kodumuzu bizim yazdığımız biçimde derlerse kodumuz yavaş çalışır.
+
+* Debugger --> Sağladığı bir takım olanaklarla, kontrollü bir ortamda programı çalıştırarak koddaki hataları bulmamıza yardımcı olur.
+---------------------------------------------------------------------------------------------------
+* preprocessor (ön işlemci)
+* preprocessor directive (ön işlemci talimatı (komutları))
+    #include <string.h>
+    #define SIZE 100
+
+* token (atom)
+* tokenizing (atomlarına ayırma)
+* Bir C derleyicisi Lexical Analysis sürecinde önce tokenizing yapar. Kaynak kodu kendisi için anlamlı en küçük birimlerine ayırır.
+
+* token --> Kaynak kodun derleyici tarafından anlam taşıyan en küçük birimi
+
+toke -> keyword (anahtar sözcük), operator, identifier (isim), constant (sabit), 
+        string literal (yazı sabiti), delimiter (işleç) olabilir.
+---------------------------------------------------------------------------------------------------
+* latin - roman karakter seti --> A.....Z, a.....z
+* 0 - 9 --> arabic numerals
+* _ underscore
+* İsimler rakam karakteri ile başlamazlar.
+* Anahtar sözcükler isim olarak seçilmez.
+
+* case - sensitive : Büyük/küçük harfe duyarlı
+* case - insensitive : Büyük/küçük harfe duyarlı değil.
+
+x = 345;      x --> identifier,  345 --> constant
+---------------------------------------------------------------------------------------------------
+* decimal system --> 561
+* octal system   --> 0561  (Başa 0 ön eki gelir.)
+* hexadecimal system --> 0x561  (Başa 0x ön eki gelir.)
+
+Operators
+  
+  && --> logical and
+  || --> logical or
+  !  --> logical not
+  
+  ++ --> increment (plus plus)
+  -- --> decrement (minus minus)
+
+  "mustafa" --> string literal
+---------------------------------------------------------------------------------------------------
+* Global Namespace --> Herşeyi içine alan, bütün kodların, fonksiyonların bulunduğu yer.
+* Local Namespace  --> Fonksiyonların içi.
+
+* Statement --> Belirli bir işi gerçekleştirmek için yazdığımız c cümlelerine "statement (deyim)" denir.
+  
+* Declaration (Bildirim) --> Bir ismin hangi anlama geldiğini, ne olduğunu anlatan cümleler.
+
+* Name lookup --> Kod içinde kullanılan bir ismin hangi varlığa ilişkin olduğunun anlaşılması süreci. (Derleyici tarafından anlaşılması süreci)
+  (İsim arama)                                                                                                 
+
+//Name lookup Hatası
+Önce isim aranacak
+                  Aranan isim bulunamaz ise sentaks hatası 
+
+//Context hatası (context control error)
+Aranan isim bulunursa
+                    Kullanım şekli hatalı ise (bulunan ismin)
+
+
+* Global namespace'de sadece declaration statement olur. Executable statement yer almaz.
+---------------------------------------------------------------------------------------------------
+* expression (ifade) --> Değişkenlerin, sabitlerin, operatörlerin bir arada bulundukları yapıya expression denir.
+
+      x * x + y * y > 10
+      x
+      10
+      x + 10
+
+* expressionların data type, value, value category gibi özellikleri vardır.
+  
+* L value expression : Bazı ifadeler bir nesneye karşılık geliyor, bir değişkene karşılık geliyor,
+                       erişebileceğimiz bellekte yeri ayrılmış bir varlığa karşılık geliyorsa buna
+                       L value expression denir.
+
+* R value expression : Bazı ifadeler bellekte doğrudan erişebileceğimiz bellek alanına, değişkene
+                       karşılık gelmiyor bir hesaplamayı ifade ediyor ise R value expression denir.
+
+
+statement niteleyicileri;
+
+* expression statement (ifade deyimi)
+     --> Eğer ifade geçerli ise sonuna ; koyarak geçerli bir deyim elde ederiz.
+         Bu şekilde oluşturulan deyimlere expression statement denir.
+
+* null statement
+     --> Tek başına noktalı virgül'ün oluşturduğu statement'a null statement denir.
+
+* block {} ikisinin oluşturduğu birime block denir.
+  { --> left brace  (opening)
+  } --> right brace (closing)
+
+* compound statement
+  {
+      x++;
+      --y;
+      a = x + y;
+  }
+
+* control statement
+  --> Önceden belirlenmiş bir sentaksı vardır.
+  --> En az bir anahtar sözcük vardır.
+  --> Kontrol deyimleri
+      - if statement
+      - while statement
+      - do while statement
+      - for statement
+      - switch statement
+      - goto statement
+      - return statement
+      - break statement
+      - continue statement
+---------------------------------------------------------------------------------------------------
+* object - nesne : Değişken anlamını taşır
+  a[2][5] -> p   } nesne
+
+* data type
+  1) Değişkenleri niteleyen terim
+  2) Sabitleri niteleyen terim
+  3) ifadeleri niteleyen terim
+
+  type --> tip veya tür demek ikiside aynı anlamda.
+
+* Programın çalışma zamanında o değişken (o nesne) bellekte kaç byte yer kaplayacak bunu belirleyen o değişkenin türüdür.
+
+* storage --> Bir nesnenin bellekte yerinden bahsederken o nesneye ait bellek bloğundan bahsederken
+              kullandığımız terim storage terimidir. (nesnenin bellekteki yeri)
+
+* object/variable
+        data type
+        value
+        storage (nesnenin bellekteki yeri)
+        address
+
+* data type
+     - basic types
+                      --> fundemental types 
+                      --> built-in types
+                      --> default types
+     - user-defined types
+                      --> structures
+                      --> unions
+                      --> enumerations
+---------------------------------------------------------------------------------------------------
+* expressions (ifadeler)
+    data type
+    value
+    L value / R value
+    constant expression (sabit ifadesi)
+
+//constant expression
+int main(void) {
+  int arr[10 + 20];  //Hata vermez
+}
+
+//Expected constant expression
+int main(void) {
+  int x = 10;
+  int y = 20;
+  int arr[x + y];  //Hata verir. 
+}
+---------------------------------------------------------------------------------------------------
+Numbering System
+  * decimal (onluk)
+  * hexadecimal (on altılık)
+  * octal (sekizlik)
+  * binary (ikilik)
+
+binary system --> 0 ve 1 lerden oluşur.
+
+signed (işaretli)    --> Hem negatif hem pozitif tamsayılar var.
+unsigned (işaretsiz) --> Negatif sayılar yok 0 ve pozitif tamsayılar var.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
