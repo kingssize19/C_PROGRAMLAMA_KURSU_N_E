@@ -513,6 +513,101 @@ int y = x;   //syntax error (initializer is not a constant)
       }
 
 
+int x; --> otomatik ömürlü    default değeri-> tanımsız davranış (UB)
+
+DİKKAT!!!
+* otomatik ömürlü değişkenlere ilk değer vermez isek (yani initialize yapmaz isek) onlar hayata indetermined value yada garbage value ile başlarlar)
+int x; -> çöp değer kullanıyor.
+   --> x'in çöp değerini kodda kullanmıyorsak ise Tanımsız davranış yok.
+int y = x; -> fakat burda x'in çöp değerini kullandığımız için tanımsız davranış var.
+   --> x'in çöp değerini kodda kullanıyor isek tanımsız davranış var.
+
+Tanımsız davranış yok!                                    Tanımsız davranış var! (Undefined Behavior)
+int x;                                                    int x;
+int x = 4;                                                x = x + 5;
+
+
+* static ömürlü değişkenlere ilk değer veren ifadelerin constant expression olma zorunluluğu varken.
+* otomatik ömürlü değişkenlere ilk değer veren ifadelerin constant expression olma zorunluluğu yok.
+
+int x = 5; 
+int y = x + 6;   --> İçinde değişken ismi olduğu için constant expression değil fakat syntax hatası vermez. Otomatik ömürlü değişken.
+--------------------------------------------------------------------------------------------------------------------------------
+* scope (kapsam)
+* name lookup (isim arama)
+
+--> C dilinde, kodda bildirilen bütün isimlerin "scope" u (kapsamı) vardır.
+--> Bir ismin scope'u demek o ismin kullanabileceği kod alanı demektir.
+--> name lookup : Kodda kullanılan isimlerin hangi varlıklara ilişkin olduğunun anlaşılması/belirlenmesi süreci
+
+--> İsim arama bir sıra dahilinde yapılır.
+         --> Yani önce şuraya bak
+         --> orda bulamaz isen şuraya bak
+         --> ...
+--> İsim arama süreci, aranan isim bulunduğunda sona erer. Bir daha başlamaz.
+
+-------------
+scoping rules
+-------------
+* file scope
+* block scope
+* function prototype scope
+* function scope
+
+--> File scope (dosya kapsamı) : İsmin tüm dosya içinde kullanılabilir olması demektir. 
+                                 Bir ismi global isim alanında bildirdiysek o isim file scope tadır.
+                                 Yani tanımlandığı noktadan dosya sonuna kadar her noktada kullanılabilmesi "file scope"
+
+--> Block scope : Block içerisinde tanıtılan isimlerin tanıtıldıkları bloğun sonuna kadar kullanılabilmeleri anlamına gelir.
+
+--> Aynı kapsam içinde bir isim birden fazla varlığa verilemez.
+--> Yerel isimler eğer kapsamları aynı "closing brace" te bitiyorsa aynı scope'tadırlar.
+
+--> Fonksiyonların ana bloğu içinde kullanılan isimlerin aranması
+
+--> name hiding (ismin gizlenmesi)
+    name masking
+    name shadowing
+
+int x = 9;    //--> global
+
+int main(void) {
+   int x = 1;     //--> local
+   printf("x = %d\n", x);      //--> local olan x'i kullanıyor. global x'in local x arkasında gizlenmesi name hiding.
+}
+
+* Global isim under score(_) karakteri ile başlatılmaz.
+* Global, yerel isimler iki underscore (__) ile başlatılmamalı.
+Bu kullanımlar sentaks hatası vermez fakat dile olan saygıdan dolayı bu kullanımlar dilin kendisinde rezerve edilmiştir. Bu yüzden tercih edilmezler.
+
+* İsmin kapsamı büyüdükçe ismin daha niteleyici olması tercih edilir.
+* İsimlendirmede tutarlı ve istikrarlı bir konvensiyon kullanmalıyız.
+konvensiyon : önceden belirlenmiş kurallar seti
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
