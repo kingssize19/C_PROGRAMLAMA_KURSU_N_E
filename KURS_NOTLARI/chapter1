@@ -330,12 +330,66 @@ Signed Binary
 * işaret biti 1 ise sayı negatif --> 1001 0101 (en soldaki bit 1)
 * işaret biti 0 ise sayı pozitif --> 0110 0000 (en soldaki bit 0)
 
+* İşaretli sistemdeki değeri nasıl bulur?
+   --> İkiye tümleyenini al sonuç ne ise bu ifadenin sonucu bulunan sonucun -'lisi.
+   1001 1100   Sayı
+   0110 0100   ikiye tümleyeni değeri 100
+   Asıl sayımız yani işaretli sistemdeki değeri -100
 
+* x sayısı -91 olsun bu sayıyı ikilik sistemde göster.
+ikiye tümlenmiş hali 91 olan sayı --> 0101 1011 = 91
+ikiye tümlenmemiş orjinal hali    --> 1010 0101 = -91
 
+* 1 byte'lık yazılabilecek en büyük değer --> 0111 1111 = 127
+* 1 byte'lık yazılabilecek en küçük değer --> 1000 0001 = -128
 
+1 byte   (-128   127)
+2 byte   (-32'768   32767)
+4 byte   (-2'147'483'648   2'147'483'647)
 
+* İşaretli olarak bir sayının tüm bitleri 1 ise o sayı -1'dir.
+İşaretli sayılarda;
+   En büyük -> 01111....
+   En küçük -> 10000....
+   1111 1111 = -1
 
+------------------------------------------------------
+Hexadecimal System
+------------------------------------------------------
+* 16 tabanlı sayı sistemi.
+0123456789ABCDEF
 
+------------------------------------------------------
+Hex convert Binary
+------------------------------------------------------
+* 1ACF sayımız olsun. Her bir değer 4 bite sığacak şekilde sırasıyla yazılır.
+1 --> 0001      A --> 1010      C --> 1100      F --> 1111
+(Hex) 1ACF --> (binary) 0001 1010 1100 1111
+
+---------------------------------------------------------
+Decimal convert Hex
+---------------------------------------------------------
+* Sayıyı sürekli 16'ya böl kalanı en sağdaki bitten itibaren yaz.
+7562    16
+        472   10 (A)
+        29    8
+         1    13 (D)
+         0    1
+
+7562 (decimal) --> 1D8A (hex)
+
+* 2 byte'lık alanda yazılabilecek en büyük işaretli tam sayıyı hex olarak gösteriniz.
+   (2 byte binary) 0111 1111 1111 1111 --> (hex) 7FFF
+* 2 byte'lık alanda yazılabilecek en küçük işaretli tam sayıyı hex olarak gösteriniz.
+   (2 byte binary) 1000 0000 0000 0000 --> (hex) 8000
+* 2 byte'lık alanda yazılan -1 değerini hex olarak yazın.
+   (2 byte binary) 1111 1111 1111 1111 --> (hex) FFFF
+
+* Gerçek bir sayı 4 byte, 8 byte'lık alanlarda kodlanmış şekilde tutulabilir.
+
+4 byte (single precision)
+8 byte (double precision)
+--------------------------------------------------------------------------------------------------------------------------------
 
 
 
