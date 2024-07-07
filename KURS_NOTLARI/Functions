@@ -1,1 +1,119 @@
+FUNCTIONS
+---------
+* C dilinde fonksiyonlar hesapladıkları değer ya da değerleri hangi yollarla kendilerini çağıran kodlara iletebilirler?
+1) Geri dönüş değeri mekanizması (return value)
+2) Sen bana değişken gönder ben o değişken ya da değişkenlere yazayım. (pointer mantığı) (address)
+3) Global değişkenleri kullanan yöntem
+
+int func(int x, double y)
+{
+  //function code
+}
+
+yukarıdaki "int" --> Fonksiyonun geri dönüş değeri türü
+           "func" --> Fonksiyon ismi
+           "(int x, double y)" --> Fonksiyonun parametre değişkenleri
+
+
+* implicit int (örtülü kapalı int) --> Günümüzde bu kural kullanılmıyor.
+func(int x)  --> Geri dönüş değeri int olur. Bu kullanımda int implicit yani örtülü olarak kullanılır.
+{
+}
+
+* Bir fonksiyonun geri dönüş değeri yoksa "void" ile ifade edilir. Bunlara void function denir.
+void func();
+* Fonksiyon değer almıyor ise içerisine "void" yazılır.
+void func(void);
+* C dilinde bir fonksiyon içinde başka bir fonksiyon tanımlanamaz.
+
+----------------
+Return Statement
+----------------
+* return;  --> İfadesiz return deyimi  --> Sonlandırıyor ama bir değer iletmiyor.
+* return expr; --> İfadeli return deyimi  --> Sonlandırıyor ama çağıran fonksiyona bir değer iletiyor.
+    return x + y;
+    return 1;
+    return a * b;
+
+* return; deyimini void fonksiyonlarda kullanabiliriz.
+
+Fonksiyonların çalışması sona erdiğinde çağrıldığı yere tekrar döner. Bu durum ile en sona return; yazılan durum aynıdır.
+
+void foo(void)                          void foo(void)
+{                                       {
+  statement1;                              statement1;
+  statement2;   --> Bu ikisi aynı <--      statement2;
+  statement3;                              statement3;
+                                           return; 
+}                                       }
+
+* Başka bir kullanım alanı;
+  Örneğin fonksiyon içerisinde bir if deyimi olsun if()'ten sonraki statementlar çalışmasın istiyorsak return; deyimini kullanırız.
+
+void foo(void)
+{
+  statement1;
+  statement2;
+  statement3;
+  if(expr)
+    return;
+  statement4;
+  statement5;
+}
+--> if'teki return çalışır ise statement4 ile statement5 çalışmaz.
+
+* unreachable code (ulaşılamaz kod) --> Aşağıdaki verilen kod parçası buna örnektir.
+void foo(void) {
+  state1;
+  state2;
+  return;
+  state3;
+  state4;
+}        
+// state3 ve state4 bu kod parçasında zaten yürütülemez. Bu kod örneği unreachable code'a örnektir.
+
+* redundant (gereksiz) code
+void foo(void) {
+  state1;
+  state2;
+  return;
+}
+// Bu kodda return; gereksiz. Olmasa da olur.
+
+NOT : Derleyici optimizasyonu çok iyi seviyede olduğu için aşağıdaki iki kod arasında çalışma hızı bakımından hiçbir fark olmaz.
+      Çünkü derleyici yazdığımız kodu en iyi şekilde optimize eder.
+
+int sum1(int x, int y)                   int sum2(int x, int y)
+{                                        {
+    int result;                              return x + y;
+    result = x + y;                      }
+    return result;
+}
+
+
+* variadic function (ellipsis function)
+
+int foo(int x, ...);    //... argümanı ile biten fonksiyonlara variadic function denir.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
