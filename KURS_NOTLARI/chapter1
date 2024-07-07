@@ -390,8 +390,127 @@ Decimal convert Hex
 4 byte (single precision)
 8 byte (double precision)
 --------------------------------------------------------------------------------------------------------------------------------
+-> () parantez
+-> [] square bracket
+-> {} brace
+-> <> angular bracket
+-> * asterisk
+--------------------------------------------------------------------------------------------------------------------------------
+HATIRLATMA
+
+Undefined Behavior
+               --> Kod derlendiğinde run time'da herşey olabilir. Kodumuzda asla olmaması gereken bir durum. (Tanımsız davranış)
+Unspecified Behavior
+               --> Kodda bir problem yok ama derleyici farklı şekilde kod üretme hakkına, şansına sahip.
+İmplementation Behavior 
+               --> Unspecified Behavior'a benzer. Derleyicinin nasıl kod üreteceğini belgeleme zorunluluğunun getirilmesidir.
+--------------------------------------------------------------------------------------------------------------------------------
+Data types: 
+
+Basic types
+         default/built-in/fundemental/primitive
+User-defined types
+         structures
+         unions
+         enumaration
+
+* Basic types 
+--> integer types (tam sayı türleri)
+--> floating types (gerçek sayı türleri)
 
 
+İnteger Types (Tamsayı Türleri)
+-------------------------------
+* Karakter Türleri
+   char                1 byte -> işaretli veya işaretsiz olduğu derleyiciye bağlı
+   unsigned char       1 byte -> [0   255]
+   signed char         1 byte -> [-128   127]
+
+* Tamsayı Türleri
+   signed short (2 byte)
+   unsigned short (2 byte)
+
+   signed int (2/4 byte)
+   unsigned int (2/4 byte)
+
+   signed long (4/8 byte)
+   unsigned long (4/8 byte)
+
+   signed long long ((C99) 8 byte)
+   unsigned long long ((C99) 8 byte)
+
+   _Bool (C99 1 byte)
+
+* short <= int <= long <= long long   }-> Değikenlerin byte'ları, derleyiciye göre değişiklik gösterse bile soldaki kurala uymalıdır.
+
+
+* Karakter türler && Tamsayı türleri => Tamsayı türleri
+
+* Compiler extension (derleyici eklentisi)
+   Derleyicimizin bize kullandırdığı onun yapacağı çeviride anlamlı olan araçlar. Ama standart c de olmayan araçlar.
+
+
+Floating Types (Gerçek Sayı Türleri)
+------------------------------------
+
+* float --> 4 byte
+* double --> 8 byte (en çok kullanılan tür)
+* long double --> 8/10/12/16 byte
+--------------------------------------------------------------------------------------------------------------------------------
+Değişkenlerin bildirimi/tanımı
+------------------------------
+* declaration : Bir ismin ne olduğunu, ne anlama geldiğini anlatan cümlelerdir.
+* definition : Tanım
+* Eğer bir bildirim derleyicinin bildirilen varlık için bir yer (storage) edinmesini sağlıyor ise böyle bildirimlere aynı zamanda definition denir.
+
+* to define a function -> bir fonksiyonu tanımlamak
+* function definition -> fonksiyon tanımı
+* to call a function -> bir fonksiyonu çağırmak 
+* function call -> fonksiyon çağrısı
+* to declare a function -> bir fonksiyonu bildirmek
+* function declaration -> fonksiyon bildirimi
+
+* değişken_türü   değişken_ismi   --> Değişken tanımlama
+
+         -> double dval;
+         -> double dval = 3.4;   ("initialize" yani ilk değer verme) 
+
+* Tamsayı türlerinde sadece değişken türünü yazarsak default olarak signed kabul edilir.
+      signed short    --> işaretli short
+      unsigned short  --> işaretsiz short
+      short   --> (default) işaretli short
+
+* sadece signed yazılarak tanımlanan değişkenin türü int kabul edilir.
+      signed x --> türü int
+
+* float / double / long double   --> signed/unsigned ile kullanılamaz. (syntax error)
+--------------------------------------------------------------------------------------------------------------------------------
+* life span
+* storage class
+   --> automatic storage (otomatik ömür) : Örnek olarak fonksiyonlar verilerbilir. Hayata gelirler kullanıldıktan sonra hayattan giderler.
+   --> static storage (statik ömür) : Bellekte bunlara ayrılan yeri programın sonuna kadar korurlar.
+   --> dynamic storage
+   --> thread - local storage
+
+* Global değişkenler default statik ömürlüdür. Bellekte yerleri ayrılır program sonuna kadar o yerler bu değişkenlerin olur.
+* Global değişkenlerin (yani statik ömürlü değişkenlerin) ilk değerleri belirlenmediği zaman default değerleri 0 olarak hayata başlarlar.
+
+DİKKAT!!!
+* C dilinde statik ömürlü değişkenlere ilk değer veren ifadeler "sabit ifadesi" olmak zorunda.
+
+#include <stdio.h>
+int x = 7;    //constant expression (sabit ifadesi)
+int y = x;   //syntax error (initializer is not a constant)
+
+* Fonksiyonların ana bloklarının içinde tanımlanan değişkenler "local variable" (yerel değişkenler).
+   --> Otomatic veya static ömürlü olabilirler.
+   --> Yerel değişkenler default biçimde otomatik ömürlüdürler.
+
+* Hem yerel değişken hemde static ömürlü olsun istiyorsak static anahtar sözcüğü kullanırız.
+   --> int main() {
+            int x;            //otomatik ömürlü
+            static int y;     //statik ömürlü
+      }
 
 
 
