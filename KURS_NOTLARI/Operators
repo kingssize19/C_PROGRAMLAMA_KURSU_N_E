@@ -1,0 +1,273 @@
++, -, *, !, >=, ++, <<=, &, ~, %, *ptr     Örnek bazı operatörler sol tarafta yer almaktadır.
+
+NOT : sizeof -> Hem anahtar sözcük hem de operatör'dür.
+
+a + b --> Burada + operatör, a ve b operand'lardır.
+x++   --> Burada ise ++ operatör, x ise operand'dır.
+*ptr  --> Burada * operatör, ptr operand.
+
+unary : Operatör tek bir operand istiyorsa      ( x++ : unary )
+binary : Operatör iki adet operand istiyorsa    ( x + y binary )
+
+operatörün konumunu niteleyen özellikleri;
+
+prefix   : ön ek      --> !x
+postfix  : arka ek    --> y++
+infix    : ara ek     --> a + b
+
+
+Aşağıdaki operatörler kullanım şekillerine göre farklı anlamlara gelmektedir. Örneğin & operatörü 2 operand alıyor infix konumunda ise bitwise and olarak kullanılır.
+Fakat tek operand alıyo ise address of operatörü olarak kullanılır.
+
+a & b --> bitwise and                    a * b -->
+&x    --> address of                     *ptr  --> dereferencing
+
+a + b -->                                x - y --> 
++x    --> sign operator                  -x    --> sign operator
+
+
+
+Operatörün ürettiği değere "operator generates value" yada "yield value" denir.
+
+
+operand ------
+             | ------> operator ------> yield value          
+operand ------
+
+*C dilinde operatörler belirli türden bir değer üretirler.
+
+int ival = 47;   //Buradaki "=" operatör değil. Burada initialization yapılıyor.
+
+ival = 4;        //Buradaki "=" operatör.
+
+*constraint (kısıtlama)
+
+*side effect -> Program state'inde bir değişiklik 
+             -> Bir değişkenin değerinin değişmesi
+             -> giriş çıkış işlemleri
+             -> side effect yan etki demektir.
+
+Operatör öncelik (associativity)
+
+-> a * b++ / c > 5  -->  ((a*(b++))/c) > 5
+
+Operatör öncelik tablosu (2, 13, 14 sağdan sola öncelik) (diğerleri soldan sağa öncelik)
+-----------------------------------------------------------------------------
+1) () [] . ->        
+-----------------------------------------------------------------------------
+2) + - ! ~ sizeof ++ -- (type) &(address) *(address)    (sağdan sola öncelik)
+-----------------------------------------------------------------------------
+3) * / %    
+-----------------------------------------------------------------------------
+4) + - 
+-----------------------------------------------------------------------------
+5) << >> 
+-----------------------------------------------------------------------------
+6) > >= < <= 
+-----------------------------------------------------------------------------
+7) == !=
+-----------------------------------------------------------------------------
+8) &(bitwise)
+-----------------------------------------------------------------------------
+9) ^
+-----------------------------------------------------------------------------
+10) |
+-----------------------------------------------------------------------------
+11) &&
+-----------------------------------------------------------------------------
+12) ||
+-----------------------------------------------------------------------------
+13) ? : (conditional operator)            (sağdan sola öncelik)  
+-----------------------------------------------------------------------------
+14) = += -= *= /= %= >>= <<= &= ^= |=     (sağdan sola öncelik)   
+-----------------------------------------------------------------------------
+15) ,  
+-----------------------------------------------------------------------------
+
+associativity (öncelik yönü)
+left - associative (soldan sağa)
+right - associative (sağdan sola)
+
+->    ~!x++ => ~(!(x++))
+->    x=y=z=t   x = (y = (z = t))
+
+-------------------------------------------
+              value category
+-------------------------------------------
++x -> R value 
+      
+            C         C++
+      ---------------------
+++x      R value    L value
+
+
+DİKKAT: Mesela 2 int değeri toplarken işaretli/işaretsiz sınırlara dikkat etmeliyiz. Yoksa "undefined behavior" olur. (taşma)
+
+        x = 2'000'000'000        y = 2'000'000'000
+        x + y  --> undefined behavior
+
+*Atama operatörünün sol operandı L-value olmalı.
+
+        +x = 6;   --> Hata çünkü atama operatörünün sol operandı L value olmalı fakat +x R value.
+
+*Bölme işleminde (x / y) sağ operandın 0 olması tanımsız davranıştır. (ub) 
+
+*Mod operatörünün operandları tamsayı olmalı. Gerçek sayı olamaz.
+  
+        x % y;      x --> int,  y --> int        (Doğru kullanım.)
+
+        x % y;      x --> int,  y --> double     (Yanlış kullanım.)
+
+Mod operatörüne örnek; Sayıyı basamaklarına ayıralım.
+
+#include <stdio.h>
+
+int main(void)
+{
+	int ival;
+	
+	printf("4 basamakli bir sayi giriniz : ");
+	scanf("%d", &ival);
+	
+	printf("Binler Basamagi : %d\n", ival /1000);
+	printf("Yuzler Basamagi : %d\n", (ival % 1000) / 100);
+	printf("Onlar Basamagi  : %d\n", (ival % 100) / 10);
+	printf("Birler Basamagi : %d\n", ival % 10);
+}
+
+
+---------------------------------------------------------------------
+++ (increment) (plus plus)            -- (decrement) (minus minus)
+---------------------------------------------------------------------
+
+-->  ++ ve -- operatörlerinin operandı olan ifadeler L value olmak zorunda.
+
+-->  ++ ve -- operatör kullanım örnekleri; 
+
+
+//i++ operatörü, önce mevcut değeri kullanır ve ardından değişkenin değerini 1 arttırır.
+#include <stdio.h>
+
+int main(void)
+{
+	int ival = 15;
+	
+	int new_ival = ival++;		//new_ival değeri ival değişken değerini yani 15 i tutmaktadır.
+	
+	printf("new_ival = %d", new_ival);	// 15 
+	
+}
+
+//++i operatörü, önce değişkenin değerini 1 artırır ve ardından bu değeri kullanır. 
+#include <stdio.h>
+
+int main(void)
+{
+	int ival = 15;
+	
+	int new_ival = ++ival;		//new_ival değeri 16 değerini tutmaktadır.
+	
+	printf("new_ival = %d", new_ival);	// 16 
+	
+}
+
+----------------
+Önemli C idiomu
+----------------
+1)
+  a = b;
+  b = b + 1;
+olsun. Farklı C idiomu yukarıdaki kodlarla aynı anlamda; 
+  a = b++;
+
+2) 
+  arr[i] = 0;
+  i = i + 1;
+olsun. Farklı C idiomu yukarıdaki kodlarla aynı anlamda;
+  arr[i++] = 0;
+
+3) Aşağıdaki idiomda örnek olarak verilebilir.
+  x = x + 1;
+  y = x;
+  Aynı anlamda aşağıdaki şekilde ifade edilebilir;
+  y = ++x;
+
+--------------------------
+Karşılaştırma Operatörleri
+--------------------------
+6) > >= < <=    (soldan sağa öncelik)
+7) == !=        (soldan sağa öncelik)
+
+Not: C dilinde tüm karşılaştırma operatörleri işaretli int türden 1 ya da 0 değerini üretirler.
+
+  ->  x = y == z; 
+  İfadesi aşağıdaki kod parçası ile aynı anlamda.
+  if (y == z)
+    x = 1;
+  else
+    x = 0;
+
+
+Gerçek sayıların eşitlik karşılaştırılması
+if (x == y)
+aradaki fark yeteri kadar küçük ise bunları eşit kabul edeceğiz.
+if (x == y) yerine if(|x - y| < epsilon)
+
+
+------------------
+Logical Operators
+------------------
+--> C dilinde lojik operatörler int türden 1 ya da 0 değerini üretirler.
+
+not     !
+and     &
+or     ||
+
+--> Bir ifadenin değilinin değili (!!) lojik kendisidir.
+
+non - zero ifadeler (-86, 75, 1 vs.) lojik 1 değerine sahiptir.
+zero ifade (0) lojik 0 değerine sahiptir.
+
+lojik özel veya operatörü yoktur. Aşağıdaki ifade lojik özel veya operatörü ile aynı görevi üstlenir.
+
+int main(void)
+{
+	int x = 1;
+	int y = 1;
+	printf("%d %d = %d\n", x, y, (!!x) != (!!y));  // --> 0
+}
+
+  özel veya
+---------------
+D    D   ->   Y
+Y    Y   ->   Y
+D    Y   ->   D
+Y    D   ->   D
+---------------
+
+*Aşağıda karşılıklı bulunan ifadeler birbirlerine denk'tir. 
+
+    !(a && b)  <----->  !a || !b
+    !(a || b)  <----->  !a && !b
+
+
+
+----------------------------------------------
+Short Circuit Behavior  (Kısa Devre Davranışı)
+----------------------------------------------
+*Lojik ve, veya operatörlerinde sol operand durumuna göre sağ operand evolate edilmiyor.
+
+0 && ??                1 || ??
+
+Yukarıdaki örneklerde sağ operand'ların ne olduğuna bakılmaksızın && operatörünün sol operandı 0 olduğu için sonuç kesinlikle 0,
+aynı şekilde || operatörünün sol operandı 1 olduğu için sonuç daima 1'dir bu tip durumlarda sağ operand'a bakılmama durumu olduğunda bu tip durumlara kısa devre davranışı denir.
+
+
+
+
+
+
+
+
+
+
