@@ -94,6 +94,261 @@ int sum1(int x, int y)                   int sum2(int x, int y)
 * variadic function (ellipsis function)
 
 int foo(int x, ...);    //... argümanı ile biten fonksiyonlara variadic function denir.
+-> En az 1 argüman yollamalıyız fonksiyona (2, 3, 4'te olabilir.)
+
+void func(int, int, ...); 
+-> En az 2 argüman yollanmalı. 2'den fazla argüman yollanabilir.
+
+
+* Fonksiyon Çağrısı
+-------------------
+-> Bir fonksiyon çağrısı C ve C++ dillerinde bir ifade oluşturur.
+-> Fonksiyon çağrısı operatör seviyesinde bir işlemdir.
+-> Fonksiyon çağrı operatörü
+
+* foo(a, b)
+-> Önce argüman olan ifadelerin değerleri hesaplanır. Ardından hesaplanmış değerler fonksiyon parametre değişkenlerine kopyalanır.
+-> Eğer çağrılan fonksiyonun bir geri dönüş değeri var ise fonksiyon çağrı ifadesinin değeri fonksiyonun geri dönüş değeridir.
+
+-> void bir fonksiyona yapılan çağrı ifadesi void türdendir. Ve C dilinde void türden ifadelerin bir değeri yoktur.
+
+----------------------------------------------------------------
+* input (giriş) / output (çıkış)
+* formatted (formatlı giriş çıkış işlemleri) -> çalışma zamanında daha maliyetli
+* unformatted (formatsız giriş çıkış işlemleri)
+
+printf -> formatted output function
+scanf  -> formatted input function
+
+   (  input stream  )             (  output stream  )
+100100111000  ---------> Program ---------> 111010101000
+
+input stream : Dış dünyadan programa akan byte'lar.    (klavye)
+output stream : Programdan dış dünyaya akan byte'lar.  (ekran)
+----------------------------------------------------------------
+Variadic Function (Özet)
+
+* Tek olacak
+* En son parametre olacak
+* Ve kendisinden önce en az bir parametre olacak
+
+void func(int, ...):    //... -> elipsis token
+---------------------------------------------------------------
+NTBS : Null Terminated Byte Stream
+
+BABA    --> 66 (B)
+            65 (A)
+            66 (B)
+            65 (A)
+            0  (NULL CHARACTER)
+
+Yazının bu şekilde tutulmasına null terminated byte stream denir.
+C'de yazı demek dizi (array) demektir.
+"Bunyamin" --> String Literal
+---------------------------------------------------------------
+* printf 'in geri dönüş değeri
+
+int printf(const char* p, ...);
+-> Standart output'a yazdığı karakter sayısı geri dönüş değeridir. Bu değeri genelde kullanmayız.
+
+Örneğin : "Sertaç" printf'in geri dönüş değeri 6 'yı tutar.
+---------------------------------------------------------------
+Constants (Sabitler)
+
+-> Sabitler birer token'dır.
+
+SABİTLER
+
+1) Tamsayı sabitleri (integer constants)
+
+int
+unsigned int
+long
+unsigned long
+long long
+unsigned long long
+
+2) Gerçek sayı sabitleri (floating constants)
+
+float 
+double
+long double
+
+------------------
+Tam sayı sabitleri
+------------------
+-> integer constants 3 ayrı sayı sisteminde yazılabilir.
+
+* decimal     (onluk)       234
+* octal       (sekizlik)   0234   (156)
+* hexadecimal (onaltılık)  0x234  (564)
+
+-> son ek içermiyorsa ve sistemin int sınırlarına sığıyor ise int türden sabittir.
+
+prefix = ön ek
+suffix - postfix = son ek  (745u / 745Lu gibi)
+
+-> Sabit türünün unsigned int olmasını sağlamak için son ek U veya u kullanılır. 
+
+-> 5, 0x12    (signed int)
+-> 5U         (unsigned int)
+-> 5u, 0x12u  (unsigned int)
+
+*Son ek olarak küçük/büyük harf (l, L)  kullanılıyorsa sabit türü işaretli Long türü olur.  (7l, 7L)
+
+*lu, LU son ek olarak kullanılırsa unsigned long tür olur.  (12LU, 15lU, 22ul vb.)
+
+*long long için iki adet LL son eki kullanılır.  (345LL -> signed long long) (234 LLU -> unsigned long long)
+
+NOT : İşaretli tamsayı türlerinde taşma tanımsız davranış.
+
+---------------------
+Gerçek sayı sabitleri
+---------------------
+-> "." içeren gerçek sayıların türleri double'dir
+
+Aşağıdaki gibi eğer son ek içermiyorlar ise double türündeler.
+4.5
+6.7
+4. (4.0)
+.5 (0.5)
+
+Son ek olarak f, F son ekini alıyolar ise bu sabitlerin türü float'tır.
+2.3f
+2.8F
+
+Hem nokta hem L son ekini içeriyor ise Long double türündedir.
+2.L
+5.L
+-----------------------
+scientific notation --> üstel notasyon 
+
+-> 2.4e-5 = 2.4x10^(-5)
+-> 5E5 = 5x10^5
+
+2E-3L -> long double
+2E-3F -> float
+----------------------------------------------------------------------------------------
+Karakter Sabiti (character constant) (int)
+------------------------------------------
+
+Önemli Not : Karakter sabitlerinin türü int'tir.
+
+-> 'A', '\n', '\x41', '\101'
+
+ASCII   |   KARAKTER
+--------------------
+65          A
+66          B
+.           .
+.           .
+.           .
+90          Z
+.           .
+.           .
+97          a
+---------------------
+48          0
+49          1
+.           .  
+.           .
+57          9
+---------------------
+
+-> Büyük harften sonra ardışık küçük harflerin gelmeme sebebi;
+
+26 adet harf car Z'den sonra 6 adet farklı karakter gelmektedir.
+A ile küçük a harfleri arasında 32 karakter var.
+Bitsel düzeyde 2^5 inci biti stleyerek bütük harfi küçüğe çeviririz.
+
+--0- ----  : A
+--1- ----  : a
+
+
+-> Düşük anlamlı nibble, en düşük anlamlı 4 bittir ve bu 4 bitin değeri sayının kendisidir.
+
+0 değeri ascii 48, 1 byte gösterimi 0011 0000    düşük anlamlı nibble yani en düşük anlamlı 4 bit 0 değerini veriyor yani sayının kendisi 0.
+2 değeri ascii 50, 1 byte gösterimi 0011 0010    düşük anlamlı nibble yani en düşük anlamlı 4 bit 2 değerini veriyor sayının kendisi 2.
+Bu şekilde bir ilişki vardır.
+
+
+* Alphabetic ve numeric/digit --> Alphanumeric
+* control character --> Görüntüleri olmayan karakterler
+* printable character --> Görüntüsü olan karakterler 
+* punctuation --> Görüntüsü olan ama alphanumeric olmayan karakterlere denir
+-----------------------------------------------------------------------------
+                        ASCII      Kullanım Şekli
+newline                  10          \n
+alert                    7           \a
+horizantal tab           9           \t
+vertical tab             11          \v
+backspace                8           \b
+form feed                12          \f
+carriage return          13          \r
+null character           0           \0
+back slash               92          \\
+
+* " \' " --> '
+* " \" " --> "
+
+* printf("\x42URS\x41);   --> BURSA    \x42 -> B \x41 -> A
+* printf; bir ifadenin değerini bizim istediğimiz formatta standart output'a yazabilir.
+
+* "%...." 
+conversion specifiers 
+ifadenin türü ne
+
+%d -> işaretli int ifadenin türünü decimal olarak yaz.
+%x -> işaretsiz int türden ifadenin değerini hex olarak yaz.
+%U -> işaretsiz int türden ifadenin değerini decimal olarak yaz.
+%o -> işaretsiz int türden ifadenin değerini octal olarak yaz.
+
+int ival  = 48704;
+printf("%d\n", ival);   --> 48704
+printf("%x\n", ival);   --> be40
+printf("%#x\n", ival);  --> 0xbe40
+
+
+* long -> %ld   ,  long long -> %lld 
+
+* printf'te %'yi yazdırmak için escape olarak % kullanılır.
+int kdv = 20;
+-> printf("KDV = %%%d\n", kdv);    // KDC = %20
+---------------------------------------------------------------
+scanf() -> formatted input function 
+
+* stream'in buffer'ındaki karakterleri buffer'dan (streamden) extract ederek istenen formatlama özelliklerine göre adresi/adresleri verilen değişkenleri set eder.
+
+* scanf variadic function'dır.
+
+* scanf bildirimi --> int scanf(const char* pfm, ...);
+
+* buffer (tampon), bellek alanı
+
+* scanf ile bir değer alınırken boş bırakılırsa -1 değeri döndürür.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
