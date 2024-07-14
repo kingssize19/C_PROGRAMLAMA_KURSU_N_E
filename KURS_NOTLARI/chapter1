@@ -101,7 +101,7 @@ Executable Code
 
 * token --> Kaynak kodun derleyici tarafından anlam taşıyan en küçük birimi
 
-toke -> keyword (anahtar sözcük), operator, identifier (isim), constant (sabit), 
+token -> keyword (anahtar sözcük), operator, identifier (isim), constant (sabit), 
         string literal (yazı sabiti), delimiter (işleç) olabilir.
 ---------------------------------------------------------------------------------------------------
 * latin - roman karakter seti --> A.....Z, a.....z
