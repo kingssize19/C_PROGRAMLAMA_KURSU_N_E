@@ -262,6 +262,118 @@ Short Circuit Behavior  (Kısa Devre Davranışı)
 Yukarıdaki örneklerde sağ operand'ların ne olduğuna bakılmaksızın && operatörünün sol operandı 0 olduğu için sonuç kesinlikle 0,
 aynı şekilde || operatörünün sol operandı 1 olduğu için sonuç daima 1'dir bu tip durumlarda sağ operand'a bakılmama durumu olduğunda bu tip durumlara kısa devre davranışı denir.
 
+*C dilinin birçok idiomu && ve || operatörlerinin kısa devre davranışından faydalanır.
+
+--------------------
+Assignment Operators
+--------------------
+-> x = y (atama operatörü)
+-> compound assigment operators
+	x += y
+	x -= y
+-> Öncelik sırası 14. sıra ve sağdan sola öncelikliler
+=	+=	-=	*=	/=	%=	<<=	>>=	&=	^=	|=
+
+*Atama operatörlerinin sol operandı L value olmak zorunda.
+*Diğer tüm operatörlerde olduğu gibi C ve C++ dillerinde atama operatörleri bir değer üretir. Birçok C idiomu atama operatörünün ürettiği değeri kullanır.
+*Atama operatörlerinin ürettiği değer nesneye atanan değerdir.
+
+---------------------------------
+Sequence Point (Yan Etki)
+---------------------------------
+*sequence point (yan etki noktası);
+x++ ifadelerinden sonra o değişken değerinin artma garantisi sequence pointe bağlı.
+; , && || vs.
+
+örnek 1
+-------
+x = 5;
+x++, y = x;	//-> Burada virgül sequence point özelliğinde y değişkenine atanan değer 6'dır. (y = 6)
+
+örnek 2
+-------
+x++ ? f(x) : g(x);		//x = 6 olsun. ? operatörü sequence point özelliği gösterir. f(7) veya g(7) fonksiyonlarına gönderilen değişken değeri 7 dir.
+
+NOT: x'in yan etkisi bu yan etki noktaları ile garanti altına alınmaktadır.
+
+NOT: Öncelik parantezi sequence point oluşturmaz.
+(x = 5) + x;   (x in değeri 5 olmak zorunda değil.)
+
+
+Sequence point oluşturan operatörler
+expr &&
+expr ||
+expr ?
+expr ,
+
+*if ve döngü parantezleri sequence point oluşturur.
+*Bir nesne bir ifadede yan etkiye maruz kaldıysa ve o yan etki (nesne) sequence pointe uğramadan ifade içerisinde tekrar kullanılmışsa 
+undefined behavior 'a sebep olur.
+
+
+----------------------
+Comma (,) Operator
+----------------------
+-> Her virgül operatör değildir!!!
+
+*Fonksiyon tanımındaki virgüller operatör değildir.
+	void func(int x, int y);
+
+*Fonksiyon çağrılarındaki virgüller operatör değil.
+	foo(x, y, z);
+
+-> int x = 5, y = 2, z = x + y;		//-> Virgüller operatör değil.
+
+*Dizileri initialize eden virgül operatör değildir.
+	int a[] = { 1, 2, 3, 4, 5 };
+
+*Virgül operatörü bir değer üretir. Bu operatörün ürettiği değer sağ operandın değeridir.
+	int x;
+	x = (5,7);	//x in değeri 7 dir. "," operatörünün sağ operand değeri 7 olduğu için.
+	x = (8,4);	//x in değeri 4 tür. "," operatörünün sağ operandının değeri 4 olduğu için.
+
+*ÖNEMLİ
+
+	double x = 4.5;
+	if (x > 4,0)
+		printf("Doğru");
+	else
+		printf("Yanlış");
+
+Yukarıdaki soruda x > 4 ifadesi (4.5 > 4 olduğu için) lojik 1 değerine sahiptir. if(1,0) ifadesi comma operator'ün sağ operand değeri olduğu için 0 değerini 
+üretir. Bu sebeple kod akışı programın else kısmına gider ve ekrana "Yanlış" yazısı yazdırılır.
+
+*ÖNEMLİ
+	7.5 -> türü double, değeri 7.5
+	7,5 -> türü int, değeri 5
+
+*ÖNEMLİ
+	bar(x, y, z);	// 3 argüman
+	bar((x, y, z)); // tek bir argüman
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
