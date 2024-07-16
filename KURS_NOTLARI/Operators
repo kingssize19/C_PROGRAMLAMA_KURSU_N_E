@@ -351,6 +351,7 @@ Yukarıdaki soruda x > 4 ifadesi (4.5 > 4 olduğu için) lojik 1 değerine sahip
 	bar(x, y, z);	// 3 argüman
 	bar((x, y, z)); // tek bir argüman
 
+NOT : Öncelik parantezi değişkenin value kategorisini değiştirmez.
 
 
 
