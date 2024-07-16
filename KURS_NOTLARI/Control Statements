@@ -13,7 +13,7 @@ continue
 return
 
 ------------------
-### if statement
+#if statement
 ------------------
 -> if parantezi içinde türü void olmayan bir ifade olacak.
 
@@ -29,7 +29,7 @@ Aşağıda yan yana bulunan örnek kullanımlar aynı anlamı ifade etmektedir.
      ++a;               ++a;
 
 --------------------
-### null statement
+#null statement
 --------------------
 -> Bir if statement var fakat gövdesi boş yani bir işlem gerçekleştirilmiyorsa bunlara null statement denir.
 
@@ -55,7 +55,7 @@ if (foo())
 --> if kısmında bulunun printf fonksiyonu çalışmaz.
 
 ----------------
-### else kısmı
+#else kısmı
 ----------------
 if (expr)
   true_path;  //Doğru kısım
@@ -74,12 +74,380 @@ Yukarıdaki kod ile aynı anlamda daha clean hali aşağıda yer almaktadır.
 if (!expr)
   ++a;
 
-### Mülakat Sorusu : Noktalı virgül kullanmadan ekrana "Merhaba Dünya" yaz.
+Mülakat Sorusu : Noktalı virgül kullanmadan ekrana "Merhaba Dünya" yaz.
 Not : printf(); fonksiyonu int türünden bir fonksiyondur ve geri dönüş değeri karakter sayısıdır. Bu sebeple;
 
 if (printf("Merhaba Dünya"))
   {}
 Bu şekilde noktalı virgül kullanmadan ekrana Merhaba Dünya yazdırırız.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#getchar function (get character)
+---------------------------------
+--> Bildirimi = int getchar(void);
+--> Standart inputun bufferında bulunan ilk karakteri alır.
+
+-> input : BABA --> x = getchar(); --> B'nin ascii'sini tutar
+                --> y = getchar(); --> A'nın ascii'sini tutar
+                --> z = getchar(); --> B'nin ascii'sini tutar
+                --> t = getchar(); --> A'nın ascii'sini tutar
+
+
+NOT : Hem scanf hemde getchar işlevleri aynı buffer'ı kullanır.
+
+NOT : scanf ve getchar her ikiside line - buffered (satır tamponlu) yani enter (\n) alana kadar veri alımına devam eder.
+
+NOT : Her ikiside echo veren fonksiyonlardır.
+
+echo vermek : Klavyeden giriş yaparken yazılanların ekranda gösterilmesine echo vermesi denir.
+
+int _getch(void);   //buffer kullanmıyor (yani "\n" e ihtiyaç duymuyor) ve echo vermiyor.
+int _getche(void);  //buffer kullanmıyor ama echo veriyor.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#putchar function (tek bir karakteri basar)
+-------------------------------------------
+
+putchar('F');
+putchar('A');
+putchar('R');
+putchar('E');
+--> Yukarıdaki programın stdout çıktısı => FARE
+
+ÖRNEK
+int main()
+{
+   int ch;
+   printf("Karakter kodunu girin: ");
+   scanf("%d", &ch);
+   putchar(ch);
+}
+input : 70      output : F
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------
+Loop Statements (Döngü Deyimleri)
+---------------------------------
+while statement (%23)
+do while statement (%2)
+for statement (%75) --> en çok kullanılan döngü
+
+Hatırlatma : 
+idiom = Bir programlama dilinde hemen herkesin yazmayı seçtiği kalıplaşmış yapılara idiom denir.
+
+---------
+while 
+--------
+whie (n--) {
+
+}
+--> Control expression 
+--> while parantezinden sonra türü void olmayan bir ifade olmalı parantezin içi boş olamaz. Parantezin içi statement olamaz.
+
+Kullanım Şekilleri
+------------------
+1)
+while (expr)
+   statement;
+
+2)
+while (expr)
+   ;   //null statement
+
+3)
+while (expr)
+   expr;
+
+4)
+while (expr) {
+   //...code...
+}
+
+5)
+while (expr)
+   if (c_ex) {
+      //...code...
+   }
+
+6)
+while (x != 0)         ---> Aynı anlamda --->      while (x)
+   statement;                                         statement;
+
+7)
+while (y == 0)         ---> Aynı anlamda --->      while (!y)
+   statement;                                         statement;
+
+
+Örnek : 
+
+int main(void)
+{
+   int c = 'A';
+   while (c <= 'Z')
+      putchar(c++);
+}
+--> çıktı = ABCDE...................Z
+
+ÖNEMLİ : Özellikle while döngü deyiminde (if deyiminde olduğu gibi) 
+         Kontrol ifadesinde atama operatörünün ürettiği değerden faydalanmak en sık görülen idiomlardan biridir.
+
+Örnek : 
+int main(void)
+{
+	int ch;
+	printf("Bir giris yapiniz : ");
+	
+	while((ch = getchar()) != '\n') 
+		putchar(ch);
+	//Bu satırda printf("%d\n", c); olsaydı '\n' in kodu 10 değerini ekrana basardı. Çünkü döngü '\n' görene kadar karakterleri alıyor. 
+   // '\n' en sondaki printf'e kalıyor
+}	
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+Maximal Munch Kuralı (En büyük lokma kuralı)
+--------------------------------------------
+int main(void)
+{
+   int x = 10;
+   int y = 30;
+   int z = x+++y;   //int z = x++ + y; derleyici adım adım tokenize eder. Bu şekilde yorumlar.
+}
+
+Örnek : sum>>=++val; 
+ifadesi olsun derleyici adım adım en anlamlaı parçalara ayırır (tokenize).
+sum 
+>>=
+++
+val
+;
+şeklinde yazılan ifadeyi anlamlı hale getirir.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+--> N kez dönen döngü idiomu
+
+int main(void)
+{
+   int n = 3;
+   while (n-- > 0)      //while (n--) aynı işlevde
+      printf("Ahmet");
+} // 3 kez döner.
+
+----------------------------
+Bir Döngüden Nasıl Çıkılır?
+----------------------------
+1) Kontrol ifadesinin yanlış olması
+2) return statement ile
+3) break statement ile
+4) goto statement ile
+5) exit/abort  //Bu fonksiyonlara çağrı yapıldığında program sonlandırılıyor.
+
+
+-----------------
+break statement
+-----------------
+break; geçerli olması için ya bir döngü deyiminin gövdesinde bulunması gerekiyor yada switch deyiminin gövdesinde bulunması gerekiyor.
+
+--------------------------------o---------------------------------------
+while (expr) {
+   state1;
+   state2;
+      .
+      .
+      .
+   state6;
+}
+
+Yukarıdaki kullanım şekli ile aşağıdaki kullanım aynı anlamdadır.
+
+while (1) {
+   if (!expr)
+      break;
+   state1;
+   state2;
+      .
+      .
+      .
+   state6;
+}
+--------------------------------o---------------------------------------
+do {
+   state1;
+   state2;
+   state3;
+}while (expr);
+
+Yukarıdaki kullanım şekli ile aşağıdaki kullanım şekli aynı anlamdadır.
+
+while (1) {
+   state1;
+   state2;
+   state3;
+   if (!expr)
+      break;
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Nested Loops (iç içe döngüler)
+------------------------------
+while (expr1){
+   while (expr2){
+      while (expr3){
+         if (c_ex)
+            break;
+      }
+   statement A;
+   }
+}
+statement B;
+
+--> break 'e girme sonucu programın akışı statement A'dan devam eder. Yani break içinde bulunduğu döngüyü kırar.
+--> statement B'den programın akışını devam ettirmek istiyorsak goto deyimini kullanabiliriz. (break kullanılan yerde)
+
+------------------------------------------------
+
+while(ch = getchar(), ch != '\n'){
+      //Bu şekilde kullanımı var. '\n' girilene kadar klavyeden girilen karakteri ch değişkenine atar.
+}
+
+--> Brute Force : İlk akla geldiği gibi soruyu çözmek.
+
+--> Armstrong sayı : abc üç basamklı sayı olsun. a^3 + b^3 + c^3 = abc eşitliğini sağlamalı. (4 basamaklı ise a^4 + b^4 + c^4 + d^4 = abcd eşitliği sağlanmalı.)
+
+--> Dosyadan byte byte okuma yapan tipik kod;
+   while ((c = fgetc(f)) != EOF){
+   //...
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Continue; Kontrol Deyimi (Sadece döngü deyimlerinde kullanılır.)
+----------------------------------------------------------------
+--> Bir döngüde continue keyword'üne gelindiyse programın akış yönü döngü koşuluna gider yani döngü başa alınır.
+
+while (expr) {
+   statement;
+   statement;
+   if (c_expr) {
+      statement A;
+      statement B;
+   }
+}
+
+Yukarıdaki kullanım şekli ile aşağıdaki kullanım şekli aynı şeyi ifade ediyor.
+
+while (expr) {
+   statement;
+   statement;
+   if (c_expr)
+      continue;
+   statement A;
+   statement B;
+}
+
+--> Break, döngü gövdesinde yürütülürse programın akışını döngüden çıkarır, döngüden sonraki ilk deyim yürütülür.
+--> Continue deyiminin yürütülmesiyle programın akışı döngünün kalan kısmını by pass eder. Onları yürütmeden döngünün bir sonraki turuna geçiş sağlar.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Do while
+--------
+do {
+   statement1;
+   statement2;
+   statement3;
+}while (expr);
+
+--> Önce statementları 1 sefer yap. 
+--> Koşulu incele.
+--> Doğru ise statementları tekrar yap.
+--> Tekrar koşulu incele.
+--> Yanlış ise çık.
+
+--> Aşağıdaki kullanım şekli ile yukarıdaki kullanım aynı anlamda.
+
+while (1) {
+   statement1; 
+   statement2;
+   statement3;
+   if (!expr)
+      break;
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+For Döngüsü
+------------
+for (exp1; exp2; exp3)
+   statement;
+
+for (a; b; c)
+--> b kısmına birşey yazmazsak lojik doğru sabiti atanır ve sürekli koşul doğru kabul edilir.
+
+------------------------
+Sonsuz döngü idiomları
+------------------------
+1)
+while (1) {
+//...
+}
+
+2)
+for (;;) {
+//...
+}
+
+Not : for (int i = 0;   ;   ) --> Bu kullanım C89 standartında geçerli değildi. C99'da geçerli oldu.
+
+--> for içindeki ilk kısımda birden çok değişken tanımlanabilir.
+for (int i = 0, k = 5; i < 10; i++) {   }
+
+Örnek : 
+for (int i = 0; i < 10; ++i) {
+   int i = 787;
+   printf("%d", i);
+}
+-->10 kere 787 yazar.İçerideki i yerel değişken i değeri. Yukarıda for parantezi içerisinde tanımlanan i ise döngü için tanımlanan farklı i değerini temsil ediyor.
+--> Çünkü aslında for döngüsünün yapısı şu şekilde (nested loop)
+for (   ) {
+   {
+
+   }
+} //Bu dıştaki süslü parantezi derleyici göstermez. Gizli süslü parantez.
+
+
+--> For kullanım şekli
+-----------------------
+int main(void) {
+   int i, k;
+   for (i = 0, k = 1; i < 1000; ++i, k += i) {
+      printf("%d%d\n", i, k);
+   }
+}
+-----------------------
+for (int i = 0; i < 1; i--) {
+   //statement
+}
+--> Bu kod sonsuz döngü mü?
+CEVAP : Hayır tanımsız davranış Undefined Behavior.
+i'nin değeri -2'147'483'648 olduğu zaman i-- ifadesi yürütüldüğünde taşma (overflow) olacak ve bu da (int türünde taşma) Undefined Behavior'dur.
+
+Not: uint, unsigned tamsayılarda taşma yoktur en küçük değerinde ike 1 azaltırsak en büyük, en büyük iken 1 eklersek 0 olma garantisi vardır.
+Bu sebeple unsigned türlerde overflow (taşma) olmaz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
