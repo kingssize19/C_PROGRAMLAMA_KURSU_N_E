@@ -1,0 +1,174 @@
+Pointer (Adres) (Gösterci, İşaretçi)
+
+Pointers
+--------
+1) Object Pointers (nesne adresleri)
+2) Function Pointers (Fonksiyon adresleri)
+
+-> ifade ==> adres  //Öyle ifadeler olacakki o ifadeler adres olacak.
+
+-> Her bir ifadenin bir türü olduğuna göre adres anlamına gelen ifadelerinde türleri olmalı.
+
+-> x bir değişken olsun ve x değişkeninin türü T olsun
+  T x;
+Eğer bir ifade x değişkeninin adresi anlamına geliyorsa o ifadenin türü T* türüdür.
+
+
+-> int i;     ---(Adresinin türü)---> int*
+-> char c;    ---(Adresinin türü)---> char*
+
+-> int *p;  //ismi p olan bir pointer değişken tanımladık.
+            //türü pointer to int veya int* türü
+
+-> int *ptr;  //ptr int* türden bir değişkendir.
+
+
+NOT1 :
+int *ptr;  //Burada kullanılan * operatör değil declarator'dür.
+*ptr  //Burada kullanılan * operatördür.
+
+NOT2 : 
+int arr[4];  //Burada kullanılan [] declarator'dür.
+a[3]  //Burada kullanılan [] ise operatördür.
+
+NOT3 : 
+int *p1, p2, p3;    //Bu ifadede yalnızca p1 değişkeni pointer değişkendir. p2 ve p3 int türünde normal değişkenlerdir.
+
+//Aşağıdaki ifade ile yukarıda kullanılan ifade aynı anlama gelmektedir.
+int *p1;
+int p2;
+int p3;
+
+NOT4 : 
+int *p1, *p2, *p3;  //Buradaki tüm değişkenler int* türünde pointer değişkenlerdir.
+
+//Aşağıdaki ifadeler ile yukarıda kullanılan ifade aynı anlama gelmektedir. 
+int *p1;
+int *p2;
+int *p3;
+
+
+-> Sistemlerde (tipik olarak) değişken adres türleri aynı storage gerektirir.
+-> Yani değişkenlerin kendi türlerinin storage ihtiyacı farklı olabilir. Ama değişken adres anlamına gelen türler aynı storage değerindedir.
+
+char   -> 1 byte            char*  -> 4 byte
+short  -> 2 byte            short* -> 4 byte
+int    -> 4 byte            int*   -> 4 byte
+float  -> 4 byte            float* -> 4 byte
+    .....                        .....
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+HATIRLATMA
+
+int foo(int);
+int main(void)
+{
+  int x = 5;
+  int a[20];
+  double dval = 3.4;
+}
+
+//x         --> L value çünkü değişken ismi anlamına gelen ifadeler her zaman L value'dir.
+//a[3]      --> L value çünkü [] operatörü ile dizi elemanına erişmiş oluruz. Dolayısıyla o bir nesnedir. Bu yüzden L value.
+//3456      --> Sabit anlamına gelen ifadeler her zaman R value'dir.
+//foo(2)    --> Fonksiyon çağrı ifadeleri her zaman R value'dir.
+//(int)dval --> Tür dönüştürme operatörü ile oluşturulan ifadeler R value'dir.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+pointer operatörleri
+--------------------
+&    address of operator               (adres)
+*    dereferencing  operator           (içerik)
+[]   index/subscript  operator         (indeks)
+->   member selection (arrow) operator  (ok)
+
+---------------------------------------------------------------------
+NOT : Adres operatörünün operandı L value olmak zorundadır.
+int x = 5;    olsun      &x;   geçerli ifade olur.
+
+int x = 5;
+&x  //ifadenin türü int*
+
+double x = 5.4;
+&x  //ifadenin türü double*
+---------------------------------------------------------------------
+int main(void)
+{
+  int x = 10;
+  int y = 20;
+  int* ptr = &x;  //ptr'nin değeri x'in adresi (ptr x'i gösteriyor.)
+
+  ptr = &y;       //ptr'nin değeri y'nin adresi (ptr y'yi gösteriyor.)
+}
+
+-> C dilinde tamsayı türleri ile adres türleri arasında örtülü dönüşüm vardır.
+
+int main(void)
+{
+  int x = 10;
+  int y = 45;
+  int* ptr = x;  //x'in türü int olmasına karşın örtülü dönüşüm ile onu int* türüne dönüştürecektir.
+}
+
+-> Bu yüzden pointer değişkenlere adres olmayan bir veriyi ilk değer olarak vermeyeceğiz, atama yapmayacağız.
+   Bu kullanım C++'da sentaks hatası, C de implicit dönüşüm.
+
+-> C dilinde farklı adres türleri arasında örtülü dönüşüm vardır.
+
+int main(void)
+{
+  int x = 10;
+  double* dp;
+  dp = &x;  //int* 'dan double* 'a örtülü dönüşüm olur.
+}
+
+
+int main(void)
+{
+  int x = 10;
+  int y = 56;
+
+  int *p1 = &x;
+  int* p2 = &y;
+
+  p2 = p1;  //p2 'de x' in adresini gösteriyor p1' de.
+}
+
+
+int main(void)
+{
+  int x = 10;
+  int* ptr = &x;
+}
+
+ptr [2800]  -----------> x[10] 2800;
+ptr değişkeni'nin değeri 2800 'dür. Bu değer x'in adres değeridir. x 'in bulunduğu adres içerisinde bulunan değer ise 10'dur. (yani x in değeri 10)
+
+DİKKAT : Adress of operatörü ile oluşturulmuş ifadeler her zaman R value expression'dur.
+
+int main(void) 
+{
+  int x = 10;
+  printf("&x = %p\n", &x);  //Değişken adresini yazdırmak için %p kullanılır.
+}  //Mikroişlemcilerdeki gibi 16'lık sayı sisteminde adres değerlerini gösterir.
+
+
+NOT : 
+ptr bir pointer değişken olsun ve x'i göstersin. Karıştırılmaması gereken bir durumda ptr x'in adres değerini tutuyor fakat ptr değişkenide bir adreste saklanıyor.
+
+int x = 10;
+int* ptr = &x;
+
+ptr[2800] 9000  -----------> x[10] 2800
+
+
+
+
+
+
+
+
+
+
+
