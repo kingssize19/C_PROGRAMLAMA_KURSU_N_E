@@ -1,0 +1,98 @@
+Pointer Aritmetiği
+------------------
+-> C dilinde;
+            - Bir adres ile bir tam sayı toplanabilir.
+            - Bir tamsayı ile bir adres toplanabilir.
+            - Bir adresten bir tam sayı çıkartılabilir.
+
+Bu işlemler legaldir (geçerlidir) ve bu işlemlerden elde edilen değer yine bir adrestir.
+
+->  adres + n   =>    adres
+->  n + adres   =>    adres
+->  adres - n   =>    adres
+
+-----------o-----------
+-> int a[10];
+   int *p;
+olsun.
+-> a + 5; //geçerli
+-> 3 + p; //geçerli
+-> p - 2; //geçerli
+-----------o-----------
+DİKKAT!!!
+-> Bir tamsayıdan bir adresin çıkartılması geçerli bir işlem değildir. (sentaks hatası)
+-> İki adresin toplanması geçersizdir.
+
+NOT : C dilinde iki adresin birbirinden çıkartılması geçerlidir. Ve bu işlemden işaretli bir tam sayı elde edilir.
+-> adres - adres ---> işaretli tam sayı
+
+
+-> Bir dizinin bir elemanının adresine 1 toplarsak dizinin bir sonraki elemanının adresini elde ederiz.
+-> Bir dizinin bir elemanının adresinden 1 çıkarırsak dizinin bir önceki elemanının adresini elde ederiz.
+
+
+ÖNEMLİ!!!
+-> Eğer a bir dizinin ismi ise (a'nın elemanlarının hangi türden olduğundan bağımsız olarak)
+
+i bir indeks olmak üzere;
+-> &a[i] yazmak ile a + i yazmak arasında hiçbir fark yoktur.
+-> *(a+i) yazmak ile a[i] yazmak arasında hiçbir fark yoktur.
+
+-> x[y] ifadesini derleyici *(x + y) ifadesine dönüştürüyor. 
+   Bu yüzden a[5] yazmak ile 5[a] yazmak aynı anlama gelmektedir.
+   *(5 + a) <-----> *(a + 5)
+
+-> ++count; //count değişken değerini 1 arttırıyor anlamına gelmektedir.
+-> ptr bir dizinin bir elemanını gösteriyor olsun.
+   ++ptr;  //Dizinin bir sonraki elemanını göstersin anlamına gelmektedir.
+
+-> Bir dizinin her elemanına fonksiyona yollanan değer eklensin. Aşağıdaki iki fonksiyon aynı işlevi gerçekleştirmektedir.
+
+void array_increment_1(int *p, int size, int val)
+{
+  for (int i = 0; i < size; ++i) {
+      p[i] += val;
+  }
+}
+
+void array_increment_2(int *p, int size, int val)
+{
+  while (size--) {
+    *p += val;
+    ++p;
+  }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1) ()    []    .    ->        (soldan sağa öncelik)
+2)  &    *                    (sağdan sola öncelik)
+
+int main(void)
+{
+  int x = 5;
+  (&x)[0] = 67;    // x = 67 ile aynı ifade
+}
+
+-> p[n]      *(p + n)
+-> p[-n]     *(p - n)
+-> &p[n]       p + n
+-> *p          p[0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
