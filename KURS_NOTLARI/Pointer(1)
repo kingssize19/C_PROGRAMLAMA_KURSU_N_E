@@ -163,6 +163,120 @@ int* ptr = &x;
 ptr[2800] 9000  -----------> x[10] 2800
 
 
+-> &a[0] -> Bu ifade array decay geçirdikten sonra L value'den R value durumuna geçer.
+
+
+-> Aşağıdaki durumlarda a bir dizi olmasına rağmen ve a ismi bir ifade içinde kullanılmasına rağmen array decay uygulanmaz.
+
+1) Dizi isminin sizeof operatörünün operandı olması.  sizeof a
+2) Dizi isminin adres operatörünün operandı olması.  &a
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* operatörü (dereferencing // indirection) (içerik operatörü)
+-------------------------------------------------------------
+
+Dikkat -> İçerik (dereferencing) operatörünün operandı "adres olmak zorunda"
+
+int a[3] = {0}
+
+*a -> geçerli bir ifade.  //derleyicinin bakış açısı ile *&a[0] yazmış oluruz.
+
+dereferencing operatörü : operandı olan adresteki nesneye erişim sağlar.
+
+*adres -> Bu adresteki nesne demek.
+
+--------------o-------------
+int x = 34;
+int* ptr = &x;
+*ptr = 777;  //x'in değerini 777 yaptık.
+--------------o-------------
+int main(void)
+{
+  int x = 34;
+  int y = 89;
+  
+  int* p1 = &x;
+  int* p2 = &y;
+
+  *p1 = *p2;  //x = y ile aynı anlamda x in değeri bu ifade ile 89 oldu.
+}
+--------------o-------------
+int main(void)
+{
+  int a[5] = {1, 3, 5, 7, 9};
+  printf("%d\n", a[0]);  // 1
+
+  *a = 999;      // *&a[0] = 999; array decay
+  //a[0] = 999; yukarıdaki ifade ile aynı anlamda.
+
+  printf("%d\n", a[0]); // 999
+}
+--------------o-------------
+
+->     ++*a;  <--------->  ++(*a);
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+call by reference
+------------------
+-> Fonksiyona main koddaki değişkenimizin adresini yollar isek ve yolladığımız değişkeni karşılayan fonksiyon parametresi pointer değişken ise bu sayede
+yolladığımız değişken adresi üzerinden o değişken ile ilgili değişiklik yapabiliriz.
+
+#include <stdio.h>
+
+void foo(int* p)
+{
+	*p = 999;
+}
+
+int main(void)
+{
+  int x = 345;
+  
+  printf("Eski x degeri : %d\n", x);
+  
+  foo(&x);
+  
+  printf("Yeni x degeri : %d\n", x);
+}	
+
+-> Neden bir fonksiyonun parametresi bir pointer olur? Yani neden call by reference yapılır?
+   Bir fonksiyon kendisini çağıran koda bir değer iletmek istesin. 2 şekilde yapabilir.
+   - geri dönüş değeri
+   - call by reference
+
+-> Geri dönüş değerinden kaçınıp call by reference kullanılan noktalar : 
+  İletilecek değerin sizeof'u yüksek olduğu durumlarda maliyet hesabından dolayı call by reference tercih edilir.
+
+-> Hesaplanacak değer 4 byte, 8 byte vs. gibi az yer kaplayan bir türe ilişkinse o zaman geri dönüş değeri mekanizmasının kullanılması tercih edilir.
+-> Aksi durumda yani hesaplanan değer farklı türde yüksek storage değerine sahipse call by reference kullanılır.
+
+-> Bir fonksiyon geri dönüş değeri mekanizması ile tek bir değer döndürebilir.
+   Fakat call by reference ile birden fazla işlem gerçekleştirip sayıca fazla değer döndürebiliriz.
+
+
+--------------------------------------------------------------------------------------
+const anahtar sözcüğünün call by reference'teki yarattığı etki aşağıda yer almaktadır.
+--------------------------------------------------------------------------------------
+
+void foo(T *p);  //out parameter
+-> Sen bana adres gönder, ben sana senin gönderdiğin adresteki nesneye yazarak sana değeri ileteceğim demek.
+
+void bar(const T *p);  //input parameter
+-> Ben senden adres istiyorum ama istediğim adresteki nesneye salt okuma amaçlı erişim sağlayacağım. O nesneyi ben input'um olarak kullanacağım diyor.
+
+bar fonksiyonunda call by value kullanabilirdik.
+void bar (T);  //Doğrudan böyle bir kullanım yapmama amacımız MALİYET.
+
+ÖNEMLİ NOT : Fonksiyonlara dizilerin call by value olarak gönderilmesi gibi bir seçenek söz konusu değildir.
+
+DİKKAT!!!
+1) C dilinde bir fonksiyonun parametre değişkeni bir dizi olamaz.
+2) C dilinde bir fonksiyonun geri dönüş değeri türü bir dizi türü olamaz.
+3) Yani, bir fonksiyonun bir fonksiyona bir dizi göndermesi (ne amaçla olursa olsun) adres yoluyla olmak zorunda.
+
+
+
 
 
 
