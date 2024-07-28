@@ -1,0 +1,264 @@
+-> ctype kütüphane fonksiyonları bool int yani;
+   Doğru testler için non-zero
+   Yanlış sonuçlar için zero döndürür. (int türden değer döndürürler.) 
+
+
+-> Sorgulama işlemini aşağıdaki şekilde yapmalıyız.
+
+Doğru Kullanım : 
+                if (isprime(ival) != 0)  ---> Doğru kullanım şekli.
+
+Yanlış Kullanım : 
+                 if (isprime(ival) == 1) ---> Yanlış kullanım şekli. Çünkü non-zero değer - veya + (1 harici) değerler dönebilir. Bu yüzden bu kullanım şekli hatalı.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> Artık yıl kontrol eden fonksiyon;
+
+Artık yıl, 365 yerine 366 günü olan bir yıldır. Fazladan bir gün, Şubat ayına eklenir ve Şubat ayı 29 gün olur. Artık yıllar, Gregoryen takvimine göre belirli kurallara göre hesaplanır:
+1) Yıl 4'e tam bölünüyorsa artık yıl olabilir.
+2) Ancak, yıl 100'e tam bölünüyorsa artık yıl olamaz.
+3) Bununla birlikte, yıl 400'e tam bölünüyorsa yine de artık yıldır.
+
+int isleap(int y)
+{
+	return (y % 4 == 0) && (y % 100 != 0 || y % 400 == 0);
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> Perfect number sorgusu yapan fonksiyon; 
+
+Mükemmel sayı, pozitif bölenlerinin (kendisi hariç) toplamı kendisine eşit olan bir pozitif tam sayıdır. Örneğin, 6'nın bölenleri 1, 2 ve 3'tür ve bu bölenlerin toplamı 6 eder.
+
+int isperfect(int num)
+{
+	int sum = 0;
+	int i;
+	for (i = 1; i <= num / 2; ++i) {
+		if (num % i == 0) {
+			sum += i;
+		}
+	}
+	return sum == num;
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sayının asal olup olmadığını sınayan program;
+
+Asal sayı, yalnızca 1 ve kendisi dışında başka hiçbir pozitif böleni olmayan pozitif tam sayıdır. Yani, bir asal sayı en az iki farklı pozitif tam sayıya bölünebilir: 1 ve kendisi.
+
+int isprime(int x)
+{
+	if (x < 2)
+		return 0;
+	if (x % 2 == 0)
+		return x == 2;
+	if (x % 3 == 0)
+		return x == 3;
+	if (x % 5 == 0)
+		return x == 5;
+	int i;
+	for (i = 7; i * i <= x; i += 2) {
+		if (x % i == 0)
+		return 0;
+	}
+	return 1;
+}
+
+NOT : Asal sayıların sonsuz olduğunu ispatlayan -> Öklid (Euclid)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<ctype.h> --> Karakter Test Fonksiyonları
+	      Karakter Dönüşüm Fonksiyonları
+
+int isupper(int c);  --> Büyük harf sınaması
+int islower(int c);  --> Küçük harf sınaması
+int isalpha(int c);  --> Harf karakteri mi sınaması
+int isdigit(int c);  --> Rakam karakteri mi sınaması
+int isalnum(int c);  --> Harf ve rakam mı sınaması
+int isxdigit(int c); --> Hex basamak gösteren karakter mi
+int isspace(int c);  --> White space karakterler mi
+int ispunct(int c);  --> Punct karakter mi
+int isblank(int c);  --> \t yada space karakteri mi
+int isprint(int c);  --> Printable (görüntüsü olan) karakter mi
+int isgraph(int c);  --> Printable ile aynı sadece ' ' (space) i graph kabul etmez.
+int iscntrl(int c);  --> Kontrol karakteri mi (Özel amaçlı görüntüsü olmayan karakter mi)
+
+punct karakteri : Görüntüsü olan fakat alpha numeric olmayan karakterler.
+white space karakter : Görüntüsü olmayan boşluk etkisi yaratan karakterler.
+
+NOT : <windows.h> kütüphanesinde sleep(); fonksiyonu içine yazılan sayı (milisaniye) kadar gecikme yaratır.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Karakter Dönüşüm Fonksiyonları
+
+toupper --> Büyük harfe dönüşüm yapıyor.
+tolower --> Küçük harfe dönüşüm yapıyor.
+
+-> int toupper(int);
+-> int tolower(int);
+
+toupper : Fonksiyona gönderilen karakter kodu küçük harf ise onun büyük harf karşılığını döndürür. 
+	  Eğer fonksiyona gönderilen harf küçük harf değil ise onun kendisini döndürür.
+
+tolower : Fonksiyona gönderilen karakter kodu büyük harf ise onun küçük harf karşılığını döndürür.
+	  Gönderilen karakter kodu büyük harf değil ise onun kendisini döndürür.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Hex sayı gir (hex olan karakterleri alır) decimal karşılığını yazdır.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int main(int argc, char *argv[]) {
+	printf("(hex) sayi girin : ");
+	int ch;
+	int result = 0;
+	while ((ch = getchar()) != '\n') {
+		if (isdigit(ch)) {
+			result = result * 16 + ch - '0';
+		}
+		else if (isxdigit(ch)) {
+			result = result * 16 + toupper(ch) - 'A' + 10;
+		}
+	}
+	printf("girilen sayi %d (decimal)", result);
+	return 0;
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ternary operator (Koşul operatörü) (Conditional Operator)
+---------------------------------------------------------
+
+-> op1 ? op2 : op3;
+
+- Bir değer üretir.
+- op1 lojik yorumlamaya tabi tutulur.
+- lojik yorumlama doğru ise op2'nin değeri üretilir.
+- lojik yorumlama yanlış ise op3'ün değerini üretir.
+
+Sequence point yaratan operatörler
+-----------------------------------
+expr1 && expr2
+expr1 || expr2
+expr1 , expr2
+conditional operator
+
+expr1 ? --> Burada da sequence point oluşuyor.
+
+Kullanım örnekleri
+------------------
+
+1) x = y == 3 ? a : b;  --------karşılık gelir----------> x = (y == 3) ? a : b;
+2) max = x > y ? x : y;
+3) mday = isleap(y) ? 29 : 28;
+4) ydays = isleap(y) ? 366 : 365;
+
+NOT : Bildirilen değişken scope'unun içinde kullanılabilir.
+
+Koşul operatörünün ürettiği değerin 
+1) bir değişkene atanması
+2) bir değişkeni initialize etmesi
+3) bir fonksiyona argüman yapılması
+4) return ifadesi yapılması
+
+-----------------------------------------------------------
+value category (C ve C++ kural farklılıkları)
+	
+++x    => C'de (R value) | C++'da (L value)
+--x    => C'de (R value) | C++'da (L value)
+(x, y) => C'de (R value) | C++'da (L value)
+------------------------------------------------------------
+
+Conditional operators (if merdiveni tarzı) kullanım örneği;
+
+-> x == 13 ? 5 : (x == 29 ? 9 : 71);
+
+-------------------------------------------------------------
+
+Redundant else : Fuzuli else kod içerisinde olmasada olur.
+
+-> if (x % 2 == 0)
+	return a;
+   else	  (redundant else)
+   	return b;
+
+Yukarıdaki else gerkesiz olarak yazılmıştır. Aşağıdaki kullanım tercih edilir.
+
+-> if (x % 2 == 0)
+	return a;
+   
+   return b;
+
+-----------------------o-----------------------
+
+-> while (expr) {
+	statement1;
+ 	statement2;
+  	if (c_exp)
+   	     break;
+	else {
+	statement3;
+ 	statement4;
+	}
+}
+
+-> Yukarıdaki örnekte ise if içerisine kod akışı yöneldiğinde döngü kırılacak program sona erecek.
+Fakat burdaki else içinde bulunan stateler her zaman çalışacak bu yüzden buradaki else gereksiz redundant else konumundadır.
+
+-> while (expr) {
+	statement1;
+ 	statement2;
+  	if (c_exp)
+   	    break;
+	statement3;
+ 	statement4;
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Fonksiyon Bildirimi / Fonksiyon Prototipi
+
+-> Tanım olmayan bir bildirim (non defining declaration)
+
+-> double func(int, int); //bildirim
+  //func isimli bir fonksiyon olduğunu belirtir.
+  //2 parametre değişkeni alır.
+  //parametre değişkenlerinin türlerinin int ve int olduğunu belirtir.
+  //fonksiyonun geri dönüş türünün double olduğunu belirtir.
+
+örnek : 
+
+double func(double, double);
+
+int main(void)
+{
+    int x = 10;
+    int y = 45;
+    func(x, y);		//Derleyici burda tür dönüşümü yapar. func fonksiyonu double parametre aldığı için int türündeki x y değişkenleri double türü ile
+    			  type casting edilir.
+}
+
+Linker : Bir fonksiyonun derlenmiş halini bulup birleştirir. Ama fonksiyonun derlenmiş halini bulamaz ise hata mesajı verir.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
