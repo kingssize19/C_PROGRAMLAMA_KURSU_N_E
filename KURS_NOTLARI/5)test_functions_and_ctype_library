@@ -1,0 +1,23 @@
+-> ctype kütüphane fonksiyonları bool int yani;
+   Doğru testler için non-zero
+   Yanlış sonuçlar için zero döndürür. (int türden değer döndürürler.) 
+
+
+-> Sorgulama işlemini aşağıdaki şekilde yapmalıyız.
+
+Doğru Kullanım : 
+                if (isprime(ival) != 0)  ---> Doğru kullanım şekli.
+
+Yanlış Kullanım : 
+                 if (isprime(ival) == 1) ---> Yanlış kullanım şekli. Çünkü non-zero değer - veya + (1 harici) değerler dönebilir. Bu yüzden bu kullanım şekli hatalı.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Artık yıl kontrol eden fonksiyon;
+
+int isleap(int y)
+{
+	return (y % 4 == 0) && (y % 100 != 0 || y % 400 == 0);
+}
+
+
+
