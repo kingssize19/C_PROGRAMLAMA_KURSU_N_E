@@ -12,7 +12,7 @@ Yanlış Kullanım :
                  if (isprime(ival) == 1) ---> Yanlış kullanım şekli. Çünkü non-zero değer - veya + (1 harici) değerler dönebilir. Bu yüzden bu kullanım şekli hatalı.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Artık yıl kontrol eden fonksiyon;
+#Artık yıl kontrol eden fonksiyon;
 
 int isleap(int y)
 {
