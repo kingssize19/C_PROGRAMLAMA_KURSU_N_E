@@ -1,0 +1,109 @@
+-> Uzantısı .h olan dosyaya header file denir.
+-> Uzantısı .c olan dosyaya implementation/code/source/.c file denir.
+
+-> Derleyici program kullanılan fonksiyonun bildirimine ihtiyaç duyar. Bu bildirimlere .h dosyalarından ön işlemci komutu ile ulaşılır. 
+Örneğin; printf() için <stdio.h> include edilmelidir.
+
+-> Linker programınında kullanılan fonksiyonun derlenmiş haline ihtiyacı vardır. Linker derlenen kodları birleştirir.
+
+-> Tipik bir header file'da neler bulunur;
+  - Fonksiyon bildirimleri (function prototypes)
+  - Değişken bildirimleri (variable declaration)
+  - tür eş bildirimleri (type alias / typedefs)
+  - Ön işlemci komutları (preprocessor directives)
+  - Tür bildirimleri (user-defined type declarations)
+
+DİKKAT : printf, scanf vs. gibi standart C fonksiyonlarının kodlarını (büyük ihtimalle) derleyicinizde bulamazsınız.
+         Çünkü derleyiciyi yazanlar bu fonksiyonların c kodlarını yazmışlar fakat bize kaynak kodlarını vermemişler.
+         Yazdıkları kodları derleyip bize derlenmiş hallerini vermişler. Yani bu fonksiyonların derlenmiş halleri obje kodları vardır.
+
+
+-> Parametre değişkenleri belirtilmeden yapılan bildirime function declaration denir
+
+   double func();
+
+-> int foo(int, int) => function prototype
+
+DİKKAT : Aşağıdaki bildirim func 'ın parametre değişkenine sahip olmadığı anlamına gelmiyor.
+
+double func();  -> Fonksiyonun parametre değişkenleri hakkında bilgi verilmiyor.
+
+double bar(void)  -> Fonksiyonun parametre değişkeninin olmadığını anlatır.
+
+double foo(); --> Bu kullanım C++ 'da double foo(void); fonksiyonu ile aynı anlamı taşır.
+                  C de böyle bir durum söz konusu değildir sadece parametre değişkenleri hakkında bilgi vermediği anlamını çıkarırız.
+
+
+NOT : C'de fonksiyon bildirimi özdeş olmak şartıyla birden fazla yapılırsa hata değildir.
+
+  int foo(int x);
+  int foo(int y);
+    HATA YOK
+
+  int foo(int x);
+  double foo(double y);
+  double foo(double x, double y);
+    HATA VAR -> Özdeş olmayan aynı isimde 3 farklı fonksiyon bildirimi.
+
+client code = Hizmet alan kod.
+server code = Hizmet veren kod.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Preprocessor Directives (Önişlemci Komutları)
+
+-> Önişlemci program kendi komutlarını yürüten böylece o komutları yürütüüğünde kaynak dosyada bir takım değişiklikler gerçekleştiren programdır.
+
+source file ----> Ön işlemci program ------Translation unit------> Derleyici program
+  (Girdi)                                  (çıktı / girdi)
+
+Ön işlemci programının komutlarının yürütüldüğü süreç -> Preprocessing time
+Derleyici programın çalıştırıldığı zaman -> Compile time
+Bağlayıcı (Linker) programın çalıştırıldığı zaman -> Link time
+Programın çalıştırıldığı zaman -> Run time
+
+-----------------------------
+Ön İşlemci Program Komutları
+-----------------------------
+#
+#include
+#define
+#undef
+//Aşağıdakiler conditional compiling denilen süreç için kullanılıyor
+#if
+#else
+#elif
+#endif
+#ifdef
+#ifndef
+//
+#line
+#error
+#pragma
+
+-> # null directive (boş # komutu)
+-> Define komutu ile önişlemciye bazı isimleri tanıtıyoruz. Bunlara macro deniliyor.
+
+-> Önişlemci programı herhangi bir komutu yürüttüğü zaman komutun kendisinide kaynak dosyadan siliyor.
+   Yani translation unit haline geldiğinde derleyicinin gördüğü kodda "#" ile başlayan satır yer almaz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
