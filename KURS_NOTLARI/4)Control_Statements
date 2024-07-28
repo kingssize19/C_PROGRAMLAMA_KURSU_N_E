@@ -424,12 +424,26 @@ i'nin değeri -2'147'483'648 olduğu zaman i-- ifadesi yürütüldüğünde taş
 Not: uint, unsigned tamsayılarda taşma yoktur en küçük değerinde ike 1 azaltırsak en büyük, en büyük iken 1 eklersek 0 olma garantisi vardır.
 Bu sebeple unsigned türlerde overflow (taşma) olmaz.
 
+NOT : 13! (faktoriyel) 4 byte'lık int sınırını taşırır. Bu da tanımsız davranışa yol açar.
+NOT : 20! 8 byte'lık long long int sınırını taşırır. Bu da tanımsız davranışa yol açar.
 
+-> Bir değişkene her defasında ilk değer verilmesin diye static anahtar sözcüğünü kullanırız.
 
+--------------------------
+factorial hesaplama kodu
+--------------------------
+int factorial(int n) 
+{
+	return n < 2 ? 1 : factorial(n - 1) * n;
+}
 
-
-
-
+-----------------
+Taylor Serisi
+-----------------
+double sum = 0.;
+for (int i = 0; i < 12; +i) {
+	sum += 1.0 / factorial(i);
+}
 
 
 
