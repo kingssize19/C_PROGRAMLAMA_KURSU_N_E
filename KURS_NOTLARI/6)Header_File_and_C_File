@@ -48,8 +48,8 @@ NOT : C'de fonksiyon bildirimi özdeş olmak şartıyla birden fazla yapılırsa
 client code = Hizmet alan kod.
 server code = Hizmet veren kod.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Preprocessor Directives (Önişlemci Komutları)
-
+                                                        Preprocessor Directives (Önişlemci Komutları)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -> Önişlemci program kendi komutlarını yürüten böylece o komutları yürütüüğünde kaynak dosyada bir takım değişiklikler gerçekleştiren programdır.
 
 source file ----> Ön işlemci program ------Translation unit------> Derleyici program
@@ -60,9 +60,9 @@ Derleyici programın çalıştırıldığı zaman -> Compile time
 Bağlayıcı (Linker) programın çalıştırıldığı zaman -> Link time
 Programın çalıştırıldığı zaman -> Run time
 
------------------------------
-Ön İşlemci Program Komutları
------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                Ön İşlemci Program Komutları
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #
 #include
 #define
@@ -84,6 +84,336 @@ Programın çalıştırıldığı zaman -> Run time
 
 -> Önişlemci programı herhangi bir komutu yürüttüğü zaman komutun kendisinide kaynak dosyadan siliyor.
    Yani translation unit haline geldiğinde derleyicinin gördüğü kodda "#" ile başlayan satır yer almaz.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                        #include ön işlemci komutu
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include <stdio.h> -> Bu kullanım ile ön işlemci bu dosyayı bul, bu dosyanın içindeki kodları bu komutun bulunduğu yere yapıştır. Demek istenir.
+
+#include <stdio.h>
+default directory
+
+#include "nutility.h"
+avtual directory
+
+<> veya "" yazım dosyanın arandığı yerin belirlenmesini sağlar.
+
+" " -> Bizim kaynak dosyalarımız.
+<> -> include adlı klasör içinde arama yapar.
+
+------------------------------------
+FONKSİYON BİLDİRİMLERİ (HATIRLATMA)
+------------------------------------
+* Default function declaration 
+
+int main(void)
+{
+  ali(1, 3);
+}
+--> Normalde syntax hatası (name lookup) çünkü ali ismi yok.
+
+Derleyici burda şunu diyor;
+Ben ali ismini aradım bulamadım. Ben alinin başka bir modülde bulunan ve geri dönüş değeri int olan fonksiyon olduğunu varsayıyorum diyor.
+İşte bu duruma defaul function declaration denir.
+
+NOT : C++ dilinde "implicit function declaration" yoktur.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                              #define önişlemci komutu
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> define komutu ile önişlemci programa bir isim tanıtılır. (Buna macro denir.)
+
+//symbolic constant
+//manifest constant
+#define SIZE 100    
+-> SIZE sözcüğüne 100 değeri atanır. Bundan sonra SIZE yazılan yerleri derleyici 100 olarak yorumlar.
+
+NOT : Ön işlemci programı açısından bloğun hiçbir önemi yok. Yani scope kavramı yoktur. Yazıldığı yerden programın en son satırına kadar heryerde geçerlidir.
+
+void foo(void)
+{
+  #define SIZE 100
+}
+      . . .
+      . . .
+-> Sadece bu blok içerisindeki SIZE'lar 100 olmaz blok dışı aşağıya kadar kodda bulunan tüm SIZE lar 100 olur.
+-> Yalnızca bu komutun üstünde SIZE kullanılırsa geçerli bir kullanım olmaz.
+
+Örneğin;
+int x = SIZE;
+#define SIZE 100
+-> Yanlış kullanım şekli. Makronun x'in intialize'ından önce yazılması gerekirdi.
+
+Replacement'in yapılabilmesi için (değiştirme işleminin olması için)
+Önişlemci programı
+a) Komutun altında kalan kod alanına bakar, üstünde kalan kod alanına bakmaz.
+b) Komutun bir blok içine yazılması özel bir anlam (scope) ifade etmez.
+
+-> Replacement'in olabilmesi için ismin kod içinde bir "token" olarak kullanılması gerekir.
+
+Örnek; 
+#define SIZE  100+200
+x = 5 * SIZE;   //-> x = 5 * 100 + 200;
+-> 100+200 ifadesinde bir hesaplama yapılmaz. O ifade kod içerisinde SIZE yerine yapıştırılır.
+
+Örnek;
+#define NEC 100;    --> NEC yerine 100; ifadesini yaz.
+int main()
+{
+  int x;
+  x = NEC;   //-> Burada bir syntax hatası yoktur. x = 100;; --> x = 100; expression statement.  ; null statement.
+  ++x;
+}
+
+-------------------------o-------------------------
+NOT : Macro olan bir isim için replacement 'in bir string literal olmasında teknik açıdan sıkıntı yoktur.
+
+#define NEC   "necati ergin"
+-------------------------o-------------------------
+NOT : Aşağıdaki kullanım şekli hatalıdır. Macro bir isim olmalıdır. İki sabit ifade kullanılmaz.
+
+#define  100    200    --> Bu şekilde kullanılmaz.
+
+->C programlamada makro olan isimler genellikle all-caps olarak seçilirler. (Büyük harfle yazılırlar.)
+-------------------------o-------------------------
+ÖNEMLİ : Makro tanımlamalarında alt satırdan devam edebilmek için \ işareti konulur.
+
+#define NEC 100+200+
+300
+-> Makro "NEC  100+200+" ifadesi oldu. 300 dahil edilmez.
+
+
+#define NEC 100+200+\
+300
+-> Makro "NEC  100+200+300" ifadesi oldu. 300 bu kullanım şekli ile dahil edildi.
+
+Bir başka örnek;
+#define FUNDEFF int max(int a, int b) { \
+if (a > b) \
+  return a; \
+return b; \
+}
+
+Aşağıdaki şekilde macro tanımlaması yapılabilir.
+#define  NEC  100
+#define  ERG  NEC
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                            MAKRO KULLANIM YÖNTEMLERİ
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Sabitlerin isimlendirilerek kullanılması
+
+NOT : Bazı kütüphanelerde türlere ön işlemci aşamasında alternatif isimler vermek için makrolar kullanılır.
+
+-> Embedded programlamada sabitleri isimlendirmek kod okunurluğu açısından çok iyi olur.
+
+-> C dilinde bir sabit olarak kullanılacak bir isim oluşturmanın en az 3 yolu vardır.
+- symbolic constants / manifest constant (makrolar bunu işledik.)
+
+- enumarations
+- const variables  (Bu ikisini ilerleyen notlarda işleyeceğiz.)
+
+DİKKAT : Gerçek sayı sabitleri kodlama hatalarına kapı açan varlıklardır.
+
+-> Gerek C standartı gerekse 3. parti kütüphaneler makroları bazı durumlarda taşınabilirlik (portability) sağlamak için kullanıyor.
+
+int main(void)
+{
+  int x = 2'147'987'225;
+}
+Yanlış Kullanım. Çünkü 4 byte'lık sistem için doğru fakat başka pc'de derleyicide bu işaretli int türü için max değer olmayabilir.
+Bu durumda standartın kabul ettiği macro kullanılarak max değeri kullanıldığı sisteme göre değişiklik gösteren makro kullanılır.
+
+int main(void)
+{
+  int x = INT_MAX;
+}
+Taşınabilirlik açısından geçerli bir kullanım. Sistemde işaretli int türünün storage değerine göre maksimum değer değişkenlik gösterir. Bu durum taşınabilirliğe
+olanak sağlar.
+
+
+Makro tanımlamalarında;
+-> İşaretsiz tamsayılar söz konusu olduğunda sabitleri hexadecimal sayı sisteminde yazmak bazı avantajlar sağlayabilmektedir.
+-> İşaretli tamsayılarda daha çok decimal sayı sistemi kullanılır.
+NOT : Sebebi ilerleyen notlarda anlatılacaktır.
+
+
+-> Bazı int parametreler any integer value (isprime() fonksiyonuna yollanan parametre)
+-> Bazı int parametreler boolean (0 veya non-zero)
+-> Bazı int parametreleri enumaration olarak kullanılıyor.
+
+Yani biz fonksiyona 0, 1, 2, 3... vb. sabitlerden birini yollayacağız ama aslında fonksiyona yolladığımız değer sabitin kendisi değil bizim tercihimiz.
+Mesela;
+void func(int font,  ) bir fonksiyon olsun.
+Bu fonksiyonun tanımı şu şekil olsun 0 yollarsan Arial, 1 yollarsan Calibri, 2 yollarsan Times New Roman... vb. font belirlememizi sağlasın.
+
+Aşağıdaki şekilde kullanım yaparsak hataya yer vermeyiz.
+func(FONT_CALIBRI,  )
+int değer yerine böyle macro kullanılıyorsa hata riski azalır.
+
+
+-------------------------o-------------------------
+#define INT_MIN  (-2147483647 - 1)
+Neden bu şekilde tanımlanmıştır? (İşaretli minimum integer değeri.)
+
+-> Sabitlerde negatif (-) sabit yoktur.
+Sabit kısmı olabilecek max değer 2147483647 'dir. 
+-2147483647 yazarsak sabit bu olur ve türü hala integer.
+
+Direkt 2147483648 yazarsak bu sabit integer sayı türünü aşar dolayısıyla bu sabitin türü integer olmaktan çıkar.
+-2147483647  -  1
+   (int)      (int)
+sonuç integer, en küçük işaretli int türündeki sayı.
+
+Ama bu sabiti -2147483648 şeklinde yazarsak ilgili derleyiciye göre türü değişir.
+-------------------------o-------------------------
+
+NOT : C++ dilinde makro kullanımı minimize edilmiş durumda.
+
+* object-like macro
+* function-like macro  //Fonksiyon çağrısı gibi görüntü verdiği için böyle deniyor. Gerçekte fonksiyon çağrısı değil.
+
+
+#define   MAX(a, b)    ((a) > (b) ? (a) : (b))
+
+int main(void)
+{
+  int x = 10;
+  int y = 20;
+  int z = MAX(x, y);
+  //int z = ((x) > (y) ? (x) : (y));  --> Aslında fonksiyon çağrısı yok önişlemci komutu parametrik bir replacement yapıyor kodu bu hale getiriyor.
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                  Functional Macro
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define SQUARE(a)    a*a        // kare alan fonksiyonel makro
+
+int y = SQUARE(x);    --Derleyicinin gördüğü kod-->  x*x; 
+int y = SQUARE(x+1)   --Derleyicinin gördüğü kod--> x+1*x+1;
+-> Yanlış hesaplamaların, işlem önceliklerinin önüne geçmek için macronun bileşenlerini paranteze almakta fayda vardır. Yukarıda verilen örneklerde 2. ifade 
+sonucu istediğimiz çıktıyı elde edemeyeceğiz. Bu yüzden öncelik parantezi kullanmakta fayda vardır.
+
+#define   SQUARE(a)    ((a)*(a))    
+Bu şekilde makroyu tanımladığımızda daha sağlıklı sonuçlar elde ederiz.
+
+-> Fonksiyonel bir makro oluşturduğunuzda makroyu dıştan parantez içine alın ve makro argümanlarının geçtiği heryeri tekrar ilave öncelik parantezine alın.
+
+- #define    MAX(x, y)    ((x) > (y) ? (x) : (y))
+- #define    MIN(x, y)    ((x) < (y) ? (x) : (y))
+- #define    ISLEAP(y)    ((y) % 4 == 0 && ((y) % 100 != 0 || (y) % 400 == 0))
+- #define    ISUPPER(c)   ((c) >= 'A' && (c) <='Z')
+- #define    ISLOWER(c)   ((c) >= 'a' && (c) <= 'z')
+- #define    ISALPHA(c)   (ISUPPER(c) || ISLOWER(c))
+
+-> Dizinin boyutunu veren makro;
+#define    ASIZE(a)    (sizeof(a) / sizeof(*a))
+
+DİKKAT : if isupper(ch)    //Kullanım şekli, eğer isupper makrosu yukarıdaki gibi parantezlerle tanımlandıysa en dıştaki parantez if'in parantezi kabul edilir.
+Bu yüzden syntax hatası olmaz.
+
+
+-> Fonksiyon yerine makro kullanarak derleyicinin daha etkili bir kod üretmesini sağlamak (MAKRO KULLANMA NEDENİ)
+-> Makrolar fonksiyon olmadığı için derleyicinin optimizasyon yapabildiği kod alanını büyütüyorlar. 
+   Eğer fonksiyon olsa derleyici o fonksiyon kodlarını göremediği için optimizasyon yapamazdı.
+
+HATIRLATMA : Bir nesne bir yan etkiye maruz iken bir sequence point'e uğramadan o nesneyi aynı ifade içinde tekrar kullanamayız. (Tanımsız Davranış U.B.)
+
+#define    SQUARE(x)    ((x)*(x))
+int ival = 5;
+int a = SQUARE(val++);    //Undefined behavior
+
+BİLGİ : Fonksiyon tanımında fonksiyon isminin parantez içine alınması fonksiyon tanımlama sentaksını bozmaz.
+int (foo)(int a, int b)
+{
+  return a * b;
+}
+Sentaksı herhangi bir şekilde bozmaz.
+
+
+ÖNEMLİ : Aynı isimli fonksiyon tanımı ve makronun ortak dosyada olmasının 2 yolu vardır. 
+
+1) Fonksiyon tanımı yukarıda, makro tanımı onun altında yapılacak.
+
+1|  int square(int a)
+2|  {
+3|    return a * a;
+4|  {
+5|
+6|  #define   square(x)    ((x)*(x))  
+
+2) Makro tanımı daha yukarıda olacak fakat fonksiyon tanımında fonksiyon ismini parantez içine alacağız. Diğer türlü makro fonksiyon isminin yerine kendi değerini
+replacement eder.
+
+1|  #define    square(x)    ((x)*(x))
+2|
+3|  int (square)(int a)
+4|  {
+5|    return a * a;
+6|  }
+
+NOT : Aynı isimli makro ve fonksiyon varsa, aynı zamanda ilave önlem alınmadıysa herhangi bir kullanımda fonksiyonel makroyu seçmiş oluruz
+      Çünkü fonksiyonel makro önişlemci programı sürecinde ele alınıyor.
+
+int y = square(x);    // Makroyu seçmiş oluruz.
+int y = (square)(x);  // Fonksiyonu seçmiş oluruz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
