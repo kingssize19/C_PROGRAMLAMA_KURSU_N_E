@@ -362,6 +362,425 @@ NOT : Aynı isimli makro ve fonksiyon varsa, aynı zamanda ilave önlem alınmad
 int y = square(x);    // Makroyu seçmiş oluruz.
 int y = (square)(x);  // Fonksiyonu seçmiş oluruz.
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                        Functional Macro    vs       Functions
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*Functional Macro
+-----------------
+- Makrolar generic yani türden bağımsızlar
+  #define  max(a, b)    (a > b ? a : b)
+  Her tür için kullanılabilir.
+
+- Fonksiyonel makrolar birçok durumda code size'ı büyütme eğiliminde.
+  Code size'ı büyütme eğiliminden dolayı gömülü sistem alanında kullanımları tercih edilmez.
+
+- Fonksiyonel makrolar, debugger'ların sevdiği araçlar değillerdir.
+
+- Makrolar için adresleri var tabiri kullanılmaz. Sadece yer değiştirme işlemine tabi tutulutlar. (Macro 'nun adresi yoktur.)
+
+- Macrolar kodlama hatası riskini arttırıyor.
+
+*Functions
+----------
+- Fonksiyonlar generic değildir, türe bağlıdırlar.
+  int max2(int x, int y)
+  {
+    //int türü için kullanılır. Double türü vs. için kayıp olur.
+  }
+  Her tür için fonksiyon yazılmalı.
+
+- Fonksiyonlar, fonksiyonel macrolara göre daha çok debugger dostudur.
+
+- Fonksiyonların adresleri var birçok işi gerçekleştirmek için C ve C++ dillerinde fonksiyon adresleri yoğun olarak kullanılıyor.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                          preprocessor  operators (Önişlemci Operatörleri)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#
+##
+Yukarıdaki operatörler fonksiyonel makrolarda kullanılıyor.
+
+defined -> (conditional compiling 'de kullanılıyor.)
+
+# -> stringification/stringizing dizge yapma
+
+Dikkat : #define -> burdaki # farklı, makro tanımında kullanılan # işareti.
+
+## -> Token - pasting (atom yapıştırma)
+
+
+-------------------o-------------------
+# operatörü tek operand alır ve ön işlemciye operandı string yap der.
+Örnek : #x --> "x"
+
+Örnek : 
+#define   fer(x)    #x
+int main(void)
+{
+  printf(fer(necati ergin));  --> //printf("necati ergin"); ifadesi ile aynı işlemi gerçekleştirir.
+}
+--------------------------------------o--------------------------------------
+Not; 
+
+int x = 5;
+printf("x"" = %d",x);
+-> Derlenme aşamasında bu iki ayrı çift tırnak ifadeleri birleştiriliyor. Program çıktısı x = 5 olur.
+
+Örnek;
+
+#define    iprint(i)    printf(#i " = %d\n", i)
+int main(void)
+{
+  int x = 10;
+  int y = 13;
+  int z = 27;
+
+  iprint(x);          --> // x = 10
+  iprint(x + y + z);  --> // x + y + z = 50;
+}
+--------------------------------------o--------------------------------------
+## operandı
+
+x##y -> xy    // İki operandı alır ve yapıştırır. Bu yüzden buna token pasting denir.
+
+Örnek;
+
+#define  paste(a, b)    a##b
+int paste(odd, _count) = 0;    --> // 2 değeri birleştirir. Derleyici kodu int   odd_count = 0;   şeklinde görür.
+--------------------------------------o--------------------------------------
+* Fonksiyonel makroları kullanarak ön işlemci programa bir fonksiyon tanımı kodu yazdırmak mümkündür.
+
+Fonksiyonel Macro Örneği;      // Hatırlatma : \ işareti ile makro yazarken alt satırdan devam edebiliriz.
+
+#define    gmaxfunc(t)      t get_max(t x, t y, t z) \
+{ \ 
+  t max = x; \
+  if (y > max) max = y; \
+  if (z > max) max = z; \
+  return max; \
+}
+
+gmaxfunc(int) --> Bu satırda get_max fonksiyonu yapıştırılır ve argüman olarak int türü verilir.
+
+int main(void)
+{
+  printf("%d\n", get_max(30, 48, 37));
+}
+Bu şekilde ön işlemci koda fonksiyon kodu yazdırmış oluruz.
+
+Yukarıdaki kod örneği baz alınarak şu durumlara bakılırsa;
+
+gmaxfunc(int)
+gmaxfunc(long)
+gmaxfunc(float)
+gmaxfunc(double)
+
+4 farklı tür ve 4 farklı parametre türü fakat 4 adet aynı isimde fonksiyon.
+
+overloading function C dilinde olmadığı için aynı isimde farklı türden fonksiyonlar tanımlandığı için derleyici hata verir.
+C++ dilinde hata vermezdi.
+
+Aşağıdaki yöntem ile bu hatanın önüne geçeriz. (## operatörünü kullanarak)
+
+#define  gmaxfunc(t)    t max_##t(t x, t y, t z) \
+...
+...
+...
+}
+
+gmaxfunc(int)  -->  int max_int(int x, int y, int z);
+gmaxfunc(long) -->  long max_long(long x, long y, long z);
+...
+...
+Bu şekilde 4 farklı isim ve türde fonksiyon oluştururuz. Ve derleyici hata vermez.
+
+--------------------------------------o--------------------------------------
+#define    SWAP(x, y)        { int temp = x; x = y; y = temp; }
+
+int main(void) 
+{
+  int a = 5;
+  int b = 9;
+  SWAP(a, b);      //-> Sonda ; kullanarak null statement oluşturmuş oluruz. Sentaks hatası vermez.
+}
+
+Fakat aşağıdaki kullanımda if ve else arasına ";" yani statement gireceği için syntax hatası verirdi.
+if (a > b)
+  SWAP(a, b);
+else
+  a = 15;
+
+NOT : if-else arasına statement giremez. SYNTAX ERROR
+
+Bu kodu geçerli kılmak için yani hatayı engellemek için aşağıda yer alan yöntemdeki gibi do-while kullanılabilir.
+
+#define       SWAP(a, b)      do { int temp = x; x = y; y = temp; } while(0)
+Bu şekilde do-while kullanarak kodun açabileceği sıkıntının önüne geçmiş oluruz.
+Blok içindeki kodun bir fonksiyon çağrısı gibi ifadede yer alması için do-while döngü deyimi ile böyle hile yapılır. (Önemli Mülakat Sorusu)
+--------------------------------------o--------------------------------------
+#define    PUBLIC
+
+PUBLIC int func(int x)
+{
+  return x * x;
+}
+
+PUBLIC yerine yapıştırılacak ifade yazılmazsa derleyici bunu görmezden gelir.
+Yani kodun syntaxını bozmaz fakat okuyan kişi bu şekilde okur ve ne kastetmek istediğimizi anlar.
+--------------------------------------o--------------------------------------
+DİKKAT : Bir makronun aynı kod içinde farklı şekilde define edilmesi tanımsız davranıştır.
+
+#define    MAX    1000
+//statement 
+    .
+    .
+//statement
+#define    MAX    5000
+//statement
+    .
+    .
+//statement
+
+Yukarıdaki kullanım şekli tanımsız davranıştır. (Undefined Behavior)
+
+DİKKAT : 
+void func(void)
+{
+  #define    MAX      100
+}
+-> Önişlemci komutlarında, makrolarda scope kavramı yoktur. Yani MAX makrosu aşağısında bulunan tüm kod boyunca 100'ü ifade eder.
+--------------------------------------o--------------------------------------
+#include "Ali.h"
+#include "Veli.h"
+
+#define  MAX    100
+
+-> Ali.h veya Veli.h dosyalarında MAX makrosu tanımlanmışsa Undefined Behavior olur.
+
+Bunun önüne undef komutu ile geçeriz.
+
+#define    MAX    1500
+        .
+        .
+(MAX'a 1500 kopyalanır.)
+        .
+        .
+#undef  MAX
+#define    MAX    500
+        .
+        .
+        .
+(MAX'a 500 kopyalanır.)
+        .
+        .
+-> Eğer arada undef kullanılmazsa tanımsız davranış olur.
+-> Undef  <isim> :  Yanına gelen ismin önceden tanımlanması halinde, undef'e gelindiğinde o ismin tanımını ortadan kaldırır. Onu tanımsız hükmünde kılar.
+
+NOT : Tanımlanmamış bir makronun undef edilmesi bir syntax hatası yada tanımsız davranış değildir.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                          Conditional Compiling (Koşullu Derleme)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Donanıma bağlı bir kod seçimi için olabilir.
+-> İşletim sistemi farkının olması durumlarına karşın yazılabilir.
+-> Dile bağlı olabilir. Yani aynı kod hem C dilinde derlenecek projeler için hemde C++ dilinde derlenecek kaynak dosyalar için kullanılıyor olabilir.
+   Yani programlama dilinin ne olduğuna bağlı olarak farklı kodların derleyici tarafından görülmesini sağlayabiliriz.
+-> Versiyona bağlı olabilir. Belirli bir versiyon için farklı kodların başka versiyon için farklı kodların derleyici tarafından görülmesini isteyebiliriz.
+-> Localization'a bağlı olabilir. Farklı farklı ülkelerde kullanılacak olabilir.
+-> Fiyata bağlı olabilir.
+
+-> Bazı kodlar hatalı olabilir.
+    x = y / z;    // z 'nin 0 olması durumunda hatalı kod tanımsız davranış.
+    Fakat if (x == 0) { Hata Mesajı } Bu tip doğrulamalar ile hatalı kodlar tespit edilir.
+    Bu şekilde yapılan doğrulamalara assertion (assert) denir.
+
+-> Bu tarz kodlara açılan standart kütüphanenin fonksiyonel bir makrosunu kullanıyoruz.
+   #include <assert.h>  içinde bulunan assert makrosu.
+   Programı 2 sürüm şeklinde yazarız;
+   Birinci sürüm debug sürümü; assert(z != 0) -> Böyle hata kontrollerinin kendi yapmış olabileceğimiz programlama hatalarının yakalanmasına yönelik kodları içeren sürüm.
+   Diğeri bu kontroller yapıldıktan sonra hata olmadığına ikna olduğumuz noktada artık bu assert kontrollerinin kod içinde yer almadığı sürüm.
+
+-> Önişlemci conditional compiling komutlarıyla debug sürümünden diğer sürüme geçerken bu kontrol kodlarını devre dışı bırakıyoruz.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                  Koşullu Derleme Komutları (Önişlemci Komutları)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#if
+
+#endif
+
+Her koşullu derleme komutu için;
+Ön işlemci programında blok kavramı olmadığı için, içine girilecek kod alanının sonunu belirleyen komut endif önişlemci komutudur.
+--------------o--------------
+#if  preprocessor expression
+
+Aşağıdaki bildirimi derleyici görecektir.
+#if  1
+void foo(int);
+#endif
+--------------o--------------
+Aşağıdaki bildirimi derleyici görmeyecektir.
+#if  0
+void foo(int);
+#endif
+--------------o--------------
+#define  NEC  100
+#if  NEC > 50
+int x = 5;
+#endif
+
+int main(void)
+{
+  x = 10;
+}
+
+-> Derleyici hata vermez. NEC > 50 den büyük olduğu için int x = 5; tanımını derleyici görür.
+-> Fakat koşul yanlış olsaydı önişlemci bu bildirimi derleyiciye vermezdi ve derleyici x tanımlanmadı diye hata mesajı döndürürdü.
+--------------o--------------
+#define  NEC  5
+#define  ERG  50
+#if  NEC == 5 && ERG == 50    --> Burada Makro ve operatörler kullanılabilir. Fakat değişken kullanılmaz.
+--------------o--------------
+#define  NEC  5
+#if  NEC == 5
+int x = 234;
+#else
+int y = 44;
+#endif
+
+-> Koşul doğru ise önişlemci x 'in tanımını derleyiciye verir.
+-> Koşul yanlış ise önişlemci y 'nin tanımını derleyiciye verir.
+--------------o--------------
+#define  NEC  15
+
+#if  NEC > 10
+#define  SIZE  100
+#else
+#define  SIZE  800
+#endif
+-> Bu kodda derleyicinin göreceği kod 100 sabitidir.
+--------------o--------------
+#define    USD    1
+#define    EUR    2
+#define    YEN    3
+#define    GBP    4
+#define    CURRENCY    GBP
+
+#if  CURRENCY == USD
+    const char* p = "usd";
+#elif  CURRENCY == EUR
+    const char* p = "euro";
+#elif  CURRENCY == YEN
+    const char* p = "yen";
+#endif
+
+-> Derleyicinin else-if merdiveni gibi ön işlemci komutlarındada #elif kullanılır.
+-> Koşullardan hangisi doğruysa ön işlemci programı o kod bloğuna girer.
+--------------o--------------
+ÖNEMLİ : Tanımlanmamış makrolar 0 kabul edilir.
+
+Örneğin;
+
+#if NEC > 10
+  int x = 5;
+#endif
+
+int main(void)
+{
+  x = 876;
+}
+-> Syntax hatası verir. x undefined. NEC makrosu tanımlanmadığı için 0 değeriymiş gibi kullanılır.
+--------------o--------------
+ÖNEMLİ : Koşullu bir makronun define edilmiş olup olmamasına bağlamak. (#ifdef)
+
+#ifdef -> Ön işlemci program ifdef komutuna geldiğinde ifdef 'in operandı olan ismin tanımlanmış bir makro olup olmadığını sınar.
+
+#ifdef  NEC  
+#endif
+--> NEC makrosu tanımlanmamış. Koşul yanlış kabul edilir.
+
+#ifdef 'in zıttı #ifndef'tir.
+
+#ifdef   NEC  -> NEC makrosu tanımlı ise koşul doğru.
+#ifndef  NEC  -> NEC makrosu tanımlı değil ise koşul doğru.
+--------------o--------------
+Ön işlemci operatörleri 3 tanedir.
+#, ##, defined.
+
+defined -> operand olarak ön işlemci ismi alır. True veya false değeri döndürür.
+
+defined  NEC  -> NEC makrosu tanımlı ise True, NEC makrosu tanımlı değil ise False değeri üretir.
+
+
+Aşağıdaki iki yazım biçimi aynı anlamdadır.
+
+#ifdef  NEC                                #if defined  NEC
+//code         <----AYNI_ANLAMDA---->      //code   
+#endif                                     #endif
+          --------------o--------------
+#ifndef  NEC                            #if !defined  NEC
+//code         <----AYNI_ANLAMDA---->    //code
+#endif                                  #endif
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                          Predefined symbolic constants (Ön tanımlı makrolar)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Predefined macro
+---------------
+-> Öyle makrolar var ki bunların bir define komutu olmamasına rağmen dilin kuralları gereği ön işlemci programı bunları yer değiştirmeye (replacement'a) tabi tutuyor.
+
+__LINE__  -> Kaçıncı satırda kullanılıyorsa o satırın numarası olan tamsayı sabiti ile değişir.
+__FILE__  -> Kaynak dosyanın ismi olan string literali ile değişir. "main.c"
+__DATE__  -> Derleme hangi tarihte yapılıyorsa o tarihe işaret eden string literali ile değişir. "12 05 1987"
+__TIME__  -> Saat değeri ile değişir. Derleme zamanının saati. "12:45:54"
+__STDC__  -> Eğer derleyici extention 'ları disable edilmiş standart C derleyicisi ise __STDC__ makrosu defined kabul ediliyor.
+
+#ifdef  __STDC__
+//code
+#endif
+-> Eğer derleyici C derleyicisi ise ifdef içine girecek. Eğer C derleyicisi değil ise ifdef içine girmeyecek.
+
+-> C++ tarafındada buna benzer şöyle bir makro var : __cplusplus
+
+#ifdef  __cplusplus
+//code
+#endif
+-> Eğer derleme işlemini yapan C derleyicisi ise buraya girmez.
+   C++ derleyicisi ise C++ 'da __cplusplus makrosu tanımlı olduğu için ifdef içine girer.
+--------------o----------------------------o----------------------------o--------------
+#error,  #line,  #pragma
+------------------------
+
+#error komutu, ön işlemci programının abortu gibi. Bu komutun yürütülmesiyle derleme işlemi sonlandırılıyor.
+Yani #error ön işlemci komutunun yürütülmesi derleme sürecini sonlandırıyor.
+
+#error komutunun parametresi bir yazıdır.
+#error  BU KOD C DILINDE DERLENMELI
+-> Bu komutun yürütülmesi demek Hata ekranına bu hata mesajının yazılmasıyla compile time 'ın sonlandırılması demektir.
+
+#ifdef  __cplusplus
+#error  Bu kod c dilinde derlenmeli
+#endif
+-> C++ derleyicisi ise yani bu koşul doğru ise ön işlemci bunun içine girecek ve ön işlemci programı error komutunu yürütecek. Ön işlemci aşamasında derleme süreci sona erecek.
+--------------o--------------
+
+#line -> Bu ön işlemci komutu, ön tanımlı __LINE__ makrosunun ve ön tanımlı __FILE__ makrosunun değerini değiştirir.
+Bazı C kodlarının varlık nedeni code generate etmektir. Yani siz bir c programı çalıştırıyorsunuz o c programı bir c kodu oluşturuyor.
+line makrosuyla (ön işlemci komutuyla) kodun kendi satırı ve dosya ismiyle, üreteceği kodun satırı ve dosya ismi arasında geçiş yapılıyor.
+--------------o--------------
+
+#pragma -> Herhangi bir derleyici pragmaya bir yada birden fazla anlam katıp ona ilave işlevler yükleyebilir. 
+
+DİKKAT : Bir derleyicinin oluşturduğu pragma bir başka derleyicide geçerli olmak zorunda değildir.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
