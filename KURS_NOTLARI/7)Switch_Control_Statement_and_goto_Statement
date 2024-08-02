@@ -1,0 +1,374 @@
+-> Bir tamsayı ifadesinin farklı değerlerine göre programın akışını farklı noktalara yönlendiren bir kontrol deyimi.
+
+switch (integer expression) {
+
+}
+-> switch deyiminin gövdesi sentaks açısından mecburiyet olmasa da lojik açıdan mecburiyet. Bileşik deyim olmak zorunda yani bloklanmak zorunda.
+
+-> case label;
+   case 1:
+   case 2:
+   case 3:
+
+-> case etiketi sadece switch parantezi içindeki ifadenin değerinin ne olduğuna bağlı olarak programın akışını hangi noktaya yönlendireceğini belirliyor.
+
+switch (integer expression) {
+
+case 1:
+      statement 1;
+      statement 2;
+case 2:
+      statement 3;
+      statement 4;
+case 3:
+      statement 4;
+case 4:
+      statement 5;
+      statement 6;
+case 5:
+      statement 7;
+}
+next_statement;
+
+-> (integer expression) ifadesinin değeri 4 ise programın akışı case 4 ün içine aldığı statement 'a ilerler ve program oradan itibaren devam eder.
+-> Yani statement 5, 6, 7 yapılır. Sadece statement 5, 6 yapılmaz çünkü case blokları içerisinde break statement bulunmamaktadır.
+-> Eğer break statement kullanırsak program akışı oraya geldiğinde switch deyiminden çıkış yapılır. Bu mantık çerçevesinde her case bloğunda statementlardan sonra break statement kullanılırsa sadece o integer 
+expression 'un gösterdiği ilgili case içerisindeki statementlar yapılır.
+
+-> switch deyiminde lojik yorumlama yoktur.
+-> switch(n) , Derleyiciyi ilgilendiren bu ifadenin tam sayı değeridir.
+
+case 1:
+      statement1;
+      statement2;
+      break;
+-> break; switch deyiminden çıkmamızı sağlar.
+------------------------------------------------------------------o---------------------------------------------------------
+
+-> case değerleri artan veya azalan sırayla olmak zorunda değildir. Hatta negatif değerlerde olabilir.
+
+switch (expr) {
+  case 1:
+  case 12:
+  case -345:
+}
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+-> Aynı değere sahip 2 ayrı case label olamaz.
+
+switch (expr) {
+  case 1:  foo(); break;
+  case 2:  bar(); break;
+  case 1:  baz(); break;
+}
+-> Yukarıdaki kullanım şekli sentaks hatasına yol açar.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+-> Karakter sabitlerinin türü int 'tir. 'A', 'B' vb.
+
+case 'A':  --> Geçerli case label.
+case "A":  --> Geçersiz case label. " " kullanılmaz.
+
+NOT : "A" string literali olur. Bunlar adres bilgisi içerir, dizi lerdir. int türünden olmadıkları için hata verirler.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+case (constant expression) :
+-> Yani yandaki ifade geçerli olur.  => case 3+4+5:  (legal)
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+-> int x = 5;
+   case x:     --> illegal x 'in olduğu yer tamsayı sabiti olmalı.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+#define  SIZE    10
+
+case SIZE:    --> Bu case ifadesi legal olurdu. Derleyici SIZE yerinde 10 sabitini görecektir.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+const int x = 5;
+
+case x:    --> illegal x. C dilinde const anahtar sözcüğü ile tanımlanmış bir değişkene sabit ifadesiyle ilk değer versek dahi sabit ifadesi oluşturmuyor.
+
+Fakat bu kullanım C++ dilinde legal.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+case x: illegal,  case "neco": illegal
+case 'A': legal,  case 4.5: illegal
+case MAX: MAX'e bağlı MAX bir makroysa legal.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+NOT : Bir case etiketinden sonra en az bir statement olmak zorunda.
+NOT : İki case arası bir deyim olmak zorunda değildir.
+
+switch (n) {
+  case 1:
+  case 2:
+  case 3:
+  case 4:
+}
+-> Yukarıdaki switch deyimi geçersizdir. case 1, 2, 3, 4 'ten sonra deyim yok.
+
+switch (n) {
+  case 1:
+  case 2:
+  case 3:
+  case 4:
+      printf("ALİ");
+}
+-> Yukarıdaki switch deyimi geçerlidir. case 'lerden sonra deyim var.
+
+switch (n) {
+  case 1:
+  case 2:
+        printf("Ali");
+  case 3:
+  case 4:
+}
+-> Yukarıdaki switch deyimi geçersizdir. case 1 ve case 2 den sonra statement var. Fakat case 3 ve case 4 ten sonra statement bulunmamakta.
+
+case 4: ; 
+-> Gösterildiği gibi null statement koysaydık. Geçerli switch deyimi olurdu.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+default : Else-if merdiveninin sonunda yer alan else ile aynı görevi görür. Switch içerisindeki değişken değeri herhangi bir case'e karşılık gelmiyorsa default'tan sonraki adım yürütülür.
+
+sytnax ->    default: printf("gecersiz giris");  break; 
+
+DİKKAT : default keyword'ü istediğiniz yere yazabilirsiniz. Sentaksı bozmaz. Fakat devamında break; statement olmazsa ve üst sıralarda yer alıyorsa kendinden sonra gelen case 'in break; statement 'ına
+kadar kodu çalıştırır.
+
+
+default: printf("geçersiz gün\n");
+case 1: printf("Pazartesi");  break;
+-> Çıktı;
+geçersiz gün
+Pazartesi
+
+Kısaca switch içerisindeki değişken değeri hiçbir case değerine eşit olmazsa default anahtar sözcüğünden sonraki statement yapılır.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+switch (n) {
+  
+  case 1:
+  case 3:
+  case 5: printf("Bam\n");  break;
+  case 7:
+  case 9: printf("Gum\n");  break;
+  case 34:
+  case 41: printf("Cat\n");  break;
+  default: printf("Pat\n");  break;
+  
+}
+-> n değeri 1, 3, 5 ise programın akışı bu case lerden sonraki ilk deyime yönlendirilecek. Yani ekrana "Bam" yazısı yazdırılacak.
+-> n değeri 7, 9 ise programın akışı bu case lerden sonraki ilk deyime yönlendirilecek. Yani ekrana "Gum" yazısı yazdırılacak.
+-> n değeri 34 ve 41 ise programın akışı bu case lerden sonraki ilk deyime yönlendirilecek. Yani ekrana "Cat" yazısı yazdırılacak.
+-> Diğer girilen farklı değerler için program akışı default: tan sonraki ilk statement'a yönlendirilecek. Yani ekrana "Pat" yazısı yazdırılacak.
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+-> Yazılması tavsiye edilmez fakat aşağıdaki kod sentaks hatası oluşturmaz.
+
+switch (n)                                           if (n == 2)   
+  case 2: printf("Neco\n");       <---Eşdeğer--->      printf("Neco\n");     
+
+------------------------------------------------------------------o---------------------------------------------------------
+
+switch deyimlerinin çoğunda case etiketlerinde bulunan sabitler. 
+        --> ya birer makro (sembolik sabit)                    
+        --> ya da birer enumaration constant olur.
+        
+İskambil kağıdı rengine göre belirli işlemler yapılsın.
+
+switch (get_card_suit()) {
+  
+  case 0:  //code... ;    break;
+  case 1:  //code... ;    break;
+    .
+    .
+    .
+}
+-> Mesela bu kod okuyan için birşey ifade etmiyor. Bunun yerine aşağıdaki gösterim okuyana kolaylık sağlar.
+
+switch (get_card_suit()) {
+
+  case CLUB:  //code... ;  break;
+  case DIAMOND: //code... ;  break;
+  case HEART: //code... ;  break;
+  case SPADE: //code... ;  break;
+  
+}
+-> Yukarıdaki örnek daha açık bir anlatıma sahiptir.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                    FALL THROUGH
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NOT : Bazı switch deyimlerinde break statement özellikle kullanılmaz. Bu duruma popüler olarak "fall through" denir.
+
+switch (expr) {
+  
+  case 1: foo();
+  case 2: bar();  break;
+  case 3:  //...
+  case 4:  //...
+
+}
+-> case 1' de foo(); 'dan sonra //fall through yazılmazsa C ve C++ 'da programcı break; koymayı unutmuş olarak kabul ederiz.
+-> Fakat //fall through yazarsak koda bilerek, isteyerek break; koymadık anlamı yükleriz. Bilinçli seçim, tercih olduğunu gösterir.
+-> Bu kullanımı alışkanlık haline getirmeniz tavsiye edilir.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> switch deyiminin gövdesinde case olmaması syntax hatası yaratmaz.
+
+switch (x) {
+      //legal kod. (No Syntax Error)
+}
+
+MÜLAKAT SORUSU : 
+* menu:  -> bir labeldir. Kod içinde label açmak sentaks hatasına yol açmaz.
+  Bu sebeple switch-case 'lerde default 'u "defualt" olarak yazıyorlar. Bu durum sentaks hatasına yol açmaz  ve defualt: bir label olarak kullanılır.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//Ekranda hiçbirşey yazmaz. Çünkü defualt bir label'dir. Dikkatli okunmalı ve default keyword'ü ile karıştırılmamalıdır.
+int main(int argc, char *argv[]) {
+	
+	int x = 99;
+	
+	switch (x) {
+		
+		case 1: printf("case 1\n"); break;
+		case 2: printf("case 2\n"); break;
+		case 3: printf("case 3\n"); break;
+		case 4: printf("case 4\n"); break;
+		defualt: printf("default case\n"); break;
+	}
+	
+	return 0;
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                              goto Statement
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Programın akışını bir noktadan koşulsuz olarak başka bir noktaya yönlendirmeye yarar. (jump)
+-> Bir fonksiyon içindeki bir noktadan fonksiyon içinde başka bir noktaya yönleniyorsa buna local jump denir.
+-> Programın akışı bir fonksiyondan başka bir fonksiyona yönlendiriyorsa buna long jump denir. (non-local)
+
+-> goto statement  --> local jump
+-> setcmp, longcmp --> long jump (standart lib. fonksiyonları)
+
+------------
+HATIRLATMA
+------------
+file scope : Global isim alanında bildirilen isimlerin bildirildikleri noktadan dosyanın sonuna kadar heryerde bilinmesi.
+
+block scope : Bir block içinde yapılan bildirimde bildirilen ismin, bildirimin yapıldığı noktadan bloğun sonunu işaretleyen } 'a kadar kullanılması.
+
+function prototype scope : Fonksiyon prototip bildiriminde parantez içinde kullanılan isimlerin scope'u sadece o parantez içinde biliniyorlar.
+
+function scope : Bir ismin bir fonksiyonun ana bloğu içinde her yerde bilinmesi. Bu kategoriye sadece label'lar dahildir.
+
+out: -> label (Bunların scope 'u function scope)
+
+
+-> İsimlendirilmiş bir label 'ı goto ile kullanırız.
+-> C dilinde label 'lardan sonra mutlaka bir deyim olmak zorunda.
+-> Label 'dan sonra bir statement olmaması sentaks hatasıdır.
+-> Derleyici label 'ı kullanıldığı fonksiyon scope'u içinde arar. 
+
+Yani aşağıdaki gibi başka fonksiyondaki label'ı kullanamayız.
+
+void foo(void)                            void bar(void)
+{                                         {
+    goto nec;                                nec:
+}                                                statement;
+                                          }
+
+Bu şekilde goto kullanılmaz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
