@@ -1,0 +1,188 @@
+Type Conversions (Tür Dönüşümleri)
+----------------------------------
+
+1) implicit (örtülü) type conversions
+-------------------------------------
+-> Bir talimat verilmeden derleyicinin standarta uygun şekilde ele alması durumu.
+   func(int); ----> int func(int);
+   örtülü int yani biz int yazmasakta derleyici standarta uygun şekilde oraya int yazılmış gibi ele almaktadır.
+
+implicit : Dönüşümün bir operatör kullanmadan derleyicinin insiyatifi ile yapılması demektir.
+
+
+
+2) explicit (açık/bilinçli) type conversions
+--------------------------------------------
+-> Dönüşümün bir operatör kullanılması ile gerçekleşmesi.
+-> type-cast operatör
+
+Neden bu kadar önemli? 
+-> Tür dönüşümü yapıldığı için ya da tür dönüşümü yapılmadığı için kodumuz yanlış olabilir.
+
+
+HATALI KODLAR (Konu ile alakalı)
+--------------------------------
+int main(void)
+{
+  int x = -1;
+  unsigned int y = 1;
+  if (y > x)
+    printf("Doğru");
+  else
+    printf("Yanlış");
+}
+--> Bu programın çıktısı ekrana "Yanlış" yazısını yazar. 
+    Sebebi y unsigned int, x ise signed int bu iki değişkenin karşılaştırması örtülü dönüşüm ile unsigned int türünde yapılır.
+    -1 değeri demek tüm bitlerin 1 olması demek bu değişken örtülü olarak unsigned int'e çevrilirse max sayı olur bu yüzden koşul yanlış kısma girer.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+implicit conversions
+--------------------
+-> usual arithmetic
+-> atama / init conversions
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                          Usual Arithmetic Conversions (implicit)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Aritmetik operatörlerinin ve karşılaştırma operatörlerinin kullanılması sonucu oluşan dönüşümler.
+-> a + b, x > y, bitsel operatörler vs. olabilir.
+
+NOT : İfadelerinde bir türleri vardır.
+
+a   +   b
+T1      T2
+    T3
+-> a ve b farklı türden ise bu işlem için standarta uygun tür seçilir.
+-> a 'nın türüde, b 'nin türüde veya ikiside olmayan farklı bir tür ile bu işlem gerçekleştirilebilir.
+
+
+ÖNEMLİ : Statik tür kavramı, Hiçbir zaman C ve C++ dillerinde programın çalışma zamanında bir değişkenin türü değişmez.
+
+ÖNEMLİ : Tür dönüşümü ister implicit olsun ister explicit olsun her zaman geçici bir nesne (temp) oluşturularak yapılır.
+
+int         double
+ a      +      b
+-> double temp = a;
+   temp + b;
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                    CONVERSİON RANK (DÖNÜŞÜM DERECESİ/SEVİYESİ)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Sıralama büyükten küçüğe yapılır.
+-> Gerçek sayı türlerinin conversion rank'i tam sayı türlerinden daha yüksektir.
+
+Gerçek Sayı Türleri
+-------------------
+long double    (Rank Yüksek)
+double
+float          (Rank Düşük)
+
+Tam Sayı Türleri
+----------------
+long long      (Rank Yüksek)    
+long
+int 
+short
+char
+_Bool          (Rank Düşük)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                    İNTEGRAL PROMOTİON
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> Tamsayı türüne yükseltme
+-> Operandların int 'ten küçük
+   short
+   char
+   _Bool
+   olması durumunda operandın önce int türüne yükseltilmesine integral promotion denir.
+
+-> int altı türdeki operand, işaretli int türde ifade edilebiliyor ise signed int 'e dönüştürülür.
+-> Eğer int altı türdeki operand int sınırlarına sığmayacak değer aralığında ise o zaman tür dönüşümü unsigned int 'e dönüştürülür.
+
+örnek;
+-> Derleyicide short 2 byte, int 2 byte olsun.
+   Unsigned short değeri int'e dönüştürülemez.
+   Unsigned int'e dönüştürülür.
+
+Örnek;
+-> Derleyicimizde short 2 byte, int 4 byte olsun.
+   Unsigned short değeri int'e dönüştürülür.
+   Çünkü unsigned short 'un sahip olacağı tüm değerleri int kapsar bu yüzden integral promotion ile unsigned short değişkeni int'e dönüştürülür.
+
+long long
+long
+int
+-> Bunlar için rankler aynı, işaretlerde aynı ise tür dönüşümü bir daha yapılmayacaktır.
+
+-> Eğer operand'ların rankleri farklı ise yüksek rank, işaretsiz ise işlem yüksek olan işaretsiz rank'te yapılır.
+-> Eğer rankler aynı ise fakat işaretler farklı ise işlem işaretsiz (unsigned) olan türde yapılır.
+
+-> rankler farklı
+   büyük olan rank işaretli
+   küçük olan rank işaretsiz
+   
+   long        unsigned int
+
+   Eğer düşük olan rank'teki değer işaretli yüsek rank'te ifade edilebiliyorsa o zaman işaretli (signed) türde yapılır.
+
+->  char      char
+     c1        c2
+   integral promotion ile bu ifadenin türü int'tir.
+
+Örnek : 
+
+int main(void) {
+  char c = 5;
+  +c;  // -> integral promotion ile bu ifadenin türü int. 
+  // + (signed operator plus)
+}
+
+
+-> ival   /   3      => Bu ifadenin türü int
+   (int)    (int)
+
+-> ival   /    3.    => Bu ifadenin türü double
+   (int)    (double)
+
+-> Yanlış Kod : 
+   float f = 3.4; --> Değişkenin türü float türden fakat ilk değer veren ifade double türden.
+
+-> Double türden float türüne dönüşüm değer kaybı olan dönüşümdür.
+
+-> Doğru Kod :
+   float f = 3.4f;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                              ASSIGNMENT/INIT  IMPLICIT CONVERSION
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-> İlk değer verme durumlarında geçerli
+   T  x = expr;
+
+-> Atama durumlarında geçerli
+   y = expr;
+
+-> Fonksiyon çağrıları durumlarında geçerli
+   void func(T  x);
+   func(expr);
+
+-> Fonksiyonların return statement'larında geçerli
+
+   T  foo(void)
+   {
+     return expr;
+   }
+
+-> Tür dön
+
+
+
+
+
+
+
+
+
+
+
+
