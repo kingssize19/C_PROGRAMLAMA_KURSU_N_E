@@ -173,7 +173,131 @@ int main(void) {
      return expr;
    }
 
--> Tür dön
+-> Tür dönüşümü her zaman atamanın, kopyalamanın yapıldığı türe doğru olur.
+
+-> int x = expr;   // expr int türüne çevrilir.
+-> y = expr;      // expr y'nin türüne çevrilir.
+
+-> void func(T   x);
+      func(expr);
+   // Argümanın gönderildiği parametre değişkeninin türüne çevrilir. Yani (T  x) => Türü ne ise expr argümanı o türe çevrilir.
+
+-> T   foo(void)
+   {
+      return expr;
+   }
+   //Fonksiyonun geri dönüş değeri türüne yani T hangi tür ise expr o türe dönüştürülür.
+
+------------------------------------------------
+
+ÖNEMLİ :  Büyük tamsayı türünden -> küçük tamsayı türüne dönüşüm veri kaybına neden olabilir.
+(NOT : Veri kaybına neden olmak zorunda değil.)
+
+Örnek;
+int ival = 3245;
+char c;
+//char -128 ila 127 arasında değer tutar
+c = ival;
+
+-> Veri kaybına sebep olur. Böyle kod yazmayınız.
+
+-------------------------------------------------o-------------------------------------------------
+
+Önemli : Büyük gerçek sayı türünden -> küçük gerçek sayı türüne yapılan dönüşümlerde veri kaybı riski bulunur.
+
+-> double foo(void);
+   int main(void)
+   {
+      float f = foo();
+   }
+
+-> Derleyici uyarı verir. Veri kaybına neden olur.
+
+-------------------------------------------------o-------------------------------------------------
+
+HATIRLATMA
+----------
+int foo();   // Bu fonksiyonda parametre türleri hakkında bilgi verilmemiş.
+
+//Yani int foo() -> int foo(void)   anlamına gelmemektedir.
+
+//int foo() -> int foo(int x, double y) gibi olabilir. Sadece soldaki gösterim parametre değişkenleri hakkında bilgi vermiyor.
+
+                                                   (DEFAULT ARGUMENTS CONVERSIONS)
+
+-> int foo();
+   int main(void)
+   {
+      foo();
+   }
+
+// İki istisna vardır. 
+// int altı argümanlar integral promotion ile int olarak yollanır.
+// float -> double'a çevrilerek yollanır.
+
+// Fonksiyon argümanı hakkında bilgi verilmediyse fonksiyona yollanan değişken kendi türü ile yollanır. Buna default argument conversions denir.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                      TYPE - CAST OPERATOR (TÜR DÖNÜŞTÜRME OPERATÖRÜ)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> 2. öncelik seviyesinde yer alır. (type)
+-> 2. öncelik seviyesinde öncelik yönü sağdan soladır.
+
+2) (type)   +   -   ++   --   &   sizeof   !
+
+(target type) -> (int)x -> x'i int türüne dönüştürürüz.
+
+-> (double)ival => R value
+   (double)ival = 45;  --> Sentaks hatası verir.
+
+-> Tür dönüştürme operatörü ile oluşturulan ifade her zaman R value espression'dur.
+
+-> int sum = 34543;
+   sum * 456  -> int türde çarpma işlemi
+   sum * 456L -> long türde çarpma işlemi
+
+
+-> double dval = 34523.73564;
+   int ival = dval;
+   // Yukarıdaki kod yazımı okuyucu tarafından yüksek ihtimal yanlış yazıldı olarak algılanır.
+   //Çünkü veri kaybı var eğer bile isteye yapıldıysa aşağıdaki şekilde bildirmeliyiz.
+
+-> double dval = 34523.73564;
+   int ival = (int)dval;
+   //Okuyucuyu bilgilendirme açısından en sağlıklı yazım şekli budur.
+
+NOT : Yukarıdaki örnekte sağlıklı kullanım şekli sadece okuyucuya kendimizi ifade etmemiz açısından yararlıdır.
+      O kullanım şekli veri kaybını önlemez, Tanımsız davranış olma durumunu engellemez.
+
+
+-> int foo(void);
+   int main(void)
+   {
+      unsigned int uval;
+      int ival = foo();
+      uval = (unsigned)ival;
+   }
+HATIRLATMA : unsigned tek başına kullanıldığında unsigned int türünü temsil eder.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
