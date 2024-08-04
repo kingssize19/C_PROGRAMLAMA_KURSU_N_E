@@ -1,0 +1,241 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                     RASTGELE SAYI ÜRETİMİ
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-> Random Number Generation
+
+1) true(ly) random number generation
+------------------------------------
+- external faaliyet
+- yavaş
+- tekrar edilebilir durumda değil
+- non-deterministic
+
+2) psuedo random number genetarion
+----------------------------------
+- deterministic
+- Resmin genelinde üretilen sayılar n kadar sonra tekrara giriyor. Gerçek sayı üretiminde bu durum böyle değil.
+
+
+* Deterministic : Aynı input -> Aynı output 'u vermek zorunda.
+* Endüstride en yaygın kullanılan rastgele sayı üretim algoritmalarından biri "Mersenne twister" algoritmasıdır.
+
+
+-> int rand(void);   //default seed value (tohum değeri) => 1
+
+-> void srand(unsigned seed);  //parametre olarak tohum değerini istiyor.
+
+NOT : srand() fonksiyonu rastgele sayı üretmez! srand() fonksiyonu rastgele sayı üreticisinin tohum (seed) değerini set eder.
+
+NOT : rand() fonksiyonu ile 'de rastgele sayı üretiriz.
+
+
+-> srand(100); //tohum değeri (100 için) set ederiz.
+   rand();  //rastgele sayı üretiyor.
+
+-> default tohum değeri srand(); fonksiyonu kullanılmaz ise 1 kabul edilir.
+
+
+DİKKAT : Daha önce gördüğünüz kod örneklerinde belirli aralıkta uniform dağılmış rastgele sayılar için mod(%) operatörünün kullanılmış olduğunu görebilirsiniz.
+Ama bu matematiksel olarak iyi bir yöntem değildir.
+
+-> rand() % 6       ( 0 - 5 arasında sayılar üretir )
+-> rand() & 6 + 1   ( 1 - 6 arasında sayılar üretir )
+
+-> Fonksiyonel makrolar ile kullanım örneği
+
+#define   RND(LOW, HIGH)    (rand % ((HIGH) - (LOW) + 1) + (LOW))
+
+for (int i = 0; i < 100; ++i) {
+  printf("%d ", RND(1987, 2023));
+  (void)getchar();
+  system("cls");
+}
+
+1987 - 2023 arasında rastgele sayı üretir.
+
+
+
+-> Tohum değeri için zamanla değişen bir değer kullanmak 
+
+  srand(time(NULL));
+  // time 'ın geri dönüş değerini srand 'a argüman olarak vermiş oluruz. time belirli orjinden geçen zamanın saniyesini verir ve bu süre sürekli değişir.
+     Bu yüzden sayı üretirken sürekli farklı tohum değeri kullandığımız için farklı sayı zincirleri oluştururuz.
+
+NOT : time 'ın geri dönüş değeri türü long long
+      srand ise unsigned int argüman istediği için veri kaybı olabilir.
+Bu yüzden aşağıdaki formatı kullanarak bu işlemi isteyerek yaptığımızı bildiririz.
+
+-> srand((unsigned)time(NULL));
+
+NOT : srand((unsigned)time(NULL));  } RANDOMIZE
+
+Bu çağrıyı fonksiyon içerisinde yaparsak o fonksiyon her çağrıldığında RANDOMIZE çağrısıda yapılacak. Dolayısıyla fonksiyon aynı saniye içinde birden fazla
+kez çağrılırsa Aynı Tohum Değeri kullanılmış olacak ve aynı rastgele değerler üretilecek.
+
+-------------
+BARBUT OYUNU
+-------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+//BARBUT OYUNU
+
+void randomize(void)
+{
+	srand((unsigned)time(NULL));
+}
+
+int zar1(void)
+{
+	return rand() % 6 + 1;	
+}
+
+int zar2(void)
+{
+	return rand() % 6 + 1;
+}
+
+int game_1(int z1, int z2)
+{
+	int total = z1 + z2;
+	printf("total = %d\n", total);
+	if ( total == 7 || total == 11)
+		return 1;
+	else if (total == 2 || total == 3 || total == 12)
+		return 0;
+	else
+		return game_2(z1, z2);
+}
+
+int game_2(int z1, int z2)
+{
+	int total = z1 + z2;
+
+	while (1) {
+		int new_total = zar1() + zar2();
+		printf("new_total = %d\n", new_total);
+		if (new_total == total)
+			return 1;
+		else if (new_total == 7)
+			return 0;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	
+	int zar_1, zar_2;
+	
+	randomize();
+	
+	zar_1 = zar1();	
+	zar_2 = zar2();
+	
+	int state = game_1(zar_1, zar_2);
+	
+	
+	
+	if (state == 0)
+		printf("Oyuncu kaybetti :(((");
+	else
+		printf("Oyuncu kazandi :))))");
+	
+	
+	return 0;
+}
+
+
+-> <stdlib.h> 'ta bulunan fonksiyonlar ile rastgele sayı üretilir.
+
+-> int rand(void);  --> sayı üretim aralığı 0 - RAND_MAX (Derleyiciden derleyiciye göre değişir.)
+
+-> void srand(unsigned int);
+   Tohum değerini set eder.
+   Bu fonksiyon kullanılmazsa tohum değeri default 1 'dir. 
+
+-> C de bir fonksiyona fonksiyon gönderirsek gönderdiğimiz fonksiyona "call back" denir. Pointerlar ile alakalı bir olay ilerleyen notlarda bahsedilecek.
+
+-> Pythonda doğrudan bir fonlsiyonu fonksiyona gönderebiliriz. Fakat bunun C ve C++ dillerindeki karşılığına "function pointer" denir.
+
+-> Bir fonksiyonu bir fonksiyona göndermek için fonksiyona fonksiyonun adresini göndeririz.
+
+int get_random_char(int (*fp)(int))
+{
+  int ch;
+  while(!fp(ch = rand() % 128))
+    ;  //null statement
+
+  return ch;
+}
+
+int main(void)
+{
+  RANDOMIZE();
+  for (int i = 0; i < 400; ++i) {
+      putchar(get_random_char(isxdigit));
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
