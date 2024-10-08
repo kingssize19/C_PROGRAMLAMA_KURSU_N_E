@@ -92,30 +92,70 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 #### IDE (Integrated Development Environment)
 * Geliştirme Platformları (Tümleşik Geliştirme Ortamı)
 
-#### ill formed   : Dilin kurallarını çiğneyen bir durumu bildirir. Geçerli olmayan bir program. zıttı -> well formed
-#### syntax error : sentaks/söz dizimi hatası
-#### invalid code : Geçersiz kod. Kodun dilin kurallarını çiğnemesi demek. zıttı -> valid code
-#### illegal code : Kodun dilin kurallarına aykırı olduğunu anlatır. zıttı -> legal code
+* **ill formed   :** Dilin kurallarını çiğneyen bir durumu bildirir. Geçerli olmayan bir program. zıttı -> well formed
+* **syntax error :** sentaks/söz dizimi hatası
+* **invalid code :** Geçersiz kod. Kodun dilin kurallarını çiğnemesi demek. zıttı -> valid code
+* **illegal code :** Kodun dilin kurallarına aykırı olduğunu anlatır. zıttı -> legal code
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### observable behavior : Gözlenebilir davranış. (optimizer modüle)
+* **observable behavior : Gözlenebilir davranış. (optimizer modüle)**
 
-#### Derleyici, programın gözlemlenebilir davranışı değişmediği sürece kodu bizim yazdığımızdan farklı şekilde düzenleyebilir.
+* **Derleyici, programın gözlemlenebilir davranışı değişmediği sürece kodu bizim yazdığımızdan farklı şekilde düzenleyebilir.**
 
-#### Derleyicinin en önemli modülü, kodun etkin bir şekilde makine kodlarına dönüştürülmesini sağlayan modül olan optimizer modülüdür.
+* **Derleyicinin en önemli modülü, kodun etkin bir şekilde makine kodlarına dönüştürülmesini sağlayan modül olan optimizer modülüdür.**
 
-#### Derleyicinin daha etkin makine kodu üretmek için yaptığı düzenlemelere "compiler optimization" denir.
+* **Derleyicinin daha etkin makine kodu üretmek için yaptığı düzenlemelere "compiler optimization" denir.**
 
-#### Yazdığımız kod farklı derleyicilerle derlendiğinde derleyicilerin ürettikleri makine kodu farklı hızlarda çalışabilir.
+* **Yazdığımız kod farklı derleyicilerle derlendiğinde derleyicilerin ürettikleri makine kodu farklı hızlarda çalışabilir.**
 
-#### Derleyici işlemci mimarisini göz önünde bulundurarak optimizasyon yapar. 
+* **Derleyici işlemci mimarisini göz önünde bulundurarak optimizasyon yapar.**
 
-#### simd -> İşlemcinin 1 cycle'ında birden fazla işlemin yapılması.
+* **simd : İşlemcinin 1 cycle'ında birden fazla işlemin yapılması.**
 
-#### Derleyiciyi 
+* **Derleyiciyi derleyici yapan optimizer modülüdür.**
 
+* **Derleyici kodumuzu bizim yazdığımız biçimde derlerse kodumuz yavaş çalışır.**
 
+* **Debugger : Sağladığı birtakım olanaklarla, kontrollü bir ortamda programı çalıştırarak koddaki hataları bulmamıza yardımcı olur.**
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Undefined Behavior (Tanımsız Davranış)
+
+**Örnek :**
+```c
+a = b / c;
+if (c == 0) {
+//code
+}
+```
+* c = 0 olamayacağı için compiler burayı görmezden gelebilir. Çünkü tamsayı 0'a bölünemez.
+* Bu yüzden **undefined behavior** durumlarında runtime'da her zaman sağlıklı çalışma işlemi gerçekleşmeyebilir. Bu yüzden bu durumlardan kaçınmalıyız.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **Preprocessor (Önişlemci)**
+* **Preprocessor Directive (Önişlemci Talimatı)**
+  * **#include <string.h>**
+  * **#define SIZE 100**
+ 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **token (atom)**
+* **tokenizing (atomlarına ayırma)**
+
+* **Bir C derleyicisi Lexical Analysis sürecinde önce tokenizing yapar. Kaynak kodu kendisi için anlamlı en küçük birimlerine ayırır.**
+* **token :** Kaynak kodun derleyici tarafından anlam taşıyan en küçük birimi.
+
+| TOKEN |
+|--|
+  * Keyword (Anahtar sözcük)
+  * Identifier (İsim)
+  * Constant (Sabit)
+  * Operator (İşleç)
+  * String Literal (Yazı sabiti)
+  * Delimiter (Ayıraç)  olabilir.
 
 
 
