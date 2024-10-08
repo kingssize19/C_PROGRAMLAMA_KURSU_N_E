@@ -40,6 +40,11 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 |--|--|
 | Lexical Analysis -> Syntax Analysis | Code Generation and Optimisation |
 
+* **Lexical Analysis :** Kaynak kodu en küçük birimlerine ayırır.
+* **Syntax Analysis :** Dilin kurallarına uygunluğun kontrol edildiği süreç.
+
+| Source File | -> Compiler -> | Object Code/Object File |
+
 
 
 
