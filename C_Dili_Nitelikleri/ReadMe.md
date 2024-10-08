@@ -70,6 +70,8 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 **(Compile time)**
 **Link time**
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 #### IDE (Integrated Development Environment)
 * Geliştirme Platformları (Tümleşik Geliştirme Ortamı)
 
@@ -86,10 +88,15 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 #### Derleyicinin en önemli modülü, kodun etkin bir şekilde makine kodlarına dönüştürülmesini sağlayan modül olan optimizer modülüdür.
 
-x = 5;                                                                         a = b;
-y = 3;        -------------------> Compiler Optimization ------------------->  y = 3;
-a = b;                                                                         x = 5;
+#### Derleyicinin daha etkin makine kodu üretmek için yaptığı düzenlemelere "compiler optimization" denir.
 
+#### Yazdığımız kod farklı derleyicilerle derlendiğinde derleyicilerin ürettikleri makine kodu farklı hızlarda çalışabilir.
+
+#### Derleyici işlemci mimarisini göz önünde bulundurarak optimizasyon yapar. 
+
+#### simd -> İşlemcinin 1 cycle'ında birden fazla işlemin yapılması.
+
+#### Derleyiciyi 
 
 
 
