@@ -64,11 +64,31 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 * link time (Object codeların exe koda dönüştürüldüğü süreç)
 * run time (Executable kodu işlemcinin fiilen çalıştırdığı süreç)
 
-**Source File (Kaynak Dosya)** --> **Preprocessor (Önişlemci)** --> **Translation Unit (Çeviri Birimi)** --> **Compiler** --> **Object Code** --> **Linker (Bağlayıcı)** --> **executable code**
+**Source File** --> **Preprocessor** --> **Translation Unit** --> **Compiler** --> **Object Code** --> **Linker** --> **executable code**
 
 **(Preprocessing time)**
 **(Compile time)**
-**Linker time**
+**Link time**
+
+#### IDE (Integrated Development Environment)
+* Geliştirme Platformları (Tümleşik Geliştirme Ortamı)
+
+#### ill formed   : Dilin kurallarını çiğneyen bir durumu bildirir. Geçerli olmayan bir program. zıttı -> well formed
+#### syntax error : sentaks/söz dizimi hatası
+#### invalid code : Geçersiz kod. Kodun dilin kurallarını çiğnemesi demek. zıttı -> valid code
+#### illegal code : Kodun dilin kurallarına aykırı olduğunu anlatır. zıttı -> legal code
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### observable behavior : Gözlenebilir davranış. (optimizer modüle)
+
+#### Derleyici, programın gözlemlenebilir davranışı değişmediği sürece kodu bizim yazdığımızdan farklı şekilde düzenleyebilir.
+
+#### Derleyicinin en önemli modülü, kodun etkin bir şekilde makine kodlarına dönüştürülmesini sağlayan modül olan optimizer modülüdür.
+
+x = 5;                                                                         a = b;
+y = 3;        -------------------> Compiler Optimization ------------------->  y = 3;
+a = b;                                                                         x = 5;
 
 
 
