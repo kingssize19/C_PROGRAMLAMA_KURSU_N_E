@@ -54,7 +54,7 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 * deneme2.c --> Compiler --> deneme2.obj ----|
 *                                             ----> Linker ----> .exe file 
-* deneme.c  --> Compiler --> deneme.obj  ----|
+* deneme.c  --> Compiler --> deneme.obj    ----|
 
 
 | Source File -> | Compiler -> | Object Code -> | Linker -> | Executable |
