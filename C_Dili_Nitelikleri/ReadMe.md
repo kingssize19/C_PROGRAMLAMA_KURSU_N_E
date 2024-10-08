@@ -53,7 +53,7 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 * Linker (Bağlayıcı)
 
 * deneme2.c --> Compiler --> deneme2.obj }
-*                                        } ----> Linker ----> .exe file 
+*                                            } ----> Linker ----> .exe file 
 * deneme.c  --> Compiler --> deneme.obj  }  
 
 
