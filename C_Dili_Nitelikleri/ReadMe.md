@@ -66,21 +66,15 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 **Source File (Kaynak Dosya)**
             |
-            |
  **Preprocessor (Önişlemci)**                                                      **(Preprocessing time)** 
-            |
             |
 **Translation Unit (Çeviri Birimi)**
             |
-            |
-  **Compiler (Derleyici)**  ----> **Assembly Code** ----> **Assembler**|               **(Compile time)**
-            |                                                          |
-            |                                                          |
-     **Object Code**    <----------------------------------------------|
-            |
+  **Compiler (Derleyici)**  ----> **Assembly Code** ----> **Assembler** |               **(Compile time)**
+            |                                                           |
+     **Object Code**    <---------------------------------------------- |
             |
    **Linker (Bağlayıcı)**                                                               **Linker time**
-            |
             |
     **executable code**
 
