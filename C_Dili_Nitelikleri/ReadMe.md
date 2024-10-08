@@ -44,6 +44,7 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 * **Syntax Analysis :** Dilin kurallarına uygunluğun kontrol edildiği süreç.
 
 | Source File | -> Compiler -> | Object Code/Object File |
+|--|--|--|
 
 
 
