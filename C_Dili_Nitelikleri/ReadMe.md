@@ -31,7 +31,10 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 ### Daha yüksek seviyeli bir dilden daha düşük seviyeli bir dile çeviri yapan programlara "compiler" denir.
 
-* Source Code (Human Readable Program) -----> Compiler -----> Object Code (Executable Machine Code)
+
+| Source Code ->|-> Compiler ->|-> Object Code |
+|--|--|
+| Human Readable Program | Compile |Executable Machine Code |
 
 | Front End | Back End |
 |--|--|
