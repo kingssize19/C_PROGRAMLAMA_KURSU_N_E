@@ -64,26 +64,10 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 * link time (Object codeların exe koda dönüştürüldüğü süreç)
 * run time (Executable kodu işlemcinin fiilen çalıştırdığı süreç)
 
-**Source File (Kaynak Dosya)**
-            ]
- **Preprocessor (Önişlemci)**                                                      **(Preprocessing time)** 
-            ]
-**Translation Unit (Çeviri Birimi)**
-            ]
-  **Compiler (Derleyici)**  ----> **Assembly Code** ----> **Assembler** ]               **(Compile time)**
-            ]                                                           ]
-     **Object Code**    <---------------------------------------------- ]
-            ]
-   **Linker (Bağlayıcı)**                                                               **Linker time**
-            ]
-    **executable code**
-
-
-
-
-
-
-
+**Source File (Kaynak Dosya)** --> **Preprocessor (Önişlemci)** --> **Translation Unit (Çeviri Birimi)** --> **Compiler** --> **Object Code** --> **Linker (Bağlayıcı)** --> **executable code**
+                                    [**(Preprocessing time)**]
+ **(Compile time)**
+ **Linker time**
 
 
 
