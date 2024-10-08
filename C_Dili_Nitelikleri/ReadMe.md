@@ -47,11 +47,42 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 |--|--|--|
 
 
+### Object kodun çalıştırılabilir bir kod haline getirilmesi için bir süreç daha gerçekleştirilmeli. Bu sürece Linking (Bağlama) denir.
+
+* Link (Bağlama)
+* Linker (Bağlayıcı)
+
+* deneme2.c --> Compiler --> deneme2.obj -----|
+                                              |----> Linker ----> .exe file 
+* deneme.c  --> Compiler --> deneme.obj ------| 
 
 
+| Source File -> | Compiler -> | Object Code -> | Linker -> | Executable |
+|--|--|--|--|--|
 
+* compile time (Derleme Zamanı)
+* link time (Object codeların exe koda dönüştürüldüğü süreç)
+* run time (Executable kodu işlemcinin fiilen çalıştırdığı süreç)
 
-
+**Source File (Kaynak Dosya)**
+            |
+            |
+ **Preprocessor (Önişlemci)**                                                      **(Preprocessing time)** 
+            |
+            |
+**Translation Unit (Çeviri Birimi)**
+            |
+            |
+  **Compiler (Derleyici)**  ----> **Assembly Code** ----> **Assembler**|               **(Compile time)**
+            |                                                          |
+            |                                                          |
+     **Object Code**    <----------------------------------------------|
+            |
+            |
+   **Linker (Bağlayıcı)**                                                               **Linker time**
+            |
+            |
+    **executable code**
 
 
 
