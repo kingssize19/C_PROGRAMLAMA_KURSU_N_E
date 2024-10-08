@@ -169,6 +169,10 @@ if (c == 0) {
 |--|--|
 | Büyük/küçük harfe duyarlı. | Büyük/küçük harfe duyarlı değil. |
 
+| x = 345; |
+|--|--|
+| x = identifier | 345 = constant |
+
 
 
 
