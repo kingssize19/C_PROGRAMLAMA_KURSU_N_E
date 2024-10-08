@@ -66,9 +66,26 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 **Source File** --> **Preprocessor** --> **Translation Unit** --> **Compiler** --> **Object Code** --> **Linker** --> **executable code**
 
-**(Preprocessing time)**
-**(Compile time)**
+**Preprocessing time**
+* Bu aşama, kaynak dosyadaki #include, #define, #ifdef gibi önişlemci komutlarının işlendiği aşamadır.
+  * Dosyadaki makrolar (#define) genişletilir.
+  * Diğer dosyalar (#include) eklenir.
+  * Koşullu derlemeler (#ifdef, #ifndef) değerlendirilir.
+  * Sonuç olarak, derleyiciye iletilmeden önce tüm kod işlenmiş bir dosya oluşturulur.
+* Bu aşama tamamlandığında, dosya "preprocessed source code" haline gelir.
+
+**Compile time**
+* Ön işleme aşamasından çıkan kaynak kod, makine diline çevrilir veya assembly diline dönüştürülür.
+  * C kaynak kodu sentezlenir, yani yazılan C kodunun sözdizimi ve dil kuralları doğrulanır.
+  * Hatalar ve uyarılar bu aşamada tespit edilir.
+  * Derleyici, C kodunu nesne koduna (object file) veya assembly koduna çevirir.
+  * Bu aşamanın sonunda her C dosyası için birer nesne dosyası (.o ya da .obj) üretilir.
+  
 **Link time**
+* Derleme aşamasından çıkan nesne dosyaları, programın çalışabilmesi için gerekli kütüphaneler ve diğer modüllerle birleştirilir.
+  * Tüm nesne dosyaları bir araya getirilir.
+  * Harici kütüphanelerle ve sistem işlevleriyle bağlantılar yapılır (örn. printf, malloc gibi işlevlerin adreslerinin bulunup bağlanması).
+  * Bu aşamanın sonunda çalıştırılabilir dosya (örneğin, .exe ya da .out) oluşturulur.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
