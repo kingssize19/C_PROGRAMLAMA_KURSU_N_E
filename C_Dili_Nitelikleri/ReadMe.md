@@ -33,7 +33,7 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 
 
 | Source Code -> | -> Compiler -> | -> Object Code |
-|--|--|
+|--|--|--|
 | Human Readable Program | Compile |Executable Machine Code |
 
 | Front End | Back End |
