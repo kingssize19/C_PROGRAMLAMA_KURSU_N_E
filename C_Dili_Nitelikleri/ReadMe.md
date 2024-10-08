@@ -157,5 +157,42 @@ if (c == 0) {
   * String Literal (Yazı sabiti)
   * Delimiter (Ayıraç)  olabilir.
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **latin-roman karakter seti : A....Z, a.....z**
+* **0 - 9 : Arabic Numerals**
+* **_ underscore**
+* **İsimler rakam karakteri ile başlamaz.**
+* **Anahtar sözcükler isim olarak seçilmez.**
+
+| CASE-SENSITIVE | CASE-INSENSITIVE |
+|--|--|
+| Büyük/küçük harfe duyarlı. | Büyük/küçük harfe duyarlı değil. |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
