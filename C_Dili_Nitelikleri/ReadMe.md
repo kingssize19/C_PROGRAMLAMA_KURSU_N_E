@@ -189,7 +189,7 @@ x = 345;
 
 | Logical AND | Logical OR | Logical NOT | increment (plus plus) | decrement (minus minus) | String Literal |
 |--|--|--|--|--|--|
-| && | || | ! | ++ | -- | "MUSTAFA" |
+| && | \|\| | ! | ++ | -- | "MUSTAFA" |
 
 
 
