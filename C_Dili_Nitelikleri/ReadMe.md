@@ -52,9 +52,9 @@ ALGOL -> CPL -> BCPL -> B -> C    [Typeless]
 * Link (Bağlama)
 * Linker (Bağlayıcı)
 
-* deneme2.c --> Compiler --> deneme2.obj -----|
-                                              |----> Linker ----> .exe file 
-* deneme.c  --> Compiler --> deneme.obj ------| 
+* deneme2.c --> Compiler --> deneme2.obj -----
+                                             * ----> Linker ----> .exe file 
+* deneme.c  --> Compiler --> deneme.obj ------ 
 
 
 | Source File -> | Compiler -> | Object Code -> | Linker -> | Executable |
