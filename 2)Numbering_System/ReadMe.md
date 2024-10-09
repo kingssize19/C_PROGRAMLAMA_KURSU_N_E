@@ -24,6 +24,43 @@
 
 ## Unsigned Binary (0, ................... , pozitif number)
 
-* 0101
-* \|   \| Sayının 0. biti
-* \| Sayının 3. biti
+* **0101**
+  * En sağdaki bit (1) sayının 0. biti
+  * En soldaki bit (0) sayının 3. biti
+
+* **1 Byte'ın tutabileceği en küçük değer :** 0000 0000 = 0
+* **1 Byte'ın tutabileceği en büyük değer :** 1111 1111 = 255
+
+* **2 Byte :**
+  * min = 0
+  * max = 65.535
+
+* **4 Byte :**
+  * min = 0
+  * max = 4.294.967.295
+
+
+#### En soldaki bit : most significant bit/digit (LSB). En anlamlı bit (yüksek anlamlı).
+#### <--- MSB
+#### 1100 1001
+####      ---> LSB
+#### En sağdaki bit : LSB. En düşük anlamlı bit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
