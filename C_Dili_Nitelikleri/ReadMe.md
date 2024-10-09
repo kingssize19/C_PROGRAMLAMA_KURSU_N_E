@@ -223,7 +223,7 @@ int main(void)
 * **Global namespace'de sadece declaration statement olur. Executable statement yer almaz.
 
 * **expression (ifade) :** Değişkenlerin, sabitlerin, operatörlerin bir arada bulundukları yapıya expression denir.
-  * x*x + y*y > 10
+  * x\*x + y\*y > 10
   * x
   * 10
   * x + 10
@@ -293,7 +293,7 @@ int main(void)
 * storage (nesnenin bellekteki yeri)
 * address
 
-| DATA TYPE | |
+| DATA | TYPE |
 |--|--|
 | Basic Types | User-Defined Types |
 | * Fundemental types | * Structures |
