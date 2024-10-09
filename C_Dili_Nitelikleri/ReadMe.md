@@ -201,13 +201,104 @@ x = 345;
 * **Statement :** Belirli bir işi gerçekleştirmek için yazdığımız c cümlelerine "statement" denir.
 *  **: -> colon**
 *  **; -> semi-colon, terminator**
+* **declaration (Bildirim):** Bir ismin hangi anlama geldiğini, ne olduğunu anlatan cümleler.
+* **name lookup (isim arama):** Kod içinde kullanılan bir ismin hangi varlığa ilişkin olduğunun derleyici anlaşılması süreci.
 
+```c
+int main(void)
+{
+  int x;   // declaration statement : x'in ne olduğunu bildiren satır.
+  x = 5;   // Name lookup : Derleyici x'in ne olduğunu öğrenmek için onu bildiren satırı arar.
+}
+```
 
+* **name lookup hatası :**
+  * Önce isim aranacak
+  * Aranan isim bulunamaz ise sentaks hatası
+
+* **context control hatası :**
+  * Aranan isim bulunursa
+  * Bulunan ismin kullanım şekli hatalı ise
+
+* **Global namespace'de sadece declaration statement olur. Executable statement yer almaz.
+
+* **expression (ifade) :** Değişkenlerin, sabitlerin, operatörlerin bir arada bulundukları yapıya expression denir.
+  * x*x + y*y > 10
+  * x
+  * 10
+  * x + 10
+  * Yukarıdakilerin hepsi **expression**'dur.
+
+* **expression'ların data type, value, value category gibi özellikleri vardır.**
+
+* **L value expression :** Bazı ifadeler bir nesneye karşılık geliyor, bir değişkene karşılık geliyor, erişebileceğimiz bellekte yeri ayrılmış bir varlığa karşılık geliyorsa buna **L value expression** denir.
+
+* **R value expression :** Bazı ifadeler bellekte doğrudan erişebileceğimiz bellek alanına, değişkene karşılık gelmiyor bir hesaplamayı ifade ediyor ise **R value expression** denir.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### Statement Niteleyicileri;
+* **expression statement (ifade deyimi)**
+  * Eğer ifade (expression) geçerli ise sonuna ; koyarak geçerli bir deyim elde ederiz. Bu şekilde oluşturulan deyimlere ifade deyimi (expression statement) denir.
+
+* **null statement**
+  * Tek başına noktali virgül'ün (;) oluşturduğu statement'a null statement denir.
+
+* **compound statement**
+  * ```c
+    {
+       x++;
+       --y;
+       a = x + y;
+    ```
+  * Yukarıdaki örnek compound statement'a örnektir. 
+
+* **control statement**
+  * Önceden belirlenmiş bir sentaksı var.
+  * En az bir anahtar sözcük var.
+  * ```c
+    if statement
+    while statement
+    do while statement
+    for statement
+    switch statement
+    goto statement
+    return statement
+    break statement
+    continue statement
+    ```
+
+* **block**
+  * { } ikisinin oluşturduğu birime block denir.
+
+* curly brace
+  * { left brace (opening)
+  * } right brace (closing)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* **object-nesne :** Değişken anlamını taşır.
+
+* **Data Type :**
+  1. Değişkenleri niteleyen terim
+  2. Sabitleri niteleyen terim
+  3. İfadeleri niteleyen terim
  
+* **Programın çalışma zamanında o değişken (o nesne) bellekte kaç byte yer kaplayacak bunu belirleyen o değişkenin türüdür.**
+* **storage :** Bir nesnenin bellekte yerinden bahsederken, o nesneye ait bellek bloğundan bahsederken kullandığımız terim **storage** terimidir.
+ 
+* object/variable
+* data type
+* value
+* storage (nesnenin bellekteki yeri)
+* address
 
-
-
-
+| DATA TYPE | |
+|--|--|
+| Basic Types | User-Defined Types |
+| * Fundemental types | * Structures |
+| * Built-in types | * unions |
+| * Default types | * enumerations |
 
 
 
