@@ -41,9 +41,9 @@
 
 
 ### En soldaki bit : most significant bit/digit (LSB). En anlamlı bit (yüksek anlamlı).
-<-- MSB
-1100    1001
-        ---> LSB
+* <-- MSB
+* 1100    1001
+*         ---> LSB
 #### En sağdaki bit : LSB. En düşük anlamlı bit.
 
 
