@@ -300,7 +300,27 @@ int main(void)
 | * Built-in types | * unions |
 | * Default types | * enumerations |
 
+* **Basic Types :** Öyle türler ki bu türlerden değişkenlerin değerleri tam sayı ve gerçek sayı değerleri hazır olarak bulunur.
+  * float, int, double vs.
 
+* **constant expression (sabit ifadesi)**
+```c
+int main (void)
+{
+  int arr[10 + 20];       
+}
+```
+* Yukarıdaki kod hata vermez.
+
+```c
+int main (void)
+{
+  int x = 10;
+  int y = 20;
+  int arr[x + y];
+}
+```
+* Yukarıdaki kod hata verir. **Expected constant expression.**
 
 
 
