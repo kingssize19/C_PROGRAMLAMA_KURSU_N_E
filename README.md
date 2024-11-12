@@ -1,1 +1,5 @@
-C Programlama Kursu (NECATİ ERGİN) ödev soruları ve çözümleri.
+## C Programlama Kursu (NECATİ ERGİN) ders notları.
+
+
+
+
