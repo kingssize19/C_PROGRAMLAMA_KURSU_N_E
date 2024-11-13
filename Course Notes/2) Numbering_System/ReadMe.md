@@ -100,14 +100,77 @@
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-* **1 byte'lık yazılabilecek en büyük değer :** 0111 1111 : 127
-* **1 byte'lık yazılabilecek en küçük değer :** 1000 0001 : -128
+* **1 byte'lık yazılabilecek en büyük değer :** 0111 1111 = 127
+* **1 byte'lık yazılabilecek en küçük değer :** 1000 0001 = -128
 
 | min | max | byte |
 |--|--|--|
 | -128 | 127 | 1 byte |
 | -32'768 | 32'767 | 2 byte |
 | -2'147'483'648 | 2'147'483'647 | 4 byte | 
+
+* İşaretli olarak bir sayının tüm bitleri 1 ise o sayı -1 'dir.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Hexadecimal System
+
+* 16 tabanlı sayı sistemi.
+* 0 1 2 3 4 5 6 7 8 9 A B C D E F
+
+## Hex convert Binary
+
+* 1ACF
+* 1 : 0001    A : 1010    C : 1100    F : 1111
+* 1ACF = 0001 1010 1100 1111
+
+## Decimal convert Hex
+
+* Sayıyı 16 ya böl sürekli kalanı en sağdaki bitten itibaren yaz.
+
+* 2 byte'lık alanda yazılabilecek en büyük işaretli tam sayıyı hex olarak yazalım.
+  * 0111 1111 1111 1111 = 7FFF
+
+* 2 byte'lık alanda yazılabilecek en küçük işaretli tam sayıyı hex olarak yazalım.
+  * 1000 0000 0000 0000 = 8000
+
+* 2 byte'lık alanda yazılan -1 değerini hex olarak yazalım.
+  * 1111 1111 1111 1111 = FFFF
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Gerçek bir sayı 4 byte, 8 byte'lık alanlarda kodlanmış şekilde tutulabilir.
+  * 4 byte (single precision)
+  * 8 byte (double precision)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
