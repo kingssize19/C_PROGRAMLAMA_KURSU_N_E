@@ -9,7 +9,7 @@ struct Data {      // Data : Struct Tag
 * C dilinde yapıların en az bir elemana sahip olması gerekmektedir.
 * Yukarıdaki yapı struct'ların yapısına, oluşturulmasına bir örnektir.
 * Fakat elemana sahip olmadığı için sentaks hatası.
-* C++ dilinde soldaki bildirim geçerlidir.
+* C++ dilinde yukarıdaki bildirim geçerlidir.
 
 -------------------------------------------------------------------------------------------------------------------
 
