@@ -88,21 +88,166 @@ int main(int argc, char *argv[]) {
 
 -------------------------------------------------------------------------------------------------------------------
 
+* Yapı elemanı her türden olabilir.
+
+```c
+struct Nec {
+	int x, y;
+	int* ptr;
+	int (*fp)(int);
+	int a[5];
+	char str[10];
+};
+```
+
+* Bir yapının bir yada birden fazla elemanlarının yine bir yapı türünden olması en sık karşılaştığımız kullanış biçimidir.
+
+```c
+struct Point {
+     double x, y;
+};
+
+struct Rectangle {
+     struct Point p1, p2;
+};
+```
+
+-------------------------------------------------------------------------------------------------------------------
+
+### Dikkat
+
+* Yapı elemanları fonksiyon olamaz. Fakat C++ dilinde yapıların elemanları fonksiyon olabilir. Böyle fonksiyonlara C++ dilinde **"member function"** denir.
+
+```c
+struct Nec {
+     int foo(int, int);		// C dili için illegal. Fakat C++ dilinde legal. member function.
+};
+```
+-------------------------------------------------------------------------------------------------------------------
+
+* Yapı elemanlarını salt okuma amaçlı kullanmak için const anahtar sözcüğü ile niteleriz.
+
+```c
+struct Data {
+     int x, y, z;
+};
+
+int main (void)
+{
+     const struct Data data = {3, 6, 7};	// Salt okuma amaçlı.
+}
+```
+
+-------------------------------------------------------------------------------------------------------------------
+
+```c
+struct Data {
+	int x, y, z;
+};
+
+struct Data g;			// Global struct Data türünden ismi g olan değişken. Derleyici bu değişken için yer ayıracak.
+extern struct Data g;		/* Derleyici bu yapı türünden nesne için yer ayırmayacak. 
+				   Bunun başka bir modülde tanımlanan, o kaynak dosyada yeri derleyici tarafından ayrılmış olan bir değişken olduğunu düşünür. */
+```
+
+-------------------------------------------------------------------------------------------------------------------
+
+* Yapı türleri büyük bir çoğunlukla başlık dosyalarında bildirilir.  (data.h)
+
+```c
+struct A {
+	int x, y, z;
+};
+
+int main(void) 
+{
+	struct A ax;
+	printf("%zu\n", sizeof(struct A));	// 12
+	printf("%zu\n", sizeof ax);		// 12
+}
+```
+
+* sizeof (struct A) için :
+  * Geçerli bir ifade
+  * Bir sabit ifadesi
+  * Bu ifadenin türü size_t türü
+  * Bu ifadenin değeri nedir?
+    * Bu ifadenin değeri struct A türünden bir nesne için bellekte ne kadar yere ihtiyaç var? sorusunun cevabıdır.
+
+-------------------------------------------------------------------------------------------------------------------
+
+```c
+struct Nec {
+	int x, y, z;
+};
+
+int main(void) 
+{
+	struct Nec nec;
+	
+}
+```
+* nec için :
+  * Bu bir ifadedir. İfadenin türü "Struct Nec"
+  * nec ifadesi l value expression.
+  * l value expression olduğu için &nec; ifadesi sentaks hatası oluşturmaz.
+  * nec.x; bir ifade, türü int, l value.
+
+-------------------------------------------------------------------------------------------------------------------
+
+## member selection operators (eleman seçme operatörü) (En yüksek öcnelik seviyesi)
+
+* **. dot operator :** Yapı nesnesinin kendisi yoluyla elemanına erişmek için kullanılır. 
+* **-> arrow operator :** Yapı nesnesinin adresini kullanarak o adresteki yapı nesnesinin elemanına erişmek için kullanılır.
+
+```c
+struct Nec {
+     int x, y;
+     int a[5];
+     double d;
+};
+
+int main (void)
+{
+    struct Nec mynec;
+    struct Nec* p = &mynec;
+}
+```
+* **(\*p).x :** mynec nesnesinin x elemanına erişir.
+* **p->x :** Bu şekildede x'e erişilebilir. Bu operatör ile adresini aldığımız nesnenin elemanına erişiriz.
+
+-------------------------------------------------------------------------------------------------------------------
+
+### Dikkat
+
+* Bir yapı nesnesi anlamına gelen bir ifade C dilinde sadece 4 tane operatörün operandı olabilir.
+* **struct Nec mynec;** olsun.
+  * mynec : sizeof, adres (&), nokta (.), atama (=) operatörlerinin operandı olabilir.
 
 
+```c
+struct Nec {
+	int x, y;
+	int a[5];
+	double d;
+};
 
+struct Erg {
+	struct Nec n;
+};
 
+int main(void) 
+{
+	struct Erg e;
+	
+	e.n.x;  // Legal (e.n).x;
+	
+}
+```
 
-
-
-
-
-
-
-
-
-
-
+* sizeof (struct Nec) için :
+  * size_t türünden bir ifade
+  * constant expression. Yani char buf\[sizeof(struct Nec)\]; tanımında sentaks hatası olmaz.
 
 
 
