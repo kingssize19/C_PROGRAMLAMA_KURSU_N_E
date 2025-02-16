@@ -249,7 +249,62 @@ int main(void)
   * size_t türünden bir ifade
   * constant expression. Yani char buf\[sizeof(struct Nec)\]; tanımında sentaks hatası olmaz.
 
+-------------------------------------------------------------------------------------------------------------------
 
+```c
+struct Nec {
+	int x, y;
+	int a[5];
+	double d;
+};
+
+
+int main(void) 
+{
+	struct Nec  mynec;
+	
+	&mynec  // struct Nec* türünden ifade.
+	
+	
+	struct Nec* ptr = &mynec;
+	
+	// *ptr ile mynec aynı anlamı ifade eder.
+	
+}
+```
+
+* Bir yapı nesnesine (ancak ve ancak) aynı türden bir başka yapı nesne atanabilir. İki farklı yapı nesnesi arasında tür dönüşümü olmaz.
+
+```c
+#include <stdio.h>
+
+struct Data {
+    int x;
+};
+
+struct Nec {
+    int y;
+};
+
+int main() {
+    struct Data d = {2};
+    struct Data a;
+    struct Nec n;
+    
+    a = d;  // legal
+    n = d;  /* /tmp/IT1r74p3Kj/main.c: In function 'main':
+		ERROR!
+		/tmp/IT1r74p3Kj/main.c:18:9: error: incompatible types when assigning to type 'struct Nec' from type 'struct Data'
+		18 |     n = d;
+		   |         ^
+
+
+		=== Code Exited With Errors === */
+
+
+    return 0;
+}
+```
 
 
 
