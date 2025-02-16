@@ -63,7 +63,26 @@ int main(void) {
     struct Data mydata;
 }
 ```
-* mydata nesnesinin kendi adresi ile mydata'nın ilk elemanının adresi aynı adrestir.
+* mydata nesnesinin kendi adresi ile mydata'nın ilk elemanının adresi aynı adrestir. Aşağıdaki örnek C kodunda bu bilgiye yer verilmiştir.
+```c
+struct Data {
+	int x, y;
+	double z;
+	
+};
+
+
+int main(int argc, char *argv[]) {
+	
+	
+	struct Data mydata;
+	
+	printf("%p %p", &mydata, &mydata.x);		//000000000062FE10 000000000062FE10
+	
+
+	return 0;
+}
+```
 * Bellek sıralamasının **x'in adresi < y'nin adresi < d'nin adresi** şeklinde olması garanti altındadır. Bu sıralamaya uyacaktır.
 * struct Data türünden bir nesnenin storage ihtiyacı = int türü storage * 2 + double türü storage şeklindedir.
 
