@@ -354,12 +354,133 @@ int main() {
 ```
 
 * *p.x ifadesi \*(p.x) anlamındadır.
-* (*p).x
+* (*p).x = 56;   Bu kod geçerlidir.
+* -> operatörünün sol operandı bir yapı türünden adres olmak zorunda yoksa sentaks hatası olur. Sağ operandı olan isimde sol operand hangi yapı türünden adres ise o yapı türünün elemanlarından birisi olacak.
+* (*p).x ile p->x aynı anlamdadır.
+* struct Data a\[5\]; olsun.
+  * a->x = 5; ile a\[0\].x = 5; aynı anlamdadır.
+* (a + 3)->y = 2; ifadesi legaldir. (a + 3) array decay ile dizinin 3 indisli elemanının adresidir.
+  * (a + 3)->y = 2 ile a\[3\].y = 2 ifadesi aynı anlamdadır.
+* struct Data mydata; olsun.
+  * (&mydata)->x = 5 ifadesi ile mydata.x = 5 ifadesi aynı anlamdadır.
 
+-------------------------------------------------------------------------------------------------
 
+```c
+#include <stdio.h>
+#include <stdlib.h>
 
+struct Data {
+    
+  int x, y;
+  double d;
+  
+};
 
+struct Data* foo(void) {
+    
+    struct Data* ptr = (struct Data*)malloc(sizeof(struct Data));
 
+    if (!ptr) {
+        printf("Memory can not allocated!!\n");
+        return NULL;
+    }    
+
+    ptr->x = 10;
+    ptr->y = 20;
+    ptr->d = 6.5;
+
+    return ptr;
+
+}
+
+int main() {
+   
+   struct Data* p = foo();
+   
+   p->x++;
+   printf("p->x = %d", p->x);
+   free(p);
+}
+```
+
+-------------------------------------------------------------------------------------------------
+
+```c
+struct Data {
+    int x, y;
+    double d;
+};
+
+struct Data g;
+
+int main() {
+    
+    struct Data a = {2, 5, 3.4};
+    
+    const struct Data* p = &a;
+    /*
+
+     **Yukarıdaki const kullanımı için geçersiz ifadeler.**
+     
+     -> *p = ; ataması yapılamaz.
+     -> (*p).x++; gibi işlemler yapılamaz. *p salt okuma amaçlı.
+     -> p->x = 4; sentaks hatası.
+     
+     **Yukarıdaki const için geçerli ifade**
+     p = &g;
+     
+    */
+    
+    struct Data* const p1 = &g;
+    
+    /*
+     *  p1 = &g; sentaks hatası. Yani p1 pointer'ı değiştirilemez. Fakat pointer ile erişebildiğimiz yapı değişkenlerini değiştirebiliriz.
+    */
+   
+   
+}
+```
+
+-------------------------------------------------------------------------------------------------
+
+```c
+struct Data {
+
+    int a[20];
+    double b[40];
+    
+};
+
+struct Data x;
+struct Data* p = &x;
+
+int main() {
+    
+    printf("sizeof(x) = %d\n", sizeof x);   // sizeof(x) = 400
+    printf("sizeof(p) = %d\n", sizeof p);   // sizeof(p) = 8
+   
+}
+```
+
+* sizeof(x) : Yapı türünün sizeof'u.
+* sizeof(p) : Yapı türünden adres türünün sizeof'u. Derleyiciden derleyiciye göre  değişir. Yapı türünden pointer sizeof'u.
+
+-------------------------------------------------------------------------------------------------
+
+```c
+struct Data* p1 = NULL;        // legal kullanım.
+struct Data* p2 = 0;           // 0 sabitinin NULL pointer'a dönüşmesinden faydalanır. Legal kullanım.
+```
+
+```c
+// Aşağıdaki kullanım şekilleri legaldir.
+struct Data mydata;
+struct Data* p = &mydata;
+struct Data** pp = &p
+```
+
+-------------------------------------------------------------------------------------------------
 
 
 
