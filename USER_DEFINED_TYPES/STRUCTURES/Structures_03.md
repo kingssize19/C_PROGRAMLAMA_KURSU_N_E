@@ -79,6 +79,26 @@ int main() {
 
 --------------------------------------------------------------------------------------------------------
 
+## Yapı Türleri ve Typedef Bildirimleri (Tür Eş İsim Bildirimleri)
+
+
+```c
+struct Student {
+    int no;
+    char name[20];
+    char surname[20];
+    int grades[5];
+};
+
+typedef struct Student Student;
+
+int main() {
+    
+    Student student;
+    
+}
+```
+* **Student** ismi **struct Student** türünün eş ismi oldu.
 
 
 
