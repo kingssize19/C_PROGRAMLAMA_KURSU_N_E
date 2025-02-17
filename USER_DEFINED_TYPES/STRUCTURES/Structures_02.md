@@ -209,10 +209,152 @@ int main() {
 
 -------------------------------------------------------------------------------------------------
 
+```c
+#include <stdio.h>
 
+struct Data {
+  int a, b, c;  
+};
 
+struct Data g;  // struct Data türünden global değişken.
 
+int main() {
 
+}
+```
+
+* Yapı bildirimi ile o yapı türünden nesne ya da nesneler tanımlamayı aşağıdaki örnekteki gibi gerçekleştirebiliriz.
+* Aşağıdaki gibi bir ya da birden fazla nesne tanımlayabiliriz.
+
+```c
+struct Data {
+  int a, b, c;  
+}g1, g2, g3;
+```
+
+* Aynı zamanda bu nesneleri tanımlarken ilk değerde verebiliriz.
+
+```c
+struct Data {
+  int x, y, z;  
+}g1 = {2, 3, 4}, g2 = {.y = 5}, g3 = {.x = 7, . z = 8};
+
+int main() {
+    
+    printf("g1.x = %d\n", g1.x);    // g1.x = 2
+    printf("g2.y = %d\n", g2.y);    // g2.y = 5
+    printf("g3.z = %d\n", g3.z);    // g3.z = 8
+    
+}
+```
+
+* Aşağıdaki iki yapı kullanımıda aynı anlamı ifade etmektedir.
+
+```c
+struct Data {
+  int x, y, z;  
+}g = {2, 3, 4}, *ptr = &g;
+
+/***********************************************/
+
+struct Data {
+    int x, y, z;
+};
+
+struct Data g = {2, 3, 4}, *ptr = &g;
+```
+
+-------------------------------------------------------------------------------------------------
+
+* structure tag olmadan bir yapı tanımlanabilir.
+* a, b ve c tür ismi olmayan ama aynı yapı türünden nesnelerdir.
+
+```c
+struct {
+  int x, y, z;  
+}a, b, c;
+```
+
+-------------------------------------------------------------------------------------------------
+
+* Aşağıdaki kodda a = b ataması geçersiz bir atamadır. a ve b'nin türleri farklı.
+* Gerçekleştirilen yapı tanımlamalarında hiçbir hata yoktur. İki bildirimde legal.
+
+```c
+struct {
+  int x, y, z;  
+}a;
+
+struct {
+    int x, y, z;
+}b;
+
+int main() {
+   a = b; 
+}
+```
+
+-------------------------------------------------------------------------------------------------
+
+* Aşağıdaki örnekte olduğu gibi dizilerin türleri yapı türünden olabilir.
+* Designated initializer kullanıldığında ilk değer verilmeyen elemanlar 0 değeri alır. Aynı durum normal değer atama yapılırkende görülür.
+
+```c
+struct Point {
+  int x, y;  
+};
+
+int main() {
+   
+   struct Point a[4] = {{2, 3}, {4, 5}, {6, 7}};
+   struct Point b[] = {[1] = {10, 11}};
+   
+   printf("a[0].x = %d\n", a[0].x);     // 2
+   printf("a[0].y = %d\n", a[0].y);     // 3
+   
+   printf("a[1].x = %d\n", a[1].x);     // 4
+   printf("a[1].y = %d\n", a[1].y);     // 5
+   
+   printf("a[2].x = %d\n", a[2].x);     // 6
+   printf("a[2].y = %d\n", a[2].y);     // 7
+   
+   printf("a[3].x = %d\n", a[3].x);     // 0
+   printf("a[3].y = %d\n", a[3].y);     // 0
+   
+   printf("b[0].x = %d\n", b[0].x);     // 0
+   printf("b[0].y = %d\n", b[0].y);     // 0
+   
+   printf("b[1].x = %d\n", b[1].x);     // 10
+   printf("b[1].y = %d\n", b[1].y);     // 11
+   
+}
+```
+
+-------------------------------------------------------------------------------------------------
+
+## Yapıların Pointer'ı ve Arrow Operator
+
+```c
+struct Data {
+    
+  int x, y;
+  double d;
+  
+};
+
+int main() {
+   
+   struct Data mydata = {3, 5, 1.2};
+   struct Data dx = {13, 35, 1.2};
+   struct Data* p = &mydata;
+   
+   *p = dx;
+   dx = *px;
+}
+```
+
+* *p.x ifadesi \*(p.x) anlamındadır.
+* (*p).x
 
 
 
