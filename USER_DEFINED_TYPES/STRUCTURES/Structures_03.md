@@ -100,15 +100,126 @@ int main() {
 ```
 * **Student** ismi **struct Student** türünün eş ismi oldu.
 
+```c
+struct Student {
+    int no;
+    char name[20];
+}Student;
+/* |--> Buradaki Student struct Student türünden global bir değişken ismidir */
+
+int main() {
+    
+    Student.no = 998;
+    printf("%d", Student.no);
+    
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+* Fakat yukarıdaki kullanım şekli typedef ile birleşirse Student struct Student türünün eş ismi olur ve aşağıdaki kodda main içerisindeki iki kullanımda legal'dir.
+
+```c
+typedef struct Student {
+    int no;
+    char name[20];
+}Student;
+/* |--> Buradaki Student struct Student türünün eş ismi. */
+
+int main() {
+    
+    struct Student s1 = {456, "Ali"};
+    Student s2 = {456, "Ali"};
+    
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+* Aşağıdaki kodda :
+  * Student tür eş ismi struct Student türünün eş ismi.
+  * StudentPtr eş ismi struct Student* türünün eş ismidir.
+
+```c
+typedef struct Student {
+    int no;
+    char name[20];
+}Student, *StudentPtr;
 
 
+int main() {
+    
+    Student s = {345, "Yelda"};
+    StudentPtr p = &s;
+    
+    printf("s.no = %d\n", s.no);        // s.no = 345
+    printf("p->no = %d\n", p->no);      // p->no = 345
+    
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+```c
+typedef struct {
+    int x;
+}Data;
 
 
+int main() {
+    
+    Data d1 = { 123 }; // legal kullanım.
+    
+    struct Data d2 = { 123 }; // Sentaks hatası : Data etiket ismi değil.
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+```c
+typedef struct {
+    int no;
+    char name[20];
+}*StudentPtr;
 
 
+int main() {
+    
+    StudentPtr pd = (StudentPtr)malloc(sizeof(*pd));
+    pd->no = 356; // gibi pointer yardımıyla bu nesneyi istediğimiz gibi kullanabiliriz.
+    
+}
+```
 
+* Bu türden otomatik veya statik ömürlü nesne kullanamayız, oluşturamayız.
+* Bu tarz tanımlanan bir yapıyı ancak yukarıdaki gibi dinamik ömürlü nesne oluşturarak kullanabiliriz.
 
+--------------------------------------------------------------------------------------------------------
 
+### Local Structure
+* Bir yapı türünün global isim alanı haricinde, bir fonksiyon içinde yani block scope'da yapılan yapı bildirimine denir.
+
+```c
+void foo(void) 
+{
+    struct Data {
+      int x, y;  
+    };
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+* **C dilinde yapıların elemanları fonksiyon olamaz.**
+* **Fakat C++ dilinde yapıların elemanları fonksiyon olabilir. (member function)**
+* **Hem C hem de C++'da yapının elemanı function pointer olabilir.**
+  * ```c
+    struct Data {
+  
+      void (*foo)(void);  // legal
+      void bar();         // illegal
+    };
+    ```
 
 
 
