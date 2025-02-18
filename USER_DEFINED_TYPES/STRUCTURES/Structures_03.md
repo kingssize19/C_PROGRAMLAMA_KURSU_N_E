@@ -220,6 +220,129 @@ void foo(void)
       void bar();         // illegal
     };
     ```
+* C dilinde yapının elemanlarına yapı bildirimi içinde bir değer atamak sentaks hatası.
+* C++ dilinde bu kullanım sentaks hatası değildir.
+  * ```c
+    struct Data {
+  
+      int x = 5;
+      int y = 10;
+  
+    };
+    ```
+    
+--------------------------------------------------------------------------------------------------------
+
+### void foo(struct Data);
+
+* call by value
+* kopyalama maliyeti var
+* struct Data size'ı arttıkça maliyet artar.
+* Kullanımı çok tercih edilmez.
+
+### void bar(struct Data*);
+
+* call by reference
+* Fonksiyona gönderilen argüman struct Data türünden nesne adresi.
+* Pointer kadar kopyalama yapar. (Benim derleyicimde 4 byte)
+* struct Data size'ı ne olursa olsun kopya maliyeti pointer kadar.
+
+--------------------------------------------------------------------------------------------------------
+
+### void bar(struct Data*);
+
+* Aldığı adresteki nesneyi değiştirme amaçlı.
+* mutator
+* set function
+
+### void baz(const struct Data*);
+
+* Salt okuma amaçlı
+* accessor
+* get function
+
+--------------------------------------------------------------------------------------------------------
+
+### void bar(struct Data*);
+
+* Bu fonksiyon, çalıştırıldığı kodun dışına bir değer aktarmak için yapı nesnesini işaretçiyle alır.
+  * **Parametre :** struct Data* → Çıktı (out) parametresi
+  * **Amaç :** Fonksiyonun içinde değiştirilen değerlerin, fonksiyonu çağıran kod tarafından kullanılmasını sağlamak.
+  * **Özellik :** İşaretçi kullanıldığı için orjinal bellek adresine erişim vardır. Bu sayede fonksiyon içinde yapılan değişiklikler, fonksiyonu çağıran koda da yansır.
+  * ```c
+    #include <stdio.h>
+
+    struct Data {
+        int x, y;
+    };
+
+    void bar(struct Data* d) {
+        d->x = 10;
+        d->y = 20;  // d'nin içindeki değerleri değiştiriyoruz
+    }
+
+    int main() {
+        struct Data myData = {0, 0};  // Başlangıçta x ve y sıfır
+        bar(&myData);  // Fonksiyona adres gönderiyoruz
+        printf("x = %d, y = %d\n", myData.x, myData.y);  // Değişiklikler main'de görülebilir
+        return 0;
+    }
+    ```
+  * Bu fonksiyon orijinal veriyi değiştirir. Böyle parametrelere out parametre (çıktı parametresi) denir.
+
+
+### void baz(const struct Data*);
+
+* Bu fonksiyon, yalnızca mevcut bir yapı nesnesinin değerlerini okumak için çağrılır. Veri değiştirilmez.
+  * **Parametre :** const struct Data* → Girdi (input) parametresi
+  * **Amaç :** Fonksiyonun, veriyi değiştirmeden kullanmasını sağlamak.
+  * **Özellik :** const anahtar kelimesi, fonksiyonun yapı içeriğini değiştirmesini engeller.
+  * ```c
+    #include <stdio.h>
+
+    struct Data {
+        int x, y;
+    };
+
+    void baz(const struct Data* d) {
+        printf("x = %d, y = %d\n", d->x, d->y);
+        // d->x = 100;  // HATA! const olduğu için değiştirmek yasak
+    }
+
+    int main() {
+        struct Data myData = {5, 15};
+        baz(&myData);  // Veriyi sadece okuyoruz
+        return 0;
+    }
+    ```
+  * Burada const, fonksiyonun veriyi değiştirmemesini sağlar. Bu tür parametrelere input parametre (girdi parametresi) denir. Eğer baz() içinde d->x = 100; gibi bir değişiklik yapmaya çalışırsan derleme hatası alırız.
+
+--------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
