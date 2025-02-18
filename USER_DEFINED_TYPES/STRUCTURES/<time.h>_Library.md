@@ -396,5 +396,198 @@ size_t strftime(char* p, size_t size, const char* pfm, const struct tm* ptm);
 | ptm       | const struct tm* | Zaman bilgilerini içeren `tm` yapısının adresi. `struct tm`, yıl, ay, gün, saat, dakika, saniye gibi bilgileri içerir. |
 
 
+#### Desteklenen Format Dizgeleri (`pfm`)
+
+| Format Dizgesi | Açıklama | Örnek Çıktı |
+|---------------|---------|-------------|
+| `%a` | Kısa gün adı | `Sal` |
+| `%A` | Uzun gün adı | `Salı` |
+| `%b` | Kısa ay adı | `Eyl` |
+| `%B` | Uzun ay adı | `Eylül` |
+| `%c` | Yerel tarih ve saat gösterimi | `18 Şub 2025 14:30:15` |
+| `%C` | Yüzyıl (yıl / 100) | `20` (2025 için) |
+| `%d` | Ayın günü (01-31) | `05` |
+| `%D` | Kısa tarih formatı (MM/DD/YY) | `02/18/25` |
+| `%e` | Ayın günü (1-31, tek haneli günlerde boşluk içerir) | ` 5` |
+| `%F` | ISO 8601 tarih formatı (YYYY-MM-DD) | `2025-02-18` |
+| `%g` | ISO 8601 yılın son iki hanesi | `25` |
+| `%G` | ISO 8601 yılın tamamı | `2025` |
+| `%H` | Saat (00-23) | `14` |
+| `%I` | Saat (01-12) | `02` |
+| `%j` | Yılın kaçıncı günü (001-366) | `049` (18 Şubat için) |
+| `%m` | Ay numarası (01-12) | `02` |
+
+----------------------------------------------------------------------------------------------------------------
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <locale.h>
+
+int main()
+{
+
+    time_t sec;
+
+    time(&sec);
+
+    struct tm* p = localtime(&sec);
+
+    char buf[100];
+
+    size_t n = strftime(buf, 100, "%A %B %Y", p);
+
+    printf("(%s)\n", buf);          // (Monday February 2025)
+    printf("n = %zu\n", n);         // n = 15
+}
+```
+
+----------------------------------------------------------------------------------------------------------------
+
+* strftime() fonksiyonu locale'e bağlıdır.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <locale.h>
+
+int main()
+{
+
+    setlocale(LC_ALL, "Turkish");
+
+    time_t sec;
+
+    time(&sec);
+
+    struct tm* p = localtime(&sec);
+
+    char buf[100];
+
+    size_t n = strftime(buf, 100, "%A %B %Y", p);
+
+    printf("(%s)\n", buf);      // (Pazartesi Şubat 2025)
+    printf("n = %zu\n", n);     // n = 20
+}
+
+```
+
+----------------------------------------------------------------------------------------------------------------
+
+#### clock_t clock(void) fonksiyonu :
+
+* mainden bu fonksiyonun çağrıldığı yere kadar yapılan işlemlerin clock tick sayısını geri döndürür. Bu clock tick sayısını (Hassas zaman olması açısından) double ile cast ederiz. Ardından CLOCK_PER_SEC macrosuna bölerek saniye cinsinden geçen süreyi buluruz.
+
+* **clock() fonksiyonunun geri dönüş değeri :** main'in başından clock fonksiyonunun çağrıldığı yere kadarki clock tick sayısı. clock_t türünden.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <locale.h>
+
+int main()
+{
+
+    printf("kac tam sayi : ");
+    size_t n;
+    scanf("%zu", &n);
+
+    int *p = (int *)malloc(n * sizeof(int));
+
+    if (!p) {
+        fprintf(stderr, "bellek yetersiz.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        p[i] = i;
+
+    }
+
+    for (int i = 0; i < n; ++i) {
+        printf("%d ", p[i]);
+    }
+    printf("\n");
+    printf("Islem bitti...\n");
+    printf("sure : %lf saniye\n", (double)clock() / CLOCKS_PER_SEC);
+    free(p);
+
+    // Çıktı : kac tam sayi : 5
+    //         0 1 2 3 4
+    //         Islem bitti...
+    //         sure : 2.024000 saniye
+
+}
+```
+
+----------------------------------------------------------------------------------------------------------------
+
+* Herhangi bir event'in süresini hesaplayabiliriz. Hesaplamak istediğimiz event başlamadan önce clock fonksiyonunu çağırırız ardından bu event'in bitiminde clock fonksiyonunu tekrar çağırırız aradaki farkı clock tick olarak buluruz. Dilersek bu clock tick değerini CLOCK_PER_SEC macrosuna bölerek saniye cinsinden o eventin harcadığı zamanı bulabiliriz.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <locale.h>
+
+int main()
+{
+
+    printf("kac tam sayi : ");
+    size_t n;
+    scanf("%zu", &n);
+
+    int *p = (int *)malloc(n * sizeof(int));
+
+    if (!p) {
+        fprintf(stderr, "bellek yetersiz.\n");
+        return 1;
+    }
+
+
+    for (int i = 0; i < n; ++i) {
+        p[i] = rand();
+
+    }
+
+    clock_t start = clock();
+    for (size_t i = 0; i < n - 1; ++i) {
+        for (size_t k = 0; k < n - 1 - i; ++k) {
+            if (p[k] < p[k + 1]) {
+                int temp = p[k];
+                p[k] = p[k + 1];
+                p[k + 1] = temp;
+            }
+        }
+    }
+    clock_t finish = clock();
+
+
+
+    printf("\n");
+    printf("Islem bitti...\n");
+    printf("sure : %lf saniye\n", (double)(finish - start) / CLOCKS_PER_SEC);
+    free(p);
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
