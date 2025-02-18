@@ -319,7 +319,69 @@ void foo(void)
 
 --------------------------------------------------------------------------------------------------------
 
+```c
+typedef struct {
+	
+	int no;
+	char name[20];
+	char surname[20];
+	double mean;
+	
+	
+}Student;
 
+
+/* Aşağıdaki fonksiyon kullanımı call by value. Kopyalama maliyeti fazla. Kulanımı önerilmez! */
+/*
+void print_student(Student s) 
+{
+	printf("*********************************\n");
+	printf("No	: %d\n", s.no);
+	printf("Name 	: %s\n", s.name);
+	printf("Surname : %s\n", s.surname);
+	printf("Mean 	: %.2f\n", s.mean);
+	printf("*********************************\n");	
+}
+*/
+
+// Aşağıdaki fonksiyon call by reference. Kopyalama maliyeti pointer kadar. 
+void print_student(const Student* s) 
+{
+	printf("*********************************\n");
+	printf("No	: %d\n", s->no);
+	printf("Name 	: %s\n", s->name);
+	printf("Surname : %s\n", s->surname);
+	printf("Mean 	: %.2f\n", s->mean);
+	printf("*********************************\n");
+}
+
+// Set function
+void set_student(Student* ptr)
+{
+	ptr->no += 100;
+	strcat(ptr->name, "can");
+	strcat(ptr->surname, "oglu");
+}
+
+
+int main(int argc, char *argv[]) {
+	
+	Student s1 = {123, "Hayati", "Kilic", 98.80};
+	Student s2 = {234, "Irem", "Ince", 100.00};
+
+	//printf("sizeof (&s1) for call by reference : %zu\n", sizeof(&s1));			// 8   call by reference kopyalama maliyet büyüklüğü
+	//printf("sizeof (s1) for call by reference  : %zu\n", sizeof(s1));			// 56  call by value kopyalama maliyet büyüklüğü
+
+	
+	print_student(&s1);
+	set_student(&s1);
+	print_student(&s1);
+	s2 = s1;
+	print_student(&s2);
+
+	return 0;
+}
+```
 
 
 
