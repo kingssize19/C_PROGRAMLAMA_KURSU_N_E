@@ -111,7 +111,6 @@ int main() {
     
     Student.no = 998;
     printf("%d", Student.no);
-    
 }
 ```
 
