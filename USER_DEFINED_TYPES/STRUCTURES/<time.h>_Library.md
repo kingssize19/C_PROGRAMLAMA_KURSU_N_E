@@ -388,12 +388,12 @@ size_t strftime(char* p, size_t size, const char* pfm, const struct tm* ptm);
 ```
 * Bu fonksiyon, verilen tarih ve saat bilgisini belirtilen format (pfm) doğrultusunda bir karakter dizisine (p) yazmak için kullanılır.
 
-| Parametre | Türü | Açıklama |
+|Parametre|Türü|Açıklama|
 |--|--|
-| p | char* | Formatlanmış tarih ve saat bilgisinin yazılacağı karakter dizisinin adresi. |
+| p | char\* | Formatlanmış tarih ve saat bilgisinin yazılacağı karakter dizisinin adresi. |
 | size | size_t | Maksimum karakter kapasitesi (null karakter dahil) – Eğer formatlanmış çıktı size değerinden büyükse, fonksiyon 0 döndürür. |
-| pfm | const char* | Format dizgesi – Tarih ve saat çıktısının nasıl olması gerektiğini belirleyen karakter dizisi. |
-| ptm | const struct tm* | Zaman bilgilerini içeren tm yapısının adresi. struct tm, yıl, ay, gün, saat, dakika, saniye gibi bilgileri içerir. |
+| pfm | const char\* | Format dizgesi – Tarih ve saat çıktısının nasıl olması gerektiğini belirleyen karakter dizisi. |
+| ptm | const struct tm\* | Zaman bilgilerini içeren tm yapısının adresi. struct tm, yıl, ay, gün, saat, dakika, saniye gibi bilgileri içerir. |
 
 
 
