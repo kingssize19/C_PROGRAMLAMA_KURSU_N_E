@@ -236,9 +236,39 @@ int main()
 * Bir ismi global isim alanında bildirdiysek o isim file scope'tadır.
 * Yani tanımlandığı noktadan dosya sonuna kadar her yerde kullanılabilir.
 
+**2. Block Scope :**
+* Block içinde tanıtılan isimlerin tanıtıldıkları bloğun sonuna kadar kullanılabilmeleri anlamına gelir.
+* Aynı kapsam içinde bir isim birden fazla varlığa verilemez.
+* Yerel isimler eğer kapsamları aynı **"closing brace"** 'te bitiyorsa aynı scope'tadır.
 
 
+#### Dikkat
 
+* Fonksiyonların ana bloğu içinde kullanılan isimlerin aranması
+* name hiding (ismin gizlenmesi)
+* name masking
+* name shadowing
+
+```c
+int x = 9;  // global x değişkeni
+
+
+int main() {
+    
+    int x = 1; // local x değişkeni
+    
+    printf("x : %d", x);  // x : 1
+}
+```
+* Global x değişkeni local x değişkeninin arkasında gizlenir. Name hiding. Bu yüzden ekrana **x : 1** yazısı yazdırılır.
+
+----------------------------------------------------------------------------------------------------------------------
+
+* Global isimler underscore (_) karakteri ile başlatılmaz.
+* Global ve yerel isimler iki underscore (__) karakteri ile başlatılmaz.
+* Bu kullanım şekilleri syntax hatası vermez fakat dile olan saygıdan dolayı bu kullanımlar dilin kendisinde rezerve edilmiştir. Bu yüzden tercih edilmezler.
+* İsmin kapsamı büyüdükçe ismin daha niteleyici olması tercih edilir.
+* İsimlerde tutarlı ve istikrarlı bir konvensiyon (önceden belirlenmiş kurallar seti) kullanmalıyız.
 
 
 
