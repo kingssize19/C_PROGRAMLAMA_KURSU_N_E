@@ -30,8 +30,30 @@
 * **Bellek kullanımının minimize edilmesi isteniyorsa**, dinamik diziler daha iyi bir seçimdir çünkü ek göstericilere ihtiyaç duymaz.
 * **Eğer veri boyutu önceden bilinmiyor ve sürekli değişiyorsa**, bağlı liste kullanmak daha uygundur çünkü bellekte dinamik olarak büyüyüp küçülebilir.  
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
+* **Tek Yönlü Bağlı Liste (Singly Linked List) :** Her düğüm (node), yalnızca bir sonraki düğümün adresini içerir. Başlangıçtan sona doğru tek yönde ilerlenebilir.
 
+```c
+#include "student.h"
+
+typedef struct Node{
+    Student data;
+    struct Node* pnext;
+}Node;
+```
+
+* **Çift Yönlü Bağlı Liste (Doubly Linked List) :** Her düğüm, hem bir önceki hem de bir sonraki düğümün adresini içerir. Hem ileri hem de geri yönde dolaşım yapılabilir, bu da ekleme ve silme işlemlerini daha esnek hale getirir.
+
+```c
+#include "student.h"
+
+typedef struct Node{
+    Student data;
+    struct Node* pprev;
+    struct Node* pnext;
+}Node;
+```
 
 
 
