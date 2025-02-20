@@ -277,9 +277,59 @@ struct Nec {
 
 ---------------------------------------------------------------------------------------------------------------------
 
+#### nested type struct :
+
+* Elemanın ilişkin olduğu türü doğrudan elemana sahip yapının içinde bildirimi.
+
+```c
+struct Erg {
+    int a, b, c;
+
+    struct Nec {
+        int x, y, z;
+    }nec;
+};
+```
+
+* struct Erg'in scope'u neyse struct Nec'inde sope'u o dur.
+
+```c
+struct Erg {
+    int a, b, c;
+
+    struct Nec {
+        int x, y, z;
+    }nec;
+};
+
+int main() {
+
+    struct Nec mynec;		// C dilinde geçerli. C++ dilinde geçerli değildir.
+    
+}
+```
+
+* Erg içinde bulunan struct Nec yapı türüne isim vermesekte geçerli olur.
+
+```c
+struct Erg {
+    int a, b, c;
+
+    struct {
+        int x, y, z;
+    }nec;
+};
 
 
+int main() {
 
+    struct Erg e;
+
+    e.nec.x = 10;	// Geçerli kullanım
+    e.nec.y = 20;	// Geçerli kullanım
+    e.nec.z = 30;	// Geçerli kullanım
+}
+```
 
 
 
