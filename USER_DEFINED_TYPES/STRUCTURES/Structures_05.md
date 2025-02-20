@@ -55,9 +55,20 @@ typedef struct Node{
 }Node;
 ```
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
+#### Dikkat !!!
 
+```c
+#include "student.h"
 
+typedef struct Node{
+    Student data;
+    struct Node* pnext;  // Bu noktada Node* pnext; şeklinde kullanım yapamayız. Scope kurallarına göre bu noktada derleyici Node isminin struct Node türünün eş ismi olduğunu bilmiyor.
+}Node;
+```
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
