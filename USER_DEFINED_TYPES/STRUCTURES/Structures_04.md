@@ -331,6 +331,28 @@ int main() {
 }
 ```
 
+* struct Erg içindeki yapı nesnesine hem isim vermeyip hem de o yapı nesnesinden değişken oluşturmazsak bile bu C dilinde geçerlidir ve struct Erg'in sizeof'u içine o yapının sizeof'uda dahil olur.
+
+```c
+struct Erg {
+    int a, b, c;
+
+    struct {
+        int x, y, z;
+    };
+};
+
+
+int main() {
+
+    struct Erg e;
+
+    e.x = 10;
+
+    printf("e.x = %d\n", e.x);  // e.x = 10
+    printf("sizeof(struct Erg) : %zu\n", sizeof(struct Erg));   // sizeof(struct Erg) : 24
+}
+```
 
 
 
