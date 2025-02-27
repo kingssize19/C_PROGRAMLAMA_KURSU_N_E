@@ -456,7 +456,129 @@ int main(void)
 
 ### #pragma pack(1)
 
-* **byte alignment :** Der
+* **byte aligment :** Derleyici padding byte kullanmayacaksın. Yapının iki elemanı arasında kullanılmayan byte olmayacak.
+* Birinci önceliğiniz daha az bellek alanının kullanımı ise
+* Önceliğiniz elemana erişme maliyeti değil ise
+* Derleyicinizde izin veriyorsa byte aligment'a alabiliriz bu şekilde padding byte'ları yok sayar.
+* #pragma pack(2) : Elemanları 2'nin katlarına yerleştirir.
+
+```c
+#include <stdio.h>
+#include <stdalign.h>
+
+// #pragma pack(1) yok iken
+
+typedef struct Nec {
+	char c1;
+	int x;
+	char c2;
+
+}Nec;
+
+int main(void)
+{
+	printf("%zu\n", sizeof(Nec));		// 12
+
+}
+
+```
+
+```c
+#include <stdio.h>
+#include <stdalign.h>
+
+#pragma pack(1)
+
+typedef struct Nec {
+	char c1;
+	int x;
+	char c2;
+
+}Nec;
+
+int main(void)
+{
+	printf("%zu\n", sizeof(Nec));		// 6 #pragma pack(1) etkisi ile
+
+}
+```
+
+--------------------------------------------------------------------------------------------------------
+
+**Dikkat :** Bir nesnenin adresini başka türden nesne adresi olarak kullanmak için belirli koşulların sağlanması gerekir. (competible types)
+
+* sizeof değerleri aynı diye bir bellek alanındaki nesneye başka bir türden nesneymiş gibi kullanma girişimi tanımsız davranıştır.
+
+```c
+int main(void)
+{
+	float f = 45.9832f;
+
+	printf("%d\n", * (int*)&f); // undefined behavior.
+
+}
+```
+
+#### Ama aşağıdaki işlemlerde herhangi bir tanımsız davranış yoktur.
+
+* int* dan unsigned int* 'a veya unsigned int* dan int* 'a dönüşüm yapmak tanımsız davranış değildir.
+
+```c
+unsigned int x = 78790989;
+int y = *(int*)&x;
+```
+
+* char türlerine yapılan dönüşüm. Hangi türden nesne olursa olsun o nesneyi char'ların (signed, unsigned dahil) dizisiymiş gibi kullanabiliriz.
+
+```c
+double dval = 7345.87532;
+unsigned char* p = (unsigned char*)&dval;
+for (size_t i = 0; i < sizeof(dval); ++i)
+	printf("%u\n", p[i]);
+```
+
+* Bir pointer türünden void* türüne, void* türünden yine aynı pointer türüne dönüşüm yapabiliriz.
+
+```c
+double dval = 7345.87532;
+void* vp = &dval;
+printf("%f\n", dval);
+double* dp = (double *)vp;
+printf("%f\n", *dp);
+```
+
+* Yapı nesnesinin ilk elemanının adresi ile yapı nesnesinin kendi adresi arasındaki dönüşümleri yapabiliriz.
+
+```c
+typedef struct{
+	double dval;
+	int a, b, c;
+
+}Data;
+
+int main(void)
+{
+	Data mydata = {3.982141, 12, 13, 14};
+
+	printf("%f\n", *(double *)&mydata); // tanımsız davranış yok.
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
