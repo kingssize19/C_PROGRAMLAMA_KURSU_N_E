@@ -171,22 +171,216 @@ x << 3 ifadesinin değeri 120 olur. Çünkü 3 kere 1 bit sola kaydırılmış o
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
-#### " & " " ^ " " | "  Operators
+#### "&", "^", "|"  Operators
 
 * **& :** Bitwise and
 * **^ :** Bitwise exor
 * **| :** Bitwise or
 
+* Operatörlerin hepsi karşılıklı bitleri işleme sokar.
 
+--------------------------------------------------------------------------------------------------------------------------------------------
 
+```c
+ x    = 0101 1101
+ y    = 1010 1001
+-----------------
+x & y = 0000 1001
+```
 
+* & işleminde bitlerden en az biri 0 ise sonu 0'dır. Yani & işleminde 0 yutan elemandır.
+* Sonucun 1 olabilmesi için karşılıklı iki bitin 1 olması gerekir. Yani & işleminde 1 etkisiz elemandır.
 
+--------------------------------------------------------------------------------------------------------------------------------------------
 
+```c
+ x    = 0101 1101
+ y    = 1010 1001
+-----------------
+x | y = 1111 1101
+```
 
+* | işleminde bitlerden en az biri 1 ise sonuç 1'dir.
+* Karşılıklı iki bit 0 ise sonuç sıfırdır.
 
+--------------------------------------------------------------------------------------------------------------------------------------------
 
+```c
+ x    = 0110 1101
+ y    = 1010 1001
+-----------------
+x ^ y = 1100 0100
+```
 
+* ^ (exor) işleminde;
+  * Bitler aynı ise sonuç sıfırdır.
+  * Bitler farklı ise sonu 1'dir.
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bitsel & operatörünün bir yan etkisi yoktur.
+
+```c
+bitprint(x);
+bitprint(y);
+bitprint(x & y);  --> // x ve y'nin değeri değişmez. Yan etkisi yok.
+```
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* **x = x & y;** ile **x &= y;** aynı anlamda.
+* Bitsel logic operatörlerin kısa devre davranışı yoktur.
+* **exp1 && exp2**
+  * ilk önce exp1 yapılır. exp1'in yanlış olması durumunda ep2 yapılmaz.
+* **exp1 & exp2**
+  * Bu işlemde her iki exp içinde işlem kodu üretilme garantisi vardır.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bitsel exor işleminde;
+  * 0 etkisiz eleman
+  * 1 ise karşısındaki bitin tersini elde eder.
+  * Yani 1 biti karşısındaki bitin toggle edilmesini sağlar.
+
+* Bir sayıyı kendisi ile exor'lar isek sıfır sonucunu elde ederiz.
+
+```c
+int x = 10;
+printf("%d\n", x);   // 10
+bitprint(x ^ x);     // 0000 0000 0000 0000 0000 0000 0000 0000
+x = x ^ x;
+printf("%d\n", x);   // 0 
+```
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bir dizi olsun bu dizide her sayıdan iki adet var fakat bir sayıdan sadece bir adet olsun. Bu tek olan sayıyı bulan program.
+
+```c
+int ar[] = {2, 5, 7, 8, 9, 1, 3, 2, 7, 5, 8, 9, 1};
+
+int main(int argc, char **argv)
+{
+    int result = 0;
+    for (size_t i = 0; i < asize(ar); ++i) {
+        result ^= ar[i];
+    }
+    // Tüm dizi elemanları sırasıyla exor'lanırsa en son cevap tek olan sayıyı verir. çünkü aynı sayılar birbirleriyle exorlanırsa 0 cevabını verir.
+    
+    printf("Result = %d\n", result);        // Result = 3
+   
+}
+```
+* Çünkü ;
+
+```c
+int main(int argc, char **argv)
+{
+    int x = 0;      // olsun
+
+    x ^= 15;
+
+    printf("%d\n", x);      // 15
+
+    x ^= 15;
+
+    printf("%d\n", x);     // 0
+   
+}
+```
+* Tüm çift olan sayıların bitleri 0'lanır.
+* Tek bulunan sayının bitleri sonucu verir.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* **int ar[] = {1, 7, 6, 4, 2, 3, 5, 9};** Bu dizideki eksik sayıyı bulunuz. (yani 8 sayısı)
+  * Önce ilk elemandan son elemana kadar olması gereken tüm sayıları birbirleriyle exor'larız.
+  * Çıkan sonucu dizinin elemanları ile sırasıyla exor'larsak eksik olan elemanı buluruz.
+
+```c
+int ar[] = { 1, 7, 6, 4, 2, 3, 5, 9 };
+
+int main(int argc, char **argv)
+{
+    int result = 0;
+
+    for (int i = 1; i <= 9; ++i) {
+        result ^= i;
+    }
+
+    for (size_t i = 0; i < asize(ar); ++i) {
+        result ^= ar[i];
+    }
+
+    printf("Eksik sayi %d\n", result);    // Eksik sayi 8
+   
+}
+```
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* x ve y iki int sayı olsun.
+* x ile y'yi exor'larsak ve çıkan sonucu tekrar y ile exor'larsak x'i elde ederiz.
+* x = x ^ y;  // x'in yeni değeri
+* x = x ^ y;  // x'in ilk değeri
+
+```c
+int main(int argc, char **argv)
+{
+    int x = 565;
+    int y = 789;
+
+    printf("x : %d\n", x);  // x : 565   ilk değer
+
+    x ^= y;
+
+    printf("x : %d\n", x);  // x : 288  elde edilen yeni değer
+
+    x ^= y;
+
+    printf("x : %d\n", x);  // x : 565 son hali ilk değer
+   
+}
+```
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+* İki değişkeni takas etmek için üçüncü bir değişken kullanmadan, bitsel exor işlemini kullanarak iki değişkeni takas edebiliriz.
+
+```c
+int main(int argc, char **argv)
+{
+    printf("iki adet sayi giriniz : ");
+    int x, y;
+    scanf("%d%d", &x, &y);
+    
+    printf("x : %d  y : %d\n", x, y);
+
+    x ^= y;
+    y ^= x;
+    x ^= y;
+
+    printf("x : %d  y : %d\n", x, y);
+
+/*  Çıktı :
+
+    iki adet sayi giriniz : 15 30
+    x : 15  y : 30
+    x : 30  y : 15
+*/
+
+}
+```
+
+* **Kolay bir örnek adım adım :**
+
+```c
+x = 4 olsun   y = 5 olsun
+
+x = 0100 ^ 0101 ---> 0001 = 1  (x ^= y)
+y = 0101 ^ 0001 ---> 0100 = 4  (y ^= x)
+x = 0001 ^ 0100 ---> 0101 = 5  (x ^= y)
+```
 
 
 
