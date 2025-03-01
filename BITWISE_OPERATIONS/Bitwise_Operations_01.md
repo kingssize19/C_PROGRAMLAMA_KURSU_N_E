@@ -16,9 +16,12 @@
 | 2 | Bitwise Not | ~ |
 | 5 | Bitwise Shift | >> << | 
 | 8 | Bitwise AND | & |
+| 9 | EXOR | ^ |
 | 10 | Bitwise OR | \| |
+| 14 | Diğer İşlemler | &=, ^=, |=, >>=, <<= |
 
 
+### Ortak Özellikleri
 
 
 
