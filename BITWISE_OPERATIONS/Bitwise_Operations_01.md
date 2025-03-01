@@ -321,8 +321,8 @@ int main(int argc, char **argv)
 
 * x ve y iki int sayı olsun.
 * x ile y'yi exor'larsak ve çıkan sonucu tekrar y ile exor'larsak x'i elde ederiz.
-* x = x ^ y;  // x'in yeni değeri
-* x = x ^ y;  // x'in ilk değeri
+* x = x ^ y; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // x'in yeni değeri
+* x = x ^ y; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // x'in ilk değeri
 
 ```c
 int main(int argc, char **argv)
