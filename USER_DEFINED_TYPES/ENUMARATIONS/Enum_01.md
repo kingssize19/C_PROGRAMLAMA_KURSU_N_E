@@ -169,6 +169,181 @@ int main(int argc, char **argv)
 }
 ```
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+```c
+enum Nec { A, B, C = 1, D, E};      // legal sentaks. Hata yok.
+
+// A = 0,
+// B = 1,
+// C = 1,
+// D = 2,
+// E = 3,
+```
+
+```c
+enum Nec { A, B, C = 1, D = 1, E = 1};      // legal. sentaks Hatası yok.
+
+// A = 0,
+// B = 1,
+// C = 1,
+// D = 1,
+// E = 1,
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* enum türünden bir değişken tanımlayabiliriz.
+
+```c
+enum Color mycolor = Red;
+```
+
+* Yapının elemanları enum türünden olabilir.
+
+```c
+enum Nec { Club, Dia, Heart, Spade };
+enum Erg { two = 2, three = 3, four = 4 };
+
+struct Data {
+    enum Nec n;
+    enum Erg e;
+};
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Enum türü derleyici tarafında işaretli int türü ile ifade ediliyor.
+* Yani C'de sizeof int ile sizeof enum türünün aynı olduğuna güvenerek kod yazabiliriz.
+
+```c
+typedef enum {A, B, C, D}Suit;
+
+int main(int argc, char **argv)
+{
+    printf("sizeof(int) : %zu\n", sizeof(int));     // sizeof(int) : 4
+    printf("sizeof(Suit) : %zu\n", sizeof(Suit));   // sizeof(Suit) : 4
+}
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Dezavantajları 
+
+* En önemli dezavantajı scope konusudur.
+
+* Numaralandırma türlerinden tamsayı - gerçek sayı türlerine ya da tamsayı - gerçek sayı türlerinden numaralandırma türlerine örtülü dönüşümün olması C'de bir dezavantajdır.
+* Derleyici bu dönüşümleri kontrol etmek zorunda değil.
+* Bu hatayı tespit etmek için ya kendimiz bir kod yazacağız ya da statik kod analizi yapan bir program kullanmalıyız.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Farklı enum türleri arasındada örtülü dönüşüm olabilir.
+
+```c
+enum Color { White, Gray, Red, Blue, Brown, Black };
+enum Fruit { Apple, Orange, Banana };
+
+int main(void)
+{
+    enum Color mycolor = Orange; // Legal kod. Sentaks hatası yok. C++'da sentaks hatası.
+}
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* enum türlerinin scope alanı vardır.
+* enumarator olan isimlerinde scope alanı vardır.
+* enum türünün scope'u ile o türün enumarator'lerinin scope'ları arasında bir fark yoktur.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Birden fazla .h dosyasını kullandığımızda enum'ların çakışma durumu söz konusu olabilir. Bu durumda derleyici Sentaks Hatası verir.
+
+```c
+//#include "screen.h"
+enum ScreenColor { White, Gray, Red, Blue, Brown, Black };
+
+//#include "traffic.h"
+enum TrafficLight { Yellow, Red, Green };
+
+// Bu iki enum yapısıbirbiriyle çakışır. Sentaks Hatası
+```
+
+* Bu başlık dosyalarında bu enumarator isimleri özelleştirilerek çakışmaların büyük ölçüde önüne geçilmektedir.
+
+```c
+//#include "screen.h"
+enum ScreenColor { ScreenColorWhite, ScreenColorGray, ScreenColorRed, ScreenColorBlue, ScreenColorBrown, ScreenColorlack };
+
+//#include "traffic.h"
+enum TrafficLight { TrafficLightYellow, TrafficLightRed, TrafficLightGreen };
+
+
+// Bu şekilde çakışmaların önüne büyük ölçüde geçilir.
+```
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Macrolara aşağıdaki kullanım biçimiyle bir scope kazandırılabilir. Fakat bu gerçek anlamda bir scope değil.
+
+```c
+#define SIZE   100
+
+void func(void)
+{
+    #undef  SIZE
+    #define  SIZE   100
+
+    #undef  SIZE  
+}
+```
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Numaralandırma sabiti, define makrosundan daha iyi alternatifli şekilde kullanılabilir.
+
+```c
+void func(void)
+{
+    enum { SIZE = 100 };
+    int a[SIZE] = { 0 };
+}
+```
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bir diğer kullanışlı biçimi. Kodda değişiklik yapıp yeni bir enumarator eklediğimizde NumberOf enumarator'u bu sabitler'in sayısı olacaktır.
+
+```c
+enum Nec { A, B, C, D, E, NoOfNec };
+
+int main()
+{
+    // int nec[NoofNec];
+    // for (int i = 0; i < NoOfNec; ++i);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
