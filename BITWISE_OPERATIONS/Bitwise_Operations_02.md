@@ -1,8 +1,8 @@
 # Bitwise Manipulations (2. Bölüm)
 
-* **Bir tamsayının belirli bir bitini birlemek &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to set the bit)**
-* **Bir tamsayının belirli bir bitini sıfırlamak &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to reset the bit)**
-* **Bir tamsayının belirli bir bitini değiştirmek &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to flip the bit / to toggle the bit)**
+* **Bir tamsayının belirli bir bitini birlemek &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to set the bit)**
+* **Bir tamsayının belirli bir bitini sıfırlamak &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to reset the bit)**
+* **Bir tamsayının belirli bir bitini değiştirmek &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to flip the bit / to toggle the bit)**
 * **Bir tamsayının belirli bir bitinin değerini elde etmek &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (to get the bit)**
 
 
