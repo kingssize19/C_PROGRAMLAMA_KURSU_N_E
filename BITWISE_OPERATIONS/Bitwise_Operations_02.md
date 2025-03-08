@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 
 #### Bir sayıyı 1 eksiği ile &'lemek ne sonucunu doğurur?
 
-```c
+```txt
 17 sayısı olsun        0001 0001
 17 - 1 = 16            0001 0000
 --------------------------------
@@ -233,7 +233,7 @@ Bu ikisin &'lersek :   0001 0000
 
 **NOT :** Bir sayıyı 1 eksiği ile &'lersek ilk 1 olan biti sıfırlamış oluruz.
 
-```c
+```txt
 36 : 0010 0100
 35 : 0010 0011
 --------------
@@ -249,7 +249,7 @@ Bu ikisin &'lersek :   0001 0000
 * Bir tam sayının 2'nin kuvveti olup olmadığını test etmek.
 * Bir tam sayı ikinin kuvveti ise sayının bir biti 1'dir.
 
-```c
+```txt
 x ikinin kuvveti olsun yani x = 0100 0000
 
 x & (x - 1) : Bu ifadenin sonucu 0'dır. Bir sayıyı kendinden 1 eksiği ile &'lersek ilk 1 bitini 0'lamış oluruz.
@@ -258,7 +258,7 @@ x sayısı 2'nin kuvveti ise tek biti 1'dir o bitte 0'lanınca x in sonucu 0 olu
 
 * Bu kurala uyan ve 2'nin kuvveti olmayan tek sayı 0 sayısıdır.
 
-```c
+```txt
 x = 0 olsun x'in 1 eksiği -1'dir yani tüm bitleri 1 olur.
 
 x       = 0000 0000
@@ -308,7 +308,7 @@ int main() {
 
 * Sayımız **10100110011001110111** olsun.
 
-```c
+```txt
 1010011001100111 0111  -> Bu sayının en düşük anlamlı 4 bitinin oluşturduğu değeri bulmak istiyoruz.
 0000000000000000 1111  -> Bu maske ile &'lersek en düşük anlamlı 4 bitin değerini elde elde etmiş oluruz.
 
@@ -324,7 +324,7 @@ int main() {
 
 **NOT :** 16 bit'lik 0101 01010010 0101 sayısının ortadaki 8 bitini get etmek isteseydik :
 
-```c
+```txt
 0101 01010010 0101 sayısı olsun
      ||||||||
      01010010  -> Bu bitleri get etmek isteseydik.
