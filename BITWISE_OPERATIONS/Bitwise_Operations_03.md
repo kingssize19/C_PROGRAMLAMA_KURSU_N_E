@@ -215,13 +215,99 @@ int y : n;  // (n) constant expression değil. Sentaks hatası. Bu kod illegal.
 
 **NOT :** Eğer eleman bit seviyesinde tutulacaksa (int y : 3; gibi) burada türün ya işaretli int olması lazım, ya işaretsiz int olması lazım ya da (C99'da) _Bool türünden olması lazım. (unsigned int, signed int, _Bool)
 
+```c
+long y : 5;
+short z : 3;
+
+// Bu kullanımlar standart değil. Ama sentaks hatasıda değil yani derleyiciye bırakılmış.
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+**NOT :** En çok karşımıza çıkacak tema; Yapının bütün elemanlarının bitfield member olması.
+
+```c
+// Doğru kullanım. Hata yok.
+
+struct Data {
+  int x;
+  int y : 3;
+  int z : 5;    
+};
+```
+
+```c
+// En sık karşılaşacağımız kullanım şekli.
+
+struct Data {
+  int x : 2;
+  int y : 3;
+  int z : 5;
+};
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+```c
+struct Data {
+  int x : 5;
+  int y : 3;
+  int z : 5;
+};
 
 
+int main(void)
+{
+//    struct Data mydata = { .y = 5, .x = 24, .z = 2 };
+//    struct Data mydata = { 20, 4, 16 };
 
+    struct Data mydata;
+    struct Data* p = &mydata;
+    p->x = 4;
+}
+```
+* Bu işlemler, erişimler şüphesiz bitsel işlemler ile yapılıyor ama bu bitsel işlemlerin kodlarını derleyici oluşturduğu için bize ait olan iş yükü azalıyor.
 
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
+* Aşağıdaki Data yapısı için :
+  * sizeof(struct Data) değeri 4'tür.
+  * Hizalama nedeniyle (padding byte olduğu için) 4 byte.
 
+```c
+struct Data {
+  int x : 5;
+  int y : 2;
+};
 
+int main(void)
+{
+    printf("%zu\n", sizeof(struct Data));   // 4
+}
+```
+
+* Aşağıdaki Data yapısı için :
+  * sizeof(struct Data) değeri 4'tür.
+
+```c
+struct Data {
+  int x1 : 5;
+  int x2 : 3;
+  int x3 : 5;
+  int x4 : 3;
+  int x5 : 6;
+  int x6 : 2;
+  int x7 : 4;
+  int x8 : 4;
+};
+
+int main(void)
+{
+    printf("%zu\n", sizeof(struct Data));   // 4
+}
+```
+
+* x8 : 5; 
 
 
 
