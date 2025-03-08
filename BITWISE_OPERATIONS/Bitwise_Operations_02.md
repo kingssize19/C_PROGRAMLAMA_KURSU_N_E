@@ -495,7 +495,53 @@ sbc_[x >> 24 & 255]    sbc_[x >> 16 & 255]    sbc_[x >> 8 & 255]    sbc_[x & 255
 * **Mantıksal ilişki içindeki n tane boolean değeri az yer kaplayacak şekilde ve hızlı erişim yapılacak şekilde bir tamsayının bitleri olarak kullanabiliriz.**
 
 ```c
+#include <stdio.h>
+#include <stdint.h>
 
+#define    WHITE     1     // sayının 0. bitini 1'lemek için.
+#define    YELLOW    2     // sayının 1. bitini 1'lemek için.
+#define    RED       4     // sayının 2. bitini 1'lemek için
+#define    GREEN     8     // sayının 3. bitini 1'lemek için
+#define    BLUE      16    // sayının 4. bitini 1'lemek için
+#define    BROWN     32    // sayının 5. bitini 1'lemek için
+#define    PURPLE    64    // sayının 6. bitini 1'lemek için
+
+
+void bit_print(int x) {
+    
+    unsigned int mask = ~(~0u >> 1);
+    
+    while (mask) {
+        putchar(x & mask ? '1' : '0');
+        mask >>= 1;
+    }
+    putchar('\n');
+}
+
+
+int main() {
+    
+    uint16_t led_flags = 0;
+    
+    led_flags |= GREEN; // sayının 3. bitini set ederiz.
+    bit_print(led_flags); // 0000 0000 0000 1000
+    
+    led_flags |= (GREEN | BLUE | YELLOW); // Yeşil, mavi, sarı ledlerin açık olduğu yani ilgili bitlerin 1 yapıldığı bilgisi.
+    bit_print(led_flags); // 0000 0000 0001 1010
+
+    led_flags &= ~BLUE; // BLUE'yi yani 4. biti 0 lamak istiyoruz.
+    bit_print(led_flags); // 0000 0000 0000 1010
+    
+    led_flags ^= GREEN; // GREEN bit değerini toggle yapar.
+    bit_print(led_flags);   // 0000 0000 0000 0010
+    
+    if (led_flags & YELLOW) { // Doğru kısma girerse Yellow biti 1 demek
+        printf("Yellow true\n");
+    }
+    else {
+        printf("Yellow false\n");
+    }
+}
 ```
 
 
