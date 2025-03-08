@@ -327,13 +327,20 @@ int main() {
      ||||||||
      01010010  -> Bu bitleri get etmek isteseydik.
 
-1) Sayıyı 4 sağa kaydırırız.
-2) Bu 4 sağa kaydırılmış sayıyı 0000000011111111 sayısı ile &'lersek o sayıyı elde ederiz.
+1. Yöntem
+------------------------------------------------------------------------------------------------------
+* Sayıyı 4 sağa kaydırırız.
+* Bu 4 sağa kaydırılmış sayıyı 0000000011111111 sayısı ile &'lersek o sayıyı elde ederiz.
+* Yani x bit'lik bir tam sayı ise ortadaki 8 biti get etmek için.
+* ((x >> 4) & 255) işlemini yaparak sonuca ulaşabiliriz.
+------------------------------------------------------------------------------------------------------
 
-Yani x bit'lik bir tam sayı ise ortadaki 8 biti get etmek için.
-
-((x >> 4) & 255) işlemini yaparak sonuca ulaşabiliriz.
-
+2. Yöntem
+------------------------------------------------------------------------------------------------------
+* Sayıyı 4 bit sola kaydırırız. Bizim 8 bitimiz en yüksek anlamlı 8 bit olur.
+* Daha sonra 8 bit sağa kaydırırızç İşaretsiz sayılarda sağa kaydırmada soldan 0 besleme olduğu için.
+* Bu yöntem ile 16 bitlik sayının ortadaki 8 bitini get etmiş oluruz.
+------------------------------------------------------------------------------------------------------
 ```
 
 
