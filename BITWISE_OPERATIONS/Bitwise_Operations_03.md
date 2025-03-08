@@ -463,12 +463,226 @@ int main(void)
 
 #### Yüksek anlamlı 5 bitini 1 yapmak
 
-* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
+* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
 * int n = 5; olsun
-* ~0u&emsp;&emsp;&emsp;&emsp;//
+* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111111111111111
+* (~0u >> n)&emsp;&emsp;&emsp; // 00000111111111111111111111111111
+* ~(~0u >> n)&emsp;&emsp;&emsp;// 11111000000000000000000000000000
+
 ```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+
+int main(void)
+{
+    int n = 5;
+
+    bitprint(~(~0u >> n));  // 11111000000000000000000000000000
+}
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### En düşük anlamlı en bitini 1 yapmak
+
+* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
+* int n = 5; olsun
+* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111111111111111
+* (~0u << n)&emsp;&emsp;&emsp; // 11111111111111111111111111100000
+* ~(~0u << n)&emsp;&emsp;&emsp;// 00000000000000000000000000011111
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+int main(void)
+{
+    int n = 5;
+
+    bitprint(~(~0u << n));  // 00000000000000000000000000011111
+}
 
 ```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Bitsel exor işleminin ilginç bir özelliği
+
+* EXOR'lama işleminde sıranın önemi yoktur.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+
+// exor'lama işleminde sıranın önemi yoktur.
+
+int main(void)
+{
+    int x = 86521;
+    int y = 983874;
+    int z = 27643;
+
+    printf("%d\n", (x ^ y) ^ z);        // 932160
+    printf("%d\n", (y ^ x) ^ z);        // 932160
+    printf("%d\n", (z ^ y) ^ x);        // 932160
+}
+```
+
+**Hatırlatma :** Bir sayıyı kendisi ile exor'larsak o ifadenin değeri 0 olur.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+int main(void)
+{
+    // 13  21
+    int x = 21;
+    
+    printf("%d\n", x);    // 21
+
+    // x in değeri 13 ise 21 yapalım. 21 ise 13 yapalım.
+
+    x = x ^ 13 ^ 21;  // Hatırlatma bir sayıyı kendisi ile exor'larsak o ifadenin değeri 0 olur.
+
+    printf("%d\n", x);    // 13
+}
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* 16 bitlik bir değişkenimiz olsun. Düşük anlamlı 2 byte'ı ve yüksek anlamlı 2 byte'ı elde etmeye çalışalım.
+* Bir byte'ı elde ederken ilgili bitleri 1 diğer bitleri 0 ile &' lersek 0 yutan eleman olduğu için o ilgili bitleri elde etmiş oluruz.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+
+int main(void)
+{
+    uint16_t x = 0xEA45;
+
+    uint8_t low_bytes;
+    uint8_t high_bytes;
+
+    printf("%X\n", x);      // EA45
+
+    low_bytes  = x & (0xFF);
+    high_bytes = (x >> 8) & (0xFF);
+
+    printf("%X\n", low_bytes);  // 45
+    printf("%X\n", high_bytes); // EA
+
+}
+```
+
+* Aynı işlemi 32 bitlik için yaparsak : 
+* Sayımız 0xEA45CB28 olsun.
+* x & 0xFFFF -> CB28
+* x >> 16 & 0xFFFF -> EA45
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Little-endian ve Big-endian Dönüşümleri
+
+* EA28 little endian olsun bunubig endian'a dönüştürürsek 28EA olur. Bu dönüşümde byte'ları takas ederek olur.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+
+int main(void)
+{
+    uint16_t x = 0xEA45;
+
+    // 0x45EA elde etmek istiyoruz.
+
+    printf("%X\n", x);      // EA45
+
+    uint16_t new_x = x >> 8 | x << 8 & 0xFF00;
+
+    printf("%X", new_x);    // 45EA
+
+}
+```
+
+* 32 bitlik bir **little endian to big endian** dönüşümü yapalım.
+* AB23CF98 olsun bunun 98CF23AB olmasını istiyoruz.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+#include "nutility.h"
+
+
+int main(void)
+{
+    uint32_t x = 0xAB23CF98;
+
+    printf("%X\n", x);      //  AB23CF98
+
+    x = (x << 24) | (x >> 24) | (x >> 8 & 0x0000FF00) | (x << 8 & 0x00FF0000);
+
+    printf("%X\n", x);      // 98CF23AB
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
