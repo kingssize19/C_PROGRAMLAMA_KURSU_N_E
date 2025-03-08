@@ -210,16 +210,131 @@ int main(int argc, char **argv)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#### Bir tam sayının tek mi çift mi olduğunu sınamak.
+
+* **x & 1 ;**
+  * sayının 0.bitinin 1' mi yoksa 0'mı olduğunu test eder.
+  * sayının 0. biti 1 ise o tek sayıdır.
+
+* **if (x & 1)** ile sayının tek veya çift olduğu bulunabilir.
+  * sayı tek ise if'in doğru kısmına girer.
+  * sayı çift ise if'in yanlış kısmına girer.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Bir sayıyı 1 eksiği ile &'lemek ne sonucunu doğurur?
+
+```c
+17 sayısı olsun        0001 0001
+17 - 1 = 16            0001 0000
+--------------------------------
+Bu ikisin &'lersek :   0001 0000
+```
+
+**NOT :** Bir sayıyı 1 eksiği ile &'lersek ilk 1 olan biti sıfırlamış oluruz.
+
+```c
+36 : 0010 0100
+35 : 0010 0011
+--------------
+&  : 0010 0000   
+```
+
+* Yukarıda 36 sayısını 35 ile &'ledik 36 sayısının ilk 1 biti 0 oldu.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### power of two
+
+* Bir tam sayının 2'nin kuvveti olup olmadığını test etmek.
+* Bir tam sayı ikinin kuvveti ise sayının bir biti 1'dir.
+
+```c
+x ikinin kuvveti olsun yani x = 0100 0000
+
+x & (x - 1) : Bu ifadenin sonucu 0'dır. Bir sayıyı kendinden 1 eksiği ile &'lersek ilk 1 bitini 0'lamış oluruz.
+x sayısı 2'nin kuvveti ise tek biti 1'dir o bitte 0'lanınca x in sonucu 0 olur.
+```
+
+* Bu kurala uyan ve 2'nin kuvveti olmayan tek sayı 0 sayısıdır.
+
+```c
+x = 0 olsun x'in 1 eksiği -1'dir yani tüm bitleri 1 olur.
+
+x       = 0000 0000
+x - 1   = 1111 1111
+--------------------
+x&(x-1) = 0000 0000   -> Sonuç 0 oldu fakat 0'sayısı 2 nin kuvveti değil.
+```
+
+* Aşağıdaki if ifadesi ile sayı 2'nin kuvveti mi değil mi sorgusu yapılabilir.
+
+```c
+if (x && !(x & (x-1)))
+```
 
 
+```c
+#include <stdio.h>
 
+#define POWER_OF_2(a)       ((a) && !((a) & ((a) - 1)))
 
+int main() {
+    
+    int x;
+    printf("Bir tamsayi girin : ");
+    scanf("%d", &x);
+    
+    if (x && !(x & (x - 1))) {
+        printf("power of two\n");
+    }
+    else {
+        printf("not power of two\n");
+    }
+    /*
+    if (POWER_OF_2(x)) {
+        printf("power of two\n");
+    }
+    else {
+        printf("not power of two\n");
+    }
+    */
+}
+```
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#### Bir tamsayının en düşük anlamlı 4 bitinin oluşturduğu tam sayının değeri nedir?
 
+* Sayımız **10100110011001110111** olsun.
 
+```c
+1010011001100111 0111  -> Bu sayının en düşük anlamlı 4 bitinin oluşturduğu değeri bulmak istiyoruz.
+0000000000000000 1111  -> Bu maske ile &'lersek en düşük anlamlı 4 bitin değerini elde elde etmiş oluruz.
 
+1010011001100111 0111
+0000000000000000 1111
+--------------------- & işlemi
+0000000000000000 0111 
+```
 
+**NOT :** & (ve) işleminde 0 yutan eleman, 1 etkisiz eleman olduğu için son 4 bitin oluşturduğu tam0000000000000000 1111sayı değerini elde ederiz.
+
+**NOT :** En düşük anlamlı byte'ının değerini elde etmek için 255 değeri ile & işlemi yaparız.
+
+```c
+0101 01010010 0101 sayısı olsun
+     ||||||||
+     01010010  -> Bu bitleri get etmek isteseydik.
+
+1) Sayıyı 4 sağa kaydırırız.
+2) Bu 4 sağa kaydırılmış sayıyı 0000000011111111 sayısı ile &'lersek o sayıyı elde ederiz.
+
+Yani x bit'lik bir tam sayı ise ortadaki 8 biti get etmek için.
+
+((x >> 4) & 255) işlemini yaparak sonuca ulaşabiliriz.
+
+```
 
 
 
