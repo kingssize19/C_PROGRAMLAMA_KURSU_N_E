@@ -463,9 +463,9 @@ int main(void)
 
 #### Yüksek anlamlı 5 bitini 1 yapmak
 
-* ~0u&#92;t// 11111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
+* ~0u&emsp;&emsp;&emsp;&emsp;// 11111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
 * int n = 5; olsun
-* ~0u    //
+* ~0u&emsp;&emsp;&emsp;&emsp;//
 ```c
 
 ```
