@@ -404,8 +404,71 @@ int main(void)
 }
 ```
 
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# UNION İLE YAPILARIN BİTFİELD ELEMANLARININ KULLANIMI
+
+#### Bir tarih bilgisini 32 bitlik değişkende saklamak.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include "myctype.h"
+#include <stdint.h>
+
+typedef union {
+
+    uint32_t uval;
+
+    struct {    // Anonymous struct
+        unsigned int day : 5;
+        unsigned int mon : 4;
+        unsigned int year : 7;  // 1980 sonrası için
+        unsigned int hour : 5;
+        unsigned int min : 6;
+        unsigned int sec : 5;   // saniyenin yarisi
+    };
 
 
+}NDate;
+
+
+
+int main(void)
+{
+    NDate mydate = {
+        .day = 1,
+        .mon = 3,
+        .year = 2025 - 1980,
+        .hour = 1,
+        .min = 16,
+        .sec = 58 / 2
+    };
+
+    printf("%u\n", mydate.uval);              // 3925957217  tarih bilgilerini bu tamsayı değerinde sakladık
+
+    // 3925957217 bu tamsayı değerinden tekrar tarih bilgisine geri dönebiliriz.
+    mydate.uval = 3925957217;
+
+
+    printf("%02u-%02u-%u %02u-%02u-%02u\n", mydate.day, mydate.mon, mydate.year + 1980, mydate.hour, mydate.min, mydate.sec * 2); //01-03-2025 01-16-58
+
+    // union olduğu için 32 bitlik veri saklayabilir. tarih bilgilerini 32 bitlik bir tamsayı değişkende sakladık.
+    // Ardından bu değeri uval e atayıp tarih değerlerini taşıyan elemanları ekrana yazdırdığımızda tarihe eriştik.
+}
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Yüksek anlamlı 5 bitini 1 yapmak
+
+* ~0u \t// 11111111111111111111 işaretsiz türden bitleri 1 olan sayıyı ifade eder.
+* int n = 5; olsun
+* ~0u    //
+```c
+
+```
 
 
 
