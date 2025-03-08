@@ -210,7 +210,7 @@ int main(int argc, char **argv)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### Bir tam sayının tek mi çift mi olduğunu sınamak.
+### Bir tam sayının tek mi çift mi olduğunu sınamak.
 
 * **x & 1 ;**
   * sayının 0.bitinin 1' mi yoksa 0'mı olduğunu test eder.
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### Bir sayıyı 1 eksiği ile &'lemek ne sonucunu doğurur?
+### Bir sayıyı 1 eksiği ile &'lemek ne sonucunu doğurur?
 
 ```txt
 17 sayısı olsun        0001 0001
@@ -244,7 +244,7 @@ Bu ikisin &'lersek :   0001 0000
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### power of two
+### power of two
 
 * Bir tam sayının 2'nin kuvveti olup olmadığını test etmek.
 * Bir tam sayı ikinin kuvveti ise sayının bir biti 1'dir.
@@ -304,7 +304,7 @@ int main() {
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### Bir tamsayının en düşük anlamlı 4 bitinin oluşturduğu tam sayının değeri nedir?
+### Bir tamsayının en düşük anlamlı 4 bitinin oluşturduğu tam sayının değeri nedir?
 
 * Sayımız **10100110011001110111** olsun.
 
@@ -348,7 +348,7 @@ int main() {
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#### Sayının bitlerini yazdırman : bit_print() fonksiyonu
+### Sayının bitlerini yazdırman : bit_print() fonksiyonu
 
 **1. Algoritma**
 
@@ -393,12 +393,110 @@ int main() {
 
 ```
 
+```c
+void bit_print(int x)
+{
+    unsigned int mask = ~(~0u >> 1); // 100000000000 maskesi
+    while (mask) {
+        putchar(x & mask ? '1' : '0');
+        mask >>= 1;
+    }
+    putchar('\n');
+}
 
+int main() {
+    
+    bit_print(135);  // 00000000000000000000000010000111
+    
+}
+```
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+### set_bit_count Fonksiyonu
 
+* Bir tamsayının set edilmiş bitlerinin sayılması.
 
+**1. Yöntem :**
 
+```c
+int sbc(int x)
+{
+    int count = 0;
+    
+    unsigned int mask = ~(~0u >> 1); // 100000000000 maskesi
+    
+    while (mask) {
+        if (x & mask) {
+            count++;
+        }
+        mask >>= 1;
+    }
+    
+    return count;
+}
+
+int main() {
+    
+    bit_print(2352532);       // 00000000001000111110010110010100
+    int cnt = sbc(2352532);
+    
+    printf("%d\n", cnt);     // 11   
+}
+```
+
+**2. Yöntem :**
+
+```c
+int sbc2(int x)
+{
+    int count = 0;
+    
+    while (x) {
+        x &= x - 1;
+        ++count;
+    }
+    return count;
+}
+
+int main() {
+    
+    bit_print(64);     // 00000000000000000000000001000000
+    int cnt = sbc2(64);
+    
+    printf("%d\n", cnt); // 1
+    
+    
+}
+```
+
+**3. Yöntem :**
+
+* 8 bitlik yani sağdan 1 byte'lık alanda oluşturulacak herbir tamsayı için 1 sayısını indeks ile karşılık gelecek dizi oluşturulur.
+* Ardından sağa kaydırma işlemleri bu dizinin indeksi yapılarak o ifadelerde bulunan bir sayılarının toplamı alınır.
+
+```c
+//    10101100                01001110              10101010           11100011
+sbc_[x >> 24 & 255]    sbc_[x >> 16 & 255]    sbc_[x >> 8 & 255]    sbc_[x & 255]
+```
+
+* **sbc_ dizisini oluşturan kod :**
+
+![image](https://github.com/user-attachments/assets/a3fcdfc3-2dc6-4405-9a4f-12fc4dc77417)
+
+* **sbc_\[x & 255\] ifadesi :**
+  * x & 255 ifadesinin değeri örneğin 16 olsun. Diziye indeks olarak bu ifadenin değerini yollarsak. sbc_\[16\] = 1 'e denk gelir. Bu sayede en düşük anlamlı byte'ında 1 adet 1 in olduğunu saptamış oluruz
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bir byte'lık bir tamsayının bitsel reversi değerini hesaplayan bir kod yazın.
+* **Not :** Sınırlı sayıda olduğu için lookup table kullanılır.
+
+* **Mantıksal ilişki içindeki n tane boolean değeri az yer kaplayacak şekilde ve hızlı erişim yapılacak şekilde bir tamsayının bitleri olarak kullanabiliriz.**
+
+```c
+
+```
 
 
 
