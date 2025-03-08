@@ -322,6 +322,8 @@ int main() {
 
 **NOT :** En düşük anlamlı byte'ının değerini elde etmek için 255 değeri ile & işlemi yaparız.
 
+**NOT :** 16 bit'lik 0101 01010010 0101 sayısının ortadaki 8 bitini get etmek isteseydik :
+
 ```c
 0101 01010010 0101 sayısı olsun
      ||||||||
@@ -340,12 +342,56 @@ int main() {
 * Sayıyı 4 bit sola kaydırırız. Bizim 8 bitimiz en yüksek anlamlı 8 bit olur.
 * Daha sonra 8 bit sağa kaydırırızç İşaretsiz sayılarda sağa kaydırmada soldan 0 besleme olduğu için.
 * Bu yöntem ile 16 bitlik sayının ortadaki 8 bitini get etmiş oluruz.
+* ((x << 4) >> 8) işelmi ile sonucu buluruz.
 ------------------------------------------------------------------------------------------------------
 ```
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### Sayının bitlerini yazdırman : bit_print() fonksiyonu
+
+**1. Algoritma**
+
+* Bu algoritmada x sayısını 00000001 ile maskeliyoruz. Sayıyı 31. bitten başlayarak 0'a kadar sağa kaydırıyoruz.
+
+```c
+#include <stdio.h>
+#include <limits.h>
+
+void bit_print(int x)
+{
+    for (int i = (int)sizeof(int)*CHAR_BIT - 1; i >= 0; --i) {
+        putchar((x >> i) & 1 ? '1' : '0');
+    }
+    putchar('\n');
+}
+
+int main() {
+
+    bit_print(32);  // 00000000000000000000000000100000
+    
+}
+```
+
+**2. Algoritma**
+
+* Bu algoritmada x sayısını 10000000 maskesi ile &'leriz.
+* Döngünün her turunda maskeyi 1 bit sağa kaydırırız.
+
+```txt
+10000000 maskesini elde etmenin yöntemi :
+* İlk olarak, ilk değer olarak int türünün en küçük değerini vermek.
+* unsigned int mask = INT_MIN;
 
 
+10000000 maskesini elde etmenin başka yolu :
 
+0000 0000 0000 0000 -> Bu sayı sıfır.
+1111 1111 1111 1111 -> Bu sayı yukarıdaki 0 sayısının 1'e tümleyeni
+0111 1111 1111 1111 -> Bir bit sağa kaydırınca elde edilen değer.
+1000 0000 0000 0000 -> Yukarıdaki sayının bitsel değil'ini alırsak maskeyi elde etmiş oluruz.
+
+```
 
 
 
