@@ -307,12 +307,102 @@ int main(void)
 }
 ```
 
-* x8 : 5; 
+* x8 : 5; olsaydı 4'byte'ı (yani 32 bit'i) aşardı.
+* Bu yüzden struct Data sizeof'u 8 byte olurdu. (5 byte olmazdı)
+* Sebebi yine hizalamadan dolayı.
+* Yani sistemlerde tipik olarak bit alanı eleman yada elemanlara sahip yapıların sizeof'u hizalama nedeniyle sistemdeki int türünün katları olarak artar. (**storage unit**)
 
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
+```c
+struct Data {
+  int a : 5;
+  int b : 3;
+  
+  // aaaaabbb
+  // bbbaaaaa
+  
+  // Hangisi şeklinde olduğu derleyiciye bağlı
+};
+```
 
+* Yani derleyici arka planda bit alanı elemanlarının bitlerinin yerleştireceği konusunda, ne şekilde kod üreteceği konusunda büyük ölçüde serbesttir.
+* Bit elemanları aynı byte'a sığıyorsa derleyici bu elemanları aynı byte'a koymak zorunda fakat aynı byte'a sığmıyorsa aşağıdaki gibi bir kodda üretilebilir.
 
+```c
+struct Data {
+  int a : 5;
+  int b : 4;
+  
+  // aaaaabbb
+  // b*******
+  
+  // Ya da
+  
+  // aaaaa???
+  // bbbb????
+  
+  // şeklinde yerleştirilebilirdi.
+};
+```
 
+* Bu yüzden ;
+* Yapıların bit alanı elemanlarını kullanıyorsanız. Yapının elemanlarına bitsel işlemler ile erişmeye çalışmayın.
+* Çünkü bu büyük ölçüde derleyiciye bağlı.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+```c
+struct Data {
+  int a : 5;
+  int _ : 3;
+  int b : 4;
+};
+```
+
+* Yukarıdaki kullanım ile b'nin ayrı bir byte'ta olması garanti altında.
+* Bu şekilde b'nin bitlerinin birden fazla byte'a yayılmasını, dolayısıyla b'nin üstünde yapılan işlemlerin yüksek maliyetle yapılmasına engel olmak için.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#### DOS sistemi 16 bitlik işletim sistemi.
+
+```c
+struct DosDate {
+  unsigned int day : 5;
+  unsigned int mon : 4;
+  unsigned int year : 7;
+};
+
+struct DosTime {
+  unsigned int hour : 5;
+  unsigned int min : 6;
+  unsigned int sec : 5; // 0 - 31
+  
+  // 5 bitlik alanda 0 - 31 değerleri tutulabilir.
+  // DOS işeltim sisteminde 31 ve üzeri saniyeler 2 ile çarpılarak ifade edilir.
+  // Bu yüzden DOS'taki deosya oluşturma saniyeleri hep çifttir.
+};
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+* Bitler adreslemeye tabi değildir.
+* C'nin kurallarına göre adreslenebilir en küçük tür 1 byte storage'a sahip char, signed char, unsigned char türleridir.
+* Bu yüzden yapıların bit alanı elemanlarının adres operatörünün operandı olması geçerli değildir. Doğrudan sentaks hatası.
+
+```c
+typedef struct {
+    int x : 5;
+    int y : 3;
+}Data;
+
+int main(void)
+{
+    Data mydata = { 2, 4 };
+    int* p = &mydata.x;     // illegal code. Sentaks hatası error: cannot take address of bit-field 'x'
+}
+```
 
 
 
